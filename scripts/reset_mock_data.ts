@@ -12,9 +12,8 @@ const MOCK_EMAILS = [
 
 // Explicit list of real users that MUST NEVER be deleted
 const PROTECTED_REAL_EMAILS = [
-  'rv3475023@gmail.com',
-  'vinay@123',
-  'vinay.kumar@nivora.edu',
+  process.env.ADMIN_EMAIL || 'admin@nivora.edu',
+  'student@nivora.edu',
 ];
 
 async function main() {

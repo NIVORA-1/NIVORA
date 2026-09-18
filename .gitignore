@@ -1,21 +1,32 @@
 # Dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# Next.js build output
-/.next/
-/out/
-/build
+# Build outputs
+.next/
+dist/
+build/
+out/
+.vercel/
+coverage/
 
-# Environment files (sensitive credentials)
+# Environment files (sensitive credentials - NEVER commit!)
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .env*.local
 
 # Prisma local database files and platform native engine binaries
 *.db
 *.db-journal
+*.sqlite
+*.sqlite3
+prisma/*.db
+prisma/*.db-journal
 *.tmp*
 src/generated/prisma/*.node
 src/generated/prisma_tmp/
@@ -24,17 +35,17 @@ src/generated/prisma_tmp/
 .DS_Store
 Thumbs.db
 *.pem
+
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-# Vercel
-.vercel
-
-# UX reference zip (unzipped folder is preserved)
+# UX reference archive
 stitch_nivora_student_operating_system_ux.zip

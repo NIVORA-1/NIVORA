@@ -1,81 +1,111 @@
-# 🎓 NIVORA — High-Performance Student Operating System
+# Nivora
 
-Nivora is an all-in-one student productivity and academic operating system designed for modern learners. Built with Next.js 14, Tailwind CSS, Prisma, and PostgreSQL, Nivora integrates coursework planning, focus modes, verified merit dossiers, and an ambient study audio engine into a unified interface.
-
----
-
-## 🚀 Features
-
-- **📅 Dynamic Academic Planner**: Track lectures, assignments, exams, and personal deep work sessions with integrated countdown timers and priority tagging.
-- **📚 Curriculum & Module Mastery**: Manage subjects, unit-by-unit syllabus progression, and safe attendance margins.
-- **🎵 Built-in Focus Audio Engine**: Curated soundscapes across 7 categories (Focus, Lo-Fi, Ambient, Classical, Nature, Binaural Beats, and Campus Soundscapes) with streaming audio player support.
-- **💼 Verified Career & Merit Dossier**: Showcase projects, technical skills, ATS resume scoring, and auditable system credentials.
-- **⚡ Reboot & Focus Sessions**: Anti-doomscroll pacing, focus metrics, and cognitive recharge workflows.
-- **🏆 Achievements & Badges**: Gamified study milestones and streak tracking.
+Nivora is a personalized student learning ecosystem designed to bring a student's academic journey, planning, focus, skills and growth into one connected experience.
 
 ---
 
-## 🛠 Tech Stack
+## Features
 
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router, React 18)
-- **Database ORM**: [Prisma](https://www.prisma.io/) with PostgreSQL (Supabase pooler support)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with Lucide Icons and custom design tokens
-- **Animations**: GSAP & Canvas Confetti
+- **Personalized Onboarding**: Tailored setup adapting to stream (CSE, BBA, MECH, LAW), academic goals, and study habits.
+- **Student Dashboard**: Real-time academic tracking, streak calculation, priority tasks, and progress metrics.
+- **Academic Planning**: Interactive planner and calendar for tracking lectures, assignments, exams, and deep work sessions.
+- **Music / Focus System**: Ambient study soundscapes and binaural audio player spanning 7 categories (Focus, Lo-Fi, Ambient, Classical, Nature, Binaural Beats, Campus).
+- **Skills and Projects**: Verified merit dossier, ATS resume alignment, proof-of-work showcasing, and project portfolios.
+- **Student Productivity**: Anti-doomscroll monitoring, cognitive pacing, and reboot focus sessions.
+- **Personalized Experience**: Dynamic curriculum tracking, attendance threshold monitoring, and customized study plans.
+- **Authentication**: Secure JWT cookie sessions, bcrypt password hashing, password reset verification codes, and protected routes.
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router) & React 18
 - **Language**: TypeScript
+- **Database & ORM**: Prisma ORM with Supabase PostgreSQL (Transaction & Session poolers)
+- **Styling**: Tailwind CSS & Lucide React
+- **Animations**: GSAP & Canvas Confetti
 
 ---
 
-## 📦 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
+
 ```bash
-git clone https://github.com/RISHABH-NEW/NIVORA.git
+git clone <GITHUB_REPOSITORY_URL>
 cd NIVORA
 ```
 
 ### 2. Install Dependencies
+
 ```bash
 npm install
 ```
-*(This automatically triggers `prisma generate` to configure your platform's Prisma Client engine)*
+*(Dependencies will install and automatically trigger `npx prisma generate` via postinstall)*
 
-### 3. Setup Environment Variables
-Create a `.env` file in the root directory modeled after `.env.example`:
+### 3. Configure Environment Variables
 
-```env
-DATABASE_URL="postgresql://user:password@host:6543/postgres?pgbouncer=true"
-DIRECT_URL="postgresql://user:password@host:5432/postgres"
-JWT_SECRET="your-super-secret-jwt-key"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
+Create your local environment configuration from `.env.example`:
 
-### 4. Database Setup & Seeding
 ```bash
-# Push schema to database
-npm run db:push
-
-# Seed initial subjects, assignments, and test student profile
-npm run db:seed
+cp .env.example .env.local
 ```
 
-### 5. Run the Development Server
+Configure your actual database connection strings and secrets in `.env.local` (see [Environment Variables](#environment-variables) below).
+
+### 4. Database Setup
+
+Push the Prisma schema to your PostgreSQL database:
+
+```bash
+npm run db:push
+```
+
+*(Optional: To populate initial development courses and subjects for local testing, run `npm run db:seed`)*
+
+### 5. Start the Development Server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🎶 Music Library Seeding (Optional)
+## Environment Variables
 
-To seed or refresh open-access legal study music:
-```bash
-npm run music:seed
-```
-For more information, see [`docs/MUSIC_SETUP.md`](docs/MUSIC_SETUP.md).
+All sensitive values must be configured via local environment files (`.env` or `.env.local`). **Never commit secrets, tokens, passwords, or connection strings to source control.**
+
+Refer to [`.env.example`](.env.example) for variable placeholders:
+
+| Variable | Description | Required |
+| --- | --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string (Transaction pooler, port 6543) | Yes |
+| `DIRECT_URL` | Direct PostgreSQL connection string (Session pooler, port 5432) | Yes |
+| `JWT_SECRET` | Secret key for signing session tokens (min 32 chars in production) | Yes |
+| `NEXT_PUBLIC_APP_URL` | Base URL of the application (e.g., `http://localhost:3000`) | Optional |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (optional cloud audio storage) | Optional |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous public API key | Optional |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key (for server-side storage operations) | Optional |
+| `RESEND_API_KEY` | Resend API key for password reset email delivery | Optional |
+| `EMAIL_FROM` | Verified sender email address | Optional |
 
 ---
 
-## 📄 License
+## Available Scripts
 
-This project is licensed under the MIT License.
+- `npm run dev`: Starts the Next.js development server.
+- `npm run build`: Generates Prisma Client and builds the production application.
+- `npm run start`: Runs the production Next.js server.
+- `npm run lint`: Runs ESLint checks.
+- `npm run db:push`: Pushes Prisma schema changes to the database.
+- `npm run db:seed`: Seeds local development mock data.
+- `npm run music:seed`: Seeds local audio tracks into the database.
+- `npm run music:update`: Updates audio metadata and audio hashes.
+
+---
+
+## License
+
+This project is private and proprietary.
