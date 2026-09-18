@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#8a938c", "secondary-container": "#2a513d", "tertiary": "#efd28e", "on-surface-variant": "#c0c9c1", "on-background": "#dbe4e9", "on-primary-fixed-variant": "#1b5039", "on-secondary-fixed": "#002113", "secondary-fixed": "#c1edd2", "surface-variant": "#2e363a", "surface-dim": "#0c1418", "secondary": "#a5d0b7", "error": "#ffb4ab", "tertiary-fixed-dim": "#e0c381", "on-secondary-container": "#98c2a9", "surface-container-low": "#151d21", "primary-container": "#8fc5a7", "on-secondary": "#0e3725", "surface": "#0c1418", "on-error-container": "#ffdad6", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "surface-container-highest": "#2e363a", "on-tertiary-container": "#5a4711", "inverse-primary": "#35684f", "inverse-surface": "#dbe4e9", "inverse-on-surface": "#293236", "on-secondary-fixed-variant": "#274e3b", "surface-container-high": "#232b2f", "primary": "#aae1c2", "on-error": "#690005", "surface-container": "#192125", "surface-tint": "#9cd2b4", "outline-variant": "#404943", "error-container": "#93000a", "on-tertiary-fixed": "#251a00", "background": "#0c1418", "surface-bright": "#323a3f", "on-tertiary-fixed-variant": "#58440e", "tertiary-container": "#d2b675", "on-primary": "#003824", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "primary-fixed-dim": "#9cd2b4", "on-surface": "#dbe4e9", "on-tertiary": "#3e2e00", "primary-fixed": "#b7efcf", "on-primary-container": "#1e533b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-3xl": "2.5rem", "gutter": "1.25rem", "space-sm": "0.75rem", "space-4xl": "3.5rem", "space-md": "1rem", "card-padding": "1.25rem", "sidebar-width": "260px", "space-2xl": "2rem", "space-2xs": "0.25rem", "space-xl": "1.5rem", "space-xs": "0.5rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-sm": [ "Plus Jakarta Sans" ], "label-mono-wide": [ "JetBrains Mono" ], "body-sm": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "label-tag": [ "JetBrains Mono" ], "headline-md": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "button-text": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "display-quote": [ "Newsreader" ] }, "fontSize": { "headline-sm": [ "15px", { "lineHeight": "22px", "fontWeight": "600" } ], "label-mono-wide": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-tag": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "headline-md": [ "18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-lg": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "button-text": [ "13px", { "lineHeight": "18px", "fontWeight": "600" } ], "display-hero": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-quote": [ "18px", { "lineHeight": "26px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md border-b border-outline-variant/20"><div class="flex items-center gap-space-xs"><div class="w-6 h-6 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">N</div><span class="font-headline-md text-headline-md tracking-wider font-bold text-on-surface">NIVORA</span></div><p class="mt-1 font-label-tag text-label-tag tracking-widest uppercase text-on-surface-variant/70">The Student Ecosystem</p></div><nav class="px-space-xs py-space-sm space-y-space-md" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Main</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="home" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Home</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Learn</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="learning" href="#"><span class="material-symbols-outlined text-[18px]">local_library</span><span>Learning</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span>Subjects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="resources" href="#"><span class="material-symbols-outlined text-[18px]">folder</span><span>Resources</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Academics</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="classes" href="#"><span class="material-symbols-outlined text-[18px]">event_seat</span><span>Classes</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="assignments" href="#"><span class="material-symbols-outlined text-[18px]">assignment</span><span>Assignments</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="exams" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Exams</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="attendance" href="#"><span class="material-symbols-outlined text-[18px]">how_to_reg</span><span>Attendance</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Life</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="planner" href="#"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span>Planner</span></a><a aria-current="page" class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-semibold" data-path="reboot" href="#"><span class="material-symbols-outlined text-[18px]">self_improvement</span><span>Reboot</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="music" href="#"><span class="material-symbols-outlined text-[18px]">headphones</span><span>Music</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="connect" href="#"><span class="material-symbols-outlined text-[18px]">forum</span><span>Connect</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Growth</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="skills" href="#"><span class="material-symbols-outlined text-[18px]">psychology</span><span>Skills</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="projects" href="#"><span class="material-symbols-outlined text-[18px]">code</span><span>Projects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="career" href="#"><span class="material-symbols-outlined text-[18px]">work_outline</span><span>Career</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Community</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="groups" href="#"><span class="material-symbols-outlined text-[18px]">groups</span><span>Groups</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="clubs-and-events" href="#"><span class="material-symbols-outlined text-[18px]">celebration</span><span>Clubs &amp; Events</span></a></div></nav></div><div class="p-space-xs space-y-space-xs border-t border-outline-variant/20 bg-surface-container-lowest/40"><nav class="space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="nivora-ai" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-primary">smart_toy</span><span>NIVORA AI</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Beta</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>Settings</span></a></nav><div class="flex items-center gap-space-xs p-space-xs rounded-xl bg-surface-container border border-outline-variant/20"><div class="relative flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container"></span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Rishabh S.</span><span class="font-label-tag text-label-tag text-on-surface-variant truncate">B.Tech CSE Year 3</span></div></div></div></aside><div class="pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant"><span class="uppercase tracking-widest text-on-surface-variant/80">Academic Core</span><span class="text-outline-variant">/</span><span class="text-primary font-semibold">Console</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant cursor-pointer hover:border-outline-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm pr-space-md">Search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">⌘K</kbd></div><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary"></span></button><button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span>AI Assist</span></button><div class="h-4 w-px bg-outline-variant/40"></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida/AEtjO1XQOggMtk-HZrdEK3-xJhgF3aIDtDxnMmk38RT437_RQI_8qM6-idBraQBFSmp3xgKeQBBJfi2Y9vxkFtuKDE-6x1DEPChMr9_cuxzEi-Lkwc45afVsNaP5NXkb7hYjcxu6vFVrMoGr2kjoGcVBRbOZxTODCHKZ8_sJeEpxbW6rxmeFld4POcq2jzxipW8RJyJq_IX0qtaTCOtFPCTVGbuzCZk8zc3Qlm7F30mFhMPBInzMKPwaeIDgHvPJ0rzaGLpUCbdSOHtu84o"/></div></header><main class="w-full pt-16 flex-1 bg-surface px-space-xl py-space-lg"><div class="flex flex-col w-full">
+<!-- Ensure Sidebar "Resources" item highlights properly via client script -->
+<script>
+    (function highlightNav() {
+      const links = document.querySelectorAll('aside nav a');
+      links.forEach(l => {
+        if (l.getAttribute('data-path') === 'resources') {
+          l.className = 'flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold transition-colors font-body-md text-body-md shadow-sm';
+          const icon = l.querySelector('.material-symbols-outlined');
+          if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+        }
+      });
+    })();
+  </script>
+<!-- Top Context & Header Architecture -->
+<header class="flex flex-col gap-space-md mb-space-2xl">
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">
+<span class="text-primary font-semibold">ACADEMIC CORE</span>
+<span>/</span>
+<span>LEARNING VAULT</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span class="text-tertiary">SEMESTER 5 · FALL '25</span>
+<span class="inline-block w-1 h-1 rounded-full bg-outline"></span>
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          OFFLINE CACHED
+        </span>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-space-xs">
+<button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-all font-button-text text-button-text">
+<span class="material-symbols-outlined text-[16px] text-tertiary">sync</span>
+<span>Sync Campus Drive</span>
+</button>
+<button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-all font-button-text text-button-text">
+<span class="material-symbols-outlined text-[16px]">upload_file</span>
+<span>+ Upload</span>
+</button>
+<button class="flex items-center gap-space-2xs px-space-md py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all font-button-text text-button-text shadow-md">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span>AI Semantic Search</span>
+</button>
+</div>
+</div>
+<!-- Title & Academic Description -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="max-w-3xl">
+<h1 class="font-display-quote text-display-hero italic tracking-tight text-on-surface leading-none mb-space-xs">
+          Resource Vault
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant/90 font-light max-w-2xl">
+          Curated academic repository of peer-reviewed lecture notes, professor slide decks, PYQ archives with rubrics, laboratory blueprints, and verified cheatsheets.
+        </p>
+</div>
+<!-- Vault Quick Stats Summary Strip -->
+<div class="flex items-center gap-space-sm self-start md:self-end">
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface font-label-mono-wide text-label-tag">
+<span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+<span>FACULTY AUTHENTICATED</span>
+</div>
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-tag">
+<span class="material-symbols-outlined text-[14px] text-tertiary">cloud_done</span>
+<span>1.4 GB LOCAL</span>
+</div>
+</div>
+</div>
+<!-- 4-Column Metric Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-sm mt-space-xs">
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-1 transition-all hover:bg-surface-container">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-mono-wide text-label-tag uppercase tracking-wider">Total Repository</span>
+<span class="material-symbols-outlined text-[18px] text-primary">library_books</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">284</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Indexed Assets</span>
+</div>
+<span class="font-label-mono-wide text-label-tag text-primary">100% Offline Ready</span>
+</div>
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-1 transition-all hover:bg-surface-container">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-mono-wide text-label-tag uppercase tracking-wider">PYQ Solutions</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">history_edu</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">46</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Solved Papers</span>
+</div>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant/80">With Grading Rubrics</span>
+</div>
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-1 transition-all hover:bg-surface-container">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-mono-wide text-label-tag uppercase tracking-wider">Faculty Decks</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">slideshow</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">82</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Annotated Decks</span>
+</div>
+<span class="font-label-mono-wide text-label-tag text-primary">3 New This Week</span>
+</div>
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-1 transition-all hover:bg-surface-container">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-mono-wide text-label-tag uppercase tracking-wider">Quick Access</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">star</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">18</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Starred Items</span>
+</div>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant/80">Filtered for Finals</span>
+</div>
+</div>
+</header>
+<!-- Omnisearch & Multi-Faceted Filter Matrix -->
+<section class="flex flex-col gap-space-md p-space-md rounded-xl bg-surface-container-low mb-space-xl">
+<!-- Search Bar with AI context pills -->
+<div class="relative flex items-center w-full">
+<div class="absolute left-space-md flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full pl-12 pr-32 py-3 rounded-lg bg-surface-container text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-1 focus:ring-primary font-body-md text-body-md transition-all" placeholder="Search across 284 papers, formula cheatsheets, lecture transcripts, and course codes (e.g. CS-301 BCNF, Red-Black Trees)..." type="text"/>
+<div class="absolute right-space-sm flex items-center gap-space-2xs">
+<kbd class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">⌘K</kbd>
+<kbd class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">/</kbd>
+</div>
+</div>
+<!-- Subject Filters Carousel / Row -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex flex-wrap items-center gap-space-2xs">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant mr-1">SUBJECT:</span>
+<button class="px-space-sm py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold">
+          All Subjects (284)
+        </button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">
+          CS-301 DBMS (74)
+        </button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">
+          CS-302 DSA (68)
+        </button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">
+          CS-303 OS (52)
+        </button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">
+          CS-304 CN (44)
+        </button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">
+          CS-305 Dist. Sys (46)
+        </button>
+</div>
+<!-- Format Filter Dropdown & View Mode Switcher -->
+<div class="flex items-center gap-space-xs">
+<div class="flex items-center gap-1 bg-surface-container px-space-sm py-1 rounded-lg text-on-surface font-body-sm text-body-sm cursor-pointer hover:bg-surface-bright transition-colors">
+<span class="text-on-surface-variant font-label-mono-wide text-label-tag">SORT:</span>
+<span class="font-semibold">Exam Proximity</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span>
+</div>
+<div class="flex items-center rounded-lg bg-surface-container p-0.5">
+<button class="p-1 rounded bg-surface-container-high text-primary shadow-sm" title="Grid View">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface transition-colors" title="List View">
+<span class="material-symbols-outlined text-[18px]">view_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Filter Pills: Asset Types & Verified Attributes -->
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-space-xs">
+<div class="flex flex-wrap items-center gap-space-2xs">
+<button class="px-2.5 py-1 rounded-md bg-surface-bright text-on-surface font-label-tag text-label-tag">All Formats</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">Lecture Slides (82)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">Cheatsheets &amp; Formulae (38)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">PYQs &amp; Rubrics (46)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">Lab Blueprints (32)</button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface-variant hover:text-on-surface font-label-tag text-label-tag transition-colors">SQL &amp; Code (62)</button>
+</div>
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-tag">
+<label class="flex items-center gap-1.5 cursor-pointer text-primary">
+<input checked="" class="accent-[#8fc5a7] rounded" type="checkbox"/>
+<span>Faculty Verified ✓</span>
+</label>
+<span class="text-outline-variant">·</span>
+<label class="flex items-center gap-1.5 cursor-pointer text-tertiary">
+<input checked="" class="accent-[#efd28e] rounded" type="checkbox"/>
+<span>High-Yield Priority</span>
+</label>
+<span class="text-outline-variant">·</span>
+<label class="flex items-center gap-1.5 cursor-pointer text-on-surface-variant hover:text-on-surface">
+<input class="accent-[#8fc5a7] rounded" type="checkbox"/>
+<span>Starred Only</span>
+</label>
+</div>
+</div>
+</section>
+<!-- Main Asymmetric Workspace Layout: 70% Vault Grid & 30% Intelligence Rail -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
+<!-- Left Column: Primary Vault Content & Impending Focus (8 Cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Impending Exam Banner / Urgent Focus Stack -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-surface-container-low via-surface-container to-surface-container-low p-space-lg">
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-tag text-label-tag uppercase tracking-wider font-semibold animate-pulse">
+              Urgent Priority
+            </span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">
+              Impending Exam Focus: CS-301 DBMS
+            </span>
+</div>
+<div class="flex items-center gap-2 font-label-mono-wide text-label-tag text-tertiary">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span>Mid-Term in 8 Days · Nov 04</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md max-w-xl">
+          High-yield syllabus alignment automatically surfaced by the NIVORA Curricular Engine. Focus on Normal Forms (BCNF vs 3NF), Conflict Serializability, and B+ Trees.
+        </p>
+<!-- 3 Highlight Action Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<!-- Banner Item 1 -->
+<div class="p-space-sm rounded-xl bg-surface-container-high flex flex-col justify-between hover:bg-surface-bright transition-all group">
+<div>
+<div class="flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant mb-2">
+<span class="text-primary font-semibold">LECTURE PACK</span>
+<span>8.4 MB</span>
+</div>
+<h2 class="font-headline-sm text-body-md font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                Prof. Sharma's DBMS Master Pack (Units 1–4)
+              </h2>
+<div class="flex items-center gap-1 text-tertiary font-label-tag text-label-tag mt-2">
+<span class="material-symbols-outlined text-[14px]">edit_note</span>
+<span>48 Annotations</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-sm pt-2">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">PDF Solved</span>
+<button class="p-1 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+</div>
+</div>
+<!-- Banner Item 2 -->
+<div class="p-space-sm rounded-xl bg-surface-container-high flex flex-col justify-between hover:bg-surface-bright transition-all group">
+<div>
+<div class="flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant mb-2">
+<span class="text-tertiary font-semibold">CHEATSHEET</span>
+<span>SVG Flow</span>
+</div>
+<h2 class="font-headline-sm text-body-md font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                Relational Normalization &amp; Decomposition Decision Matrix
+              </h2>
+<div class="flex items-center gap-1 text-primary font-label-tag text-label-tag mt-2">
+<span class="material-symbols-outlined text-[14px]">star</span>
+<span>98% Student Mastery</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-sm pt-2">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Quick View</span>
+<button class="p-1 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Banner Item 3 -->
+<div class="p-space-sm rounded-xl bg-surface-container-high flex flex-col justify-between hover:bg-surface-bright transition-all group">
+<div>
+<div class="flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant mb-2">
+<span class="text-error font-semibold">SOLVED PYQS</span>
+<span>12 MB</span>
+</div>
+<h2 class="font-headline-sm text-body-md font-semibold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                DBMS 2020–2024 Mid-Term Papers with Marking Scheme
+              </h2>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-tag text-label-tag mt-2">
+<span class="material-symbols-outlined text-[14px]">fact_check</span>
+<span>Rubric Verified</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-space-sm pt-2">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Archive Pack</span>
+<button class="p-1 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Filtered Asset Feed / Interactive Cards Grid -->
+<div class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface font-display-quote italic">
+              Verified Course Materials &amp; Field Guides
+            </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-tag">
+              6 Assets Matched
+            </span>
+</div>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Auto-synced with Semester Syllabi</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Card 1: CS-301 DBMS Architecture -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-wide text-label-tag font-semibold">
+                    CS-301
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    Interactive Guide
+                  </span>
+</div>
+<button class="text-tertiary hover:scale-110 transition-transform" title="Starred Asset">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                B+ Tree Indexing and Query Pipeline Architectural Reference
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                Exhaustive breakdown of fanout calculation, disk-page splits, range-query latency proofs, and practical buffer manager interactions.
+              </p>
+<!-- Tags cluster -->
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#Module-2</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-tag text-label-tag">#High-Yield</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#Indexed</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Dept. of Computer Science</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">3.2 MB · 2 days ago</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>Preview</span>
+</button>
+<button class="p-1.5 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors" title="Download Asset">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2: CS-302 DSA Dynamic Programming -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-label-mono-wide text-label-tag font-semibold">
+                    CS-302
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    Markdown / PDF
+                  </span>
+</div>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                Dynamic Programming State Transitions &amp; Memoization Cheatsheet
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                Canonical recurrence relations for 0/1 Knapsack, Longest Common Subsequence (LCS), Matrix Chain Multiplication, and Digit DP.
+              </p>
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-error font-label-tag text-label-tag">#Exam-Critical</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#12-Recurrences</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#Curated</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Prof. Rao (Algorithm Lab)</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">1.8 MB · 1 week ago</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>Preview</span>
+</button>
+<button class="p-1.5 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors" title="Download Asset">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3: CS-303 OS Concurrency & Deadlocks -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-label-mono-wide text-label-tag font-semibold">
+                    CS-303
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    Lecture Handout
+                  </span>
+</div>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                Operating Systems Concurrency: Semaphores, Monitors &amp; Deadlock Proofs
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                Peterson's Solution edge cases, Dining Philosophers state matrix, and Banker's Algorithm safety vector mathematical proofs.
+              </p>
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-tertiary font-label-tag text-label-tag">#Weak-Topic-Sync</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#14-Annotations</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Prof. Alok Verma</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">4.6 MB · Annotated Handout</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>Preview</span>
+</button>
+<button class="p-1.5 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors" title="Download Asset">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 4: CS-305 Distributed Systems Consensus -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-wide text-label-tag font-semibold">
+                    CS-305
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    Technical Whitepaper
+                  </span>
+</div>
+<button class="text-tertiary hover:scale-110 transition-transform" title="Starred Asset">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                Raft vs. Multi-Paxos Consensus Protocols Visual Architecture
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                Split-brain mitigation, election timeouts, term numbers, and log replication guarantees with step-by-step state machine diagrams.
+              </p>
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-secondary font-label-tag text-label-tag">#Lab-4-Prereq</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#MIT-6.824-Align</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">SysLab Research Group</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">2.1 MB · 3 days ago</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>Preview</span>
+</button>
+<button class="p-1.5 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors" title="Download Asset">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 5: CS-301 PostgreSQL Enterprise Schemas -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-label-mono-wide text-label-tag font-semibold">
+                    CS-301
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    SQL DDL &amp; ERD
+                  </span>
+</div>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                PostgreSQL 16 Enterprise Schemas (Northwind &amp; Pagila Extended)
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                Production-grade DDL scripts, trigger definitions, partitioned sales ledger, and foreign key integrity test harness for Lab 05.
+              </p>
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-label-tag text-label-tag">#Lab-Sheet-05</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#SQL-Scratchpad</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Database Teaching Desk</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">240 KB · Instant Load</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary font-button-text text-button-text flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+<span>Launch SQL</span>
+</button>
+<button class="p-1.5 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors" title="Download DDL">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 6: CS-304 CN Subnetting Drill Sheet -->
+<article class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col justify-between hover:bg-surface-container transition-all group">
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary font-label-mono-wide text-label-tag font-semibold">
+                    CS-304
+                  </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+                    Drill Sheet + Key
+                  </span>
+</div>
+<button class="text-on-surface-variant hover:text-tertiary transition-colors" title="Bookmark">
+<span class="material-symbols-outlined text-[18px]">star</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold group-hover:text-primary transition-colors mb-space-2xs">
+                Subnet Masking, CIDR &amp; Variable-Length Subnet (VLSM) Drill Sheet
+              </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 line-clamp-2 mb-space-sm">
+                40 step-by-step problem sets covering broadcast boundaries, usable host pools, supernetting calculations, and Cisco routing table lookups.
+              </p>
+<div class="flex flex-wrap gap-1 mb-space-md">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-tertiary font-label-tag text-label-tag">#100%-Solved</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">#Network-Lab</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20">
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">Networking Faculty Desk</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">2.8 MB · Yesterday</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="px-space-xs py-1 rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>Preview</span>
+</button>
+<button class="p-1.5 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors" title="Download Asset">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</div>
+<!-- Institutional Archive Integration Banner -->
+<section class="p-space-card-padding rounded-xl bg-surface-container flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">account_balance</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">
+              University Central Digital Archives Interop
+            </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+              Connected to IEEE Xplore, ACM Digital Library, and Campus DSpace repository via Shibboleth SSO.
+            </span>
+</div>
+</div>
+<button class="px-space-md py-2 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-button-text text-button-text shrink-0 transition-colors">
+          Browse Library Proxy
+        </button>
+</section>
+</div>
+<!-- Right Companion Rail (4 Cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- 1. Storage & Offline Sync Status Widget -->
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">offline_pin</span>
+<h3 class="font-headline-sm text-body-md font-semibold text-on-surface">Local Vault Storage</h3>
+</div>
+<span class="font-label-mono-wide text-label-tag text-primary font-semibold">28% USED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Local device allocation allows lightning-fast access during offline examinations and library sessions.
+        </p>
+<!-- Progress Gauge -->
+<div class="flex flex-col gap-1.5 my-1">
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 28%"></div>
+<div class="h-full bg-tertiary" style="width: 8%"></div>
+</div>
+<div class="flex items-center justify-between font-label-mono-wide text-label-tag text-on-surface-variant">
+<span>1.4 GB Saved</span>
+<span>5.0 GB Quota</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/20 font-label-tag text-label-tag text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            Synced 14m ago
+          </span>
+<button class="text-primary hover:underline">Manage Cache</button>
+</div>
+</div>
+<!-- 2. AI Spaced Retrieval & Recommendation Engine -->
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-tertiary">psychology</span>
+<h3 class="font-headline-sm text-body-md font-semibold text-on-surface">NIVORA Cognitive Recall</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-tertiary font-label-mono-wide text-label-tag font-semibold">
+            AI INSIGHT
+          </span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container flex flex-col gap-2">
+<div class="flex items-center gap-1 text-on-error font-label-tag text-label-tag">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>CS-301 RETENTION AT 54%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-snug">
+            Diagnostic quiz reveals weak recall in <strong>Multi-Valued Dependencies (MVD) &amp; 4NF Decomposition</strong>.
+          </p>
+<div class="p-2 rounded bg-surface-container-high flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">MVD &amp; 4NF Formal Proofs</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">6 min synthesis handout</span>
+</div>
+<button class="p-1 rounded bg-secondary-container text-on-secondary-container hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+</button>
+</div>
+</div>
+<button class="w-full py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all font-button-text text-button-text flex items-center justify-center gap-1">
+<span>Launch Recommended Review</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<!-- 3. Faculty Vault Bulletin / Live Feed -->
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary">campaign</span>
+<h3 class="font-headline-sm text-body-md font-semibold text-on-surface">Academic Bulletin</h3>
+</div>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">LIVE FEED</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Item 1 -->
+<div class="flex items-start gap-space-xs pb-space-xs border-b border-outline-variant/10">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-headline-sm text-label-tag font-semibold shrink-0">
+              PS
+            </div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">Prof. Sharma</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">3h ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight mt-0.5">
+                Uploaded <em>Unit 3 Mid-term Prep Sample Problems.pdf</em> into the CS-301 vault.
+              </p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-start gap-space-xs pb-space-xs border-b border-outline-variant/10">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-secondary flex items-center justify-center font-headline-sm text-label-tag font-semibold shrink-0">
+              AM
+            </div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">TA Alex M.</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Yesterday</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight mt-0.5">
+                Approved <em>DSA AVL Tree Deletion Corrections.md</em> with faculty endorsement.
+              </p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-start gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-tertiary flex items-center justify-center font-headline-sm text-label-tag font-semibold shrink-0">
+              KR
+            </div>
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">K. Ray (Peer Lead)</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">2 days ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-tight mt-0.5">
+                Indexed 4 previous years of CN exam question papers with verified step-by-step calculations.
+              </p>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Quick Collections / Curated Stacks -->
+<div class="p-space-card-padding rounded-xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-on-surface">bookmarks</span>
+<h3 class="font-headline-sm text-body-md font-semibold text-on-surface">Curated Study Stacks</h3>
+</div>
+<button class="text-primary font-label-mono-wide text-label-tag hover:underline">+ New Stack</button>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between hover:bg-surface-container-high cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-error">local_fire_department</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">Mid-Term Survival Stack</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">12 files · High-yield formulas only</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between hover:bg-surface-container-high cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-primary">terminal</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">SQL &amp; Database Practicals</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">8 files · DDL scripts, ERDs, schema dumps</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between hover:bg-surface-container-high cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[20px] text-tertiary">code_blocks</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">Algorithms LeetCode Prep</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">24 files · Pattern templates &amp; graphs</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main><footer class="h-8 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-space-xl flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/70"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>NIVORA Workspace v2.4 · Academic Core</span></div><div class="flex items-center gap-space-md"><span>Press <kbd class="text-on-surface-variant font-mono">⌘K</kbd> for Command Palette</span><span>·</span><span>Press <kbd class="text-on-surface-variant font-mono">/</kbd> to search</span></div></footer></div></body></html>

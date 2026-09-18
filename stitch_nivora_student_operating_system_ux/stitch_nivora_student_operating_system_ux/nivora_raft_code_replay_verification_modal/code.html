@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-container": "#2a513d", "primary-fixed-dim": "#9cd2b4", "inverse-surface": "#dbe4e9", "surface-container-highest": "#2e363a", "primary": "#aae1c2", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "on-surface-variant": "#c0c9c1", "inverse-primary": "#35684f", "on-secondary-container": "#98c2a9", "secondary": "#a5d0b7", "on-tertiary": "#3e2e00", "background": "#0c1418", "outline-variant": "#404943", "error-container": "#93000a", "primary-fixed": "#b7efcf", "tertiary": "#efd28e", "on-primary-fixed-variant": "#1b5039", "tertiary-container": "#d2b675", "on-background": "#dbe4e9", "primary-container": "#8fc5a7", "surface": "#0c1418", "outline": "#8a938c", "on-secondary": "#0e3725", "surface-variant": "#2e363a", "tertiary-fixed-dim": "#e0c381", "on-surface": "#dbe4e9", "on-error-container": "#ffdad6", "on-tertiary-container": "#5a4711", "surface-container": "#192125", "on-primary": "#003824", "secondary-fixed": "#c1edd2", "on-tertiary-fixed-variant": "#58440e", "on-error": "#690005", "on-secondary-fixed-variant": "#274e3b", "on-primary-container": "#1e533b", "on-secondary-fixed": "#002113", "surface-tint": "#9cd2b4", "surface-container-low": "#151d21", "on-tertiary-fixed": "#251a00", "surface-dim": "#0c1418", "error": "#ffb4ab", "surface-bright": "#323a3f", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "surface-container-high": "#232b2f", "inverse-on-surface": "#293236" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-4xl": "3.5rem", "space-2xl": "2rem", "card-padding": "1.25rem", "space-xs": "0.5rem", "sidebar-width": "260px", "space-md": "1rem", "space-sm": "0.75rem", "space-3xl": "2.5rem", "space-xl": "1.5rem", "space-lg": "1.25rem", "space-2xs": "0.25rem", "gutter": "1.25rem" }, fontFamily: { "display-quote": ["Newsreader"], "label-tag": ["JetBrains Mono"], "label-mono-wide": ["JetBrains Mono"], "headline-md": ["Plus Jakarta Sans"], "button-text": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, fontSize: { "display-quote": ["18px", { lineHeight: "26px", fontWeight: "400" }], "label-tag": ["10px", { lineHeight: "14px", letterSpacing: "0.08em", fontWeight: "500" }], "label-mono-wide": ["11px", { lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "500" }], "headline-md": ["18px", { lineHeight: "26px", letterSpacing: "-0.01em", fontWeight: "600" }], "button-text": ["13px", { lineHeight: "18px", fontWeight: "600" }], "display-hero": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "600" }], "headline-lg": ["22px", { lineHeight: "30px", letterSpacing: "-0.015em", fontWeight: "600" }], "headline-sm": ["15px", { lineHeight: "22px", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "body-md": ["13px", { lineHeight: "20px", fontWeight: "400" }], "body-lg": ["15px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script></head><body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen relative overflow-x-hidden"><header class="fixed top-0 left-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="w-full px-gutter h-20 flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-xl min-w-0"><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="text-primary font-headline-md text-headline-md tracking-tight font-bold">NIVORA</span><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span><span class="text-on-surface-variant font-label-tag text-label-tag uppercase">Recruiter Dossier</span></div><div class="flex items-center gap-space-xs text-on-surface-variant font-label-mono-wide text-label-mono-wide mt-space-2xs"><span class="text-secondary font-medium">PROTOCOL v2.4</span><span>/</span><span class="truncate text-on-surface">rishabh-s</span></div></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-2xs rounded-full bg-surface-container-high"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-tag text-label-tag text-on-surface-variant uppercase">On-Chain Artifact #NV-8492</span><span class="text-outline-variant font-label-tag text-label-tag">•</span><span class="font-label-tag text-label-tag text-primary uppercase">Sig: Valid</span></div><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-on-surface font-semibold"><a aria-current="page" class="transition-colors text-on-surface font-semibold" data-path="candidate-dossier" href="#">Overview</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="verified-credentials" href="#">Credentials</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="technical-artifacts" href="#">Artifacts</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="academic-evaluations" href="#">Evaluations</a></nav></div><div class="flex items-center gap-space-md shrink-0"><button class="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">download</span><span>Master PDF</span></button><button class="hidden md:inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">calendar_today</span><span>Screen</span></button><button class="inline-flex items-center justify-center px-space-lg py-space-xs rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">mail</span><span>Contact</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<!-- Status Micro-Ticker & Verification Ledger Proof -->
+<section class="w-full bg-surface-container-lowest py-space-xs px-gutter border-b border-outline-variant/30">
+<div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-space-xs text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded-full bg-secondary-container text-primary font-label-tag text-label-tag font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+          LEDGER VERIFIED
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface font-medium">BLOCK #8,194,204</span>
+<span class="text-outline-variant">•</span>
+<span class="text-secondary font-mono truncate max-w-xs sm:max-w-none">SHA-256: 0x7f9a88e42f01a3cd...c418</span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant">DEAN &amp; REGISTRAR SIGNED</span>
+</div>
+<div class="flex items-center gap-space-sm text-label-tag">
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+          PROOF ATTESTATION: VALID
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant">TOKEN: verified_merit_942</span>
+</div>
+</div>
+</section>
+<!-- Candidate Profile Hero Section -->
+<section class="w-full px-gutter py-space-3xl relative overflow-hidden bg-surface">
+<!-- Subtle architectural background glow -->
+<div class="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none -z-0"></div>
+<div class="absolute -bottom-24 left-10 w-80 h-80 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none -z-0"></div>
+<div class="max-w-7xl mx-auto relative z-10 flex flex-col gap-space-2xl">
+<!-- Top profile metadata split -->
+<div class="flex flex-col lg:flex-row items-start justify-between gap-space-2xl">
+<!-- Left: Identity & Core Title -->
+<div class="flex flex-col sm:flex-row gap-space-xl items-start max-w-3xl">
+<!-- Candidate Portrait with Tier Status Pill -->
+<div class="relative shrink-0">
+<div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-surface-container-high overflow-hidden shadow-xl ring-2 ring-primary/30">
+<img class="w-full h-full object-cover" data-alt="High contrast editorial black and white headshot of a young South Asian male computer science engineer in early twenties with thoughtful expression, sharp studio lighting, dark graphite backdrop, cinematic rim lighting matching deep teal and sage tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5odHu7y_8aovTH1Elc4rGC_-OBprEQfTTkmK-sua7tB-pRHZtVYJXDPj_eOAhNe9cula4axHUUcKlKFVsQd1wbGzhJJgoUSDdvJF-1Y0HnQL-wgSpKvLlYmLur7hcwBiqBbe7b5Os3FcOqKNVWuLD7mHH26IKuC3Uu-UkM_dtqEfxsCcq-9B1dz7S3QVp_Po15jPkCEYi8eCZDUMDkrE2OSRdTPk-NkM0kbMJmZsRRtyVydUUYXn0AQ"/>
+</div>
+<div class="absolute -bottom-2 -right-2 bg-surface-container-highest px-2 py-0.5 rounded-full shadow-md flex items-center gap-1.5 ring-1 ring-primary/40">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-tag text-label-tag text-primary uppercase font-bold">L4 READY</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs min-w-0">
+<div class="flex flex-wrap items-center gap-space-xs">
+<h1 class="font-headline-lg text-display-hero font-bold tracking-tight text-on-surface">Rishabh S.</h1>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high text-primary font-label-tag text-label-tag font-semibold">SEM 5 CSE</span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container-high text-tertiary font-label-tag text-label-tag font-semibold">TOP 0.5% DEPT</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-secondary font-medium tracking-normal">
+              Systems Software &amp; Distributed Infrastructure Engineer
+            </p>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
+              B.Tech Computer Science &amp; Engineering (Fall '25 candidate) at Apex Institute of Technology. Specializing in fault-tolerant consensus, low-latency concurrent storage, and kernel-bypass network runtimes. Benchmarked for Jane Street, Google, Databricks, and Tower Research systems tracks.
+            </p>
+<!-- Fast Contact & Telemetry Pills -->
+<div class="flex flex-wrap items-center gap-space-xs mt-space-sm font-label-mono-wide text-label-mono-wide">
+<a class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors flex items-center gap-1.5 shadow-sm" href="https://github.com" target="_blank">
+<span class="text-primary font-bold">GH</span>
+<span>@rishabh-s</span>
+</a>
+<a class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors flex items-center gap-1.5 shadow-sm" href="https://leetcode.com" target="_blank">
+<span class="text-tertiary font-bold">LC</span>
+<span>1,980 (Knight Tier)</span>
+</a>
+<div class="px-space-sm py-1 rounded bg-surface-container text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+<span>Bangalore • Open to London / NYC / SF</span>
+</div>
+<div class="px-space-sm py-1 rounded bg-surface-container text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">verified_user</span>
+<span>ID: #NV-8492-PUB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Primary Recruiter Action Panel -->
+<div class="flex flex-col sm:flex-row lg:flex-col gap-space-sm w-full lg:w-72 shrink-0 bg-surface-container-low p-space-lg rounded-xl shadow-lg border border-outline-variant/20">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant/30">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">RECRUITER DIRECT BAR</span>
+<span class="font-label-tag text-label-tag text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> ACTIVE
+            </span>
+</div>
+<button class="w-full inline-flex items-center justify-center px-space-lg py-space-sm rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all font-button-text text-button-text font-bold gap-space-xs shadow-md" id="btn-schedule" type="button">
+<span class="material-symbols-outlined text-[18px]">calendar_add_on</span>
+<span>Schedule Technical Chat</span>
+</button>
+<button class="w-full inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export Recruiter Packet (PDF)</span>
+</button>
+<button class="w-full inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface-variant hover:text-primary transition-all font-label-mono-wide text-label-mono-wide gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[15px]">verified</span>
+<span>Verify Signature on Ledger</span>
+</button>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 text-center text-[11px] leading-tight mt-1">
+            Pre-cleared for Tier 1 offshore visas &amp; Super-Dream fast track pipelines.
+          </p>
+</div>
+</div>
+<!-- Key Metrics High-Contrast Ribbon -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md w-full">
+<!-- Metric 1: CGPA -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-tag text-label-tag uppercase tracking-wider">ACADEMIC STANDING</span>
+<span class="material-symbols-outlined text-[18px] text-primary">school</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-display-hero font-bold tracking-tight text-on-surface">9.42<span class="text-headline-md text-on-surface-variant font-normal"> / 10</span></div>
+<div class="font-body-sm text-body-sm text-primary font-medium mt-1">Rank #4 Department (Top 0.5%)</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[10px] mt-0.5">Dean's List: Sem 1, 2, 3, 4, 5 • 0 Backlogs</div>
+</div>
+</div>
+<!-- Metric 2: AI Evaluator Benchmark -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-tag text-label-tag uppercase tracking-wider">AI EVALUATOR BENCHMARK</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">psychology</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-display-hero font-bold tracking-tight text-secondary">93.4<span class="text-headline-md text-on-surface-variant font-normal"> / 100</span></div>
+<div class="font-body-sm text-body-sm text-on-surface font-semibold mt-1">Strong Hire (L4 Systems)</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[10px] mt-0.5">Jane Street / Google Core Calibrated</div>
+</div>
+</div>
+<!-- Metric 3: DBMS Autograder -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-tag text-label-tag uppercase tracking-wider">CORE DBMS AUTOGRADER</span>
+<span class="material-symbols-outlined text-[18px] text-primary-container">terminal</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-display-hero font-bold tracking-tight text-on-surface">100<span class="text-headline-md text-on-surface-variant font-normal"> / 100</span></div>
+<div class="font-body-sm text-body-sm text-primary font-medium mt-1">B+ Tree &amp; Buffer Pool Engine</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[10px] mt-0.5">Zero Memleaks (Valgrind) • 100k Multi-t</div>
+</div>
+</div>
+<!-- Metric 4: Competitive Code & Math -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="font-label-tag text-label-tag uppercase tracking-wider">ALGORITHMIC SPEED</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">military_tech</span>
+</div>
+<div class="mt-space-md">
+<div class="font-headline-lg text-display-hero font-bold tracking-tight text-tertiary">1,980</div>
+<div class="font-body-sm text-body-sm text-on-surface font-semibold mt-1">LeetCode Knight (Top 3.2%)</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[10px] mt-0.5">ICPC Regionalist '24 • 420+ Solved</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Dual Workspace: Verified Artifacts (65%) & AI Telemetry Audit (35%) -->
+<section class="w-full px-gutter py-space-2xl bg-surface-container-lowest">
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-space-2xl">
+<!-- Primary Column: Verified Artifacts & Technical Proofs of Work (7 cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-xl">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">EVIDENCE PORTFOLIO</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface mt-1">Verified Technical Proofs of Work</h2>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-secondary bg-surface-container-high px-space-sm py-1 rounded-full">
+            4 SYSTEM ARTIFACTS
+          </span>
+</div>
+<!-- Artifact 1: Flagship Raft Distributed KV Store -->
+<div class="p-space-xl rounded-xl bg-surface-container shadow-lg flex flex-col gap-space-md relative overflow-hidden border border-outline-variant/30">
+<div class="flex flex-wrap items-center justify-between gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-secondary-container text-primary font-label-tag text-label-tag font-bold tracking-wider uppercase">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+              GOLD TIER ARTIFACT • FACULTY AUDITED • JEPSEN TESTED
+            </span>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">CS-305 CAPSTONE</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Raft Consensus Protocol &amp; Distributed KV Engine</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 leading-relaxed">
+              Ground-up implementation of the Raft consensus algorithm in Go 1.22. Includes randomized leader election with split-vote deterrence, logarithmic replicated log append entries, snapshot log compaction, and an RPC client with linearizable lease reads. Validated against multi-partition split-brain scenarios via customized Jepsen tests.
+            </p>
+</div>
+<!-- Micro Telemetry Sparkline & Specs -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs py-space-sm px-space-md rounded-lg bg-surface-container-low font-label-mono-wide text-label-mono-wide">
+<div>
+<div class="text-on-surface-variant text-[10px]">THROUGHPUT</div>
+<div class="text-on-surface font-bold text-[13px] text-primary">12,040 ops/sec</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[10px]">JEPSEN PASS</div>
+<div class="text-on-surface font-bold text-[13px] text-secondary">98.6% (Chaos)</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[10px]">LOC / STACK</div>
+<div class="text-on-surface font-bold text-[13px]">3,450 LoC (Go)</div>
+</div>
+<div>
+<div class="text-on-surface-variant text-[10px]">HASH RECORD</div>
+<div class="text-on-surface font-bold text-[13px] text-on-surface-variant">0x4b71..ef88</div>
+</div>
+</div>
+<!-- Interactive Code Inspector Preview -->
+<div class="rounded-lg bg-surface-container-lowest p-space-md font-label-mono-wide text-label-mono-wide text-[11px] leading-relaxed text-on-surface-variant overflow-x-auto shadow-inner">
+<div class="flex items-center justify-between text-[10px] text-outline pb-2 mb-2 border-b border-outline-variant/30">
+<span>raft/server.go · Term &amp; Commit Invariant Check</span>
+<span class="text-primary">LINE 142-154</span>
+</div>
+<pre class="text-on-surface"><code><span class="text-secondary">func</span> (rf *Raft) <span class="text-primary">sendAppendEntries</span>(server <span class="text-tertiary">int</span>, args *AppendEntriesArgs, reply *AppendEntriesReply) <span class="text-tertiary">bool</span> {
+    ok := rf.peers[server].Call(<span class="text-primary-container">"Raft.AppendEntries"</span>, args, reply)
+    rf.mu.Lock()
+    <span class="text-secondary">defer</span> rf.mu.Unlock()
+    <span class="text-outline">// Monotonic term advancement check on partition recovery</span>
+    <span class="text-secondary">if</span> reply.Term &gt; rf.currentTerm {
+        rf.currentTerm, rf.state = reply.Term, Follower
+        rf.votedFor = -1
+        rf.persistStateAndSnapshot()
+    }
+    <span class="text-secondary">return</span> ok
+}</code></pre>
+</div>
+<!-- Bottom Actions -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-1.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface text-button-text font-button-text flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[15px] text-primary">code</span>
+<span>Inspect Repository</span>
+</button>
+<button class="px-space-md py-1.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant text-button-text font-button-text flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[15px] text-secondary">schema</span>
+<span>Architecture Diagram</span>
+</button>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant">FACULTY AUDITOR: DR. S. RAMANUJAN (DISTRIBUTED SYS LAB)</span>
+</div>
+</div>
+<!-- Artifact 2: Modern C++20 B+ Tree Storage Engine -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col gap-space-sm border border-outline-variant/20 hover:border-outline-variant/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-tag text-label-tag text-primary-fixed-dim uppercase bg-surface-container-high px-2 py-0.5 rounded">AUTOGRADER 100/100</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">CS-301 DBMS ENGINE</span>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[11px]">C++20 / POSIX AIO</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">B+ Tree Storage Engine &amp; Buffer Pool Manager</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Multi-threaded B+ Tree indexing disk storage engine with optimistic lock-coupling latch crabbing, write-ahead logging (WAL) under ARIES recovery, and a configurable LRU-K frame replacement manager. Executed 100,000 multi-threaded concurrent transactional insertions with zero page corruption and clean Valgrind leaks check.
+          </p>
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-2 text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<div class="flex items-center gap-space-md text-[11px]">
+<span class="text-primary font-semibold">LRU-K Eviction</span>
+<span>•</span>
+<span class="text-secondary font-semibold">ARIES WAL Crash Recovery</span>
+<span>•</span>
+<span class="text-on-surface">p99: 0.84ms</span>
+</div>
+<a class="text-primary hover:text-primary-fixed flex items-center gap-1 text-[12px] font-semibold" href="#">
+              View Benchmarks <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Artifact 3: Rust WebAssembly Vector Indexer -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col gap-space-sm border border-outline-variant/20 hover:border-outline-variant/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-tag text-label-tag text-secondary uppercase bg-surface-container-high px-2 py-0.5 rounded">RUST / WASM</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">PRODUCTION DEPLOYED</span>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[11px]">HNSW VECTOR ENGINE</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">NIVORA Hierarchical Navigable Small World (HNSW) Memory Store</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            SIMD-accelerated Rust vector retrieval engine compiled to WebAssembly. Executes cosine distance queries across 100,000 embedded academic papers directly inside the browser client memory space without server-side compute roundtrips.
+          </p>
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-2 text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<div class="flex items-center gap-space-md text-[11px]">
+<span class="text-primary font-semibold">4.12ms p99 Query Latency</span>
+<span>•</span>
+<span class="text-tertiary font-semibold">AVX-512 SIMD Fallback</span>
+</div>
+<a class="text-primary hover:text-primary-fixed flex items-center gap-1 text-[12px] font-semibold" href="#">
+              Inspect Crates &amp; Tests <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Artifact 4: LaTeX Proof Synthesizer Research Preprint -->
+<div class="p-space-lg rounded-xl bg-surface-container shadow-md flex flex-col gap-space-sm border border-outline-variant/20 hover:border-outline-variant/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-tag text-label-tag text-tertiary uppercase bg-surface-container-high px-2 py-0.5 rounded">RESEARCH PREPRINT</span>
+<span class="text-outline-variant">•</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">MATH AUTOMATION</span>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant text-[11px]">PYTORCH / MCTS</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-bold">Autonomous LaTeX Proof Synthesizer via Monte Carlo Tree Search</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Co-authored research preprint with Prof. A. Sharma. Evaluated on 84.2% Olympiad-level benchmark discrete mathematics lemmas, auto-generating formally checkable Lean 4 lemmas from natural language proof sketches.
+          </p>
+<div class="flex flex-wrap items-center justify-between gap-space-xs pt-2 text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<span class="text-on-surface-variant text-[11px]">arXiv:2411.08914 [cs.AI] • Under Double-Blind Review</span>
+<a class="text-primary hover:text-primary-fixed flex items-center gap-1 text-[12px] font-semibold" href="#">
+              Read PDF Preprint <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Secondary Column: Standardized AI Technical Interview Telemetry & Verification Seals (5 cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-xl">
+<!-- Standardized AI Technical Audit Card -->
+<div class="p-space-xl rounded-xl bg-surface-container shadow-xl flex flex-col gap-space-lg border border-outline-variant/30 relative">
+<!-- Top Tag -->
+<div class="flex flex-col gap-1 pb-space-sm border-b border-outline-variant/30">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-primary uppercase font-bold tracking-wider">AI EVALUATOR TELEMETRY</span>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">AUDIT #SIM-4092</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold mt-1">
+              Jane Street &amp; Google Core Infra L4 Benchmark
+            </div>
+</div>
+<!-- Overall Verdict Card -->
+<div class="p-space-md rounded-lg bg-surface-container-high flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">EVALUATION VERDICT</span>
+<span class="font-headline-lg text-headline-lg text-primary font-bold">Strong Hire (L4)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Percentile: 98.2% across 1,400+ candidates</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-secondary-container flex flex-col items-center justify-center shrink-0 border border-primary/30">
+<span class="font-headline-md text-headline-md text-primary font-bold">93.4</span>
+<span class="font-label-tag text-[9px] text-on-secondary-container uppercase">OVERALL</span>
+</div>
+</div>
+<!-- Pillar breakdown bars -->
+<div class="flex flex-col gap-space-md">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider">TECHNICAL PILLARS AUDITED</span>
+<!-- Pillar 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[12px] font-label-mono-wide">
+<span class="text-on-surface font-semibold">Concurrency &amp; Fault Tolerance</span>
+<span class="text-primary font-bold">96 / 100 (Exceeds L4)</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 96%"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">Lock granularity, zero-deadlock state machine proof.</span>
+</div>
+<!-- Pillar 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[12px] font-label-mono-wide">
+<span class="text-on-surface font-semibold">Distributed Quorum Invariants</span>
+<span class="text-primary font-bold">94 / 100</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 94%"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">Monotonic term advancement &amp; log compaction integrity.</span>
+</div>
+<!-- Pillar 3 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[12px] font-label-mono-wide">
+<span class="text-on-surface font-semibold">Production Go Cleanliness</span>
+<span class="text-secondary font-bold">91 / 100</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 91%"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">Idiomatic select channels, atomic pointer rotations.</span>
+</div>
+<!-- Pillar 4 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between text-[12px] font-label-mono-wide">
+<span class="text-on-surface font-semibold">Verbal Cadence &amp; System Term Density</span>
+<span class="text-secondary font-bold">92 / 100</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 92%"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">138 WPM optimal speed, 96% precise technical taxonomy.</span>
+</div>
+</div>
+<!-- Evaluator Quote in Literary Serif -->
+<div class="p-space-md rounded-lg bg-surface-container-low border-l-2 border-primary">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-tag text-label-tag uppercase mb-1">
+<span class="material-symbols-outlined text-[14px] text-primary">format_quote</span>
+<span>SYNTHETIC INTERVIEW AUDITOR OBSERVATION</span>
+</div>
+<p class="font-display-quote text-display-quote italic text-on-surface/90 leading-relaxed text-[15px]">
+              “Rishabh immediately framed the invariants via monotonic term numbers and non-overlapping quorum majorities. He anticipated network partitions without prompting and wrote idiomatic, thread-safe Go code with zero race conditions.”
+            </p>
+<div class="mt-2 font-label-mono-wide text-label-mono-wide text-secondary text-[11px]">
+              — Calibrated against Google L4 Core Infrastructure SWE rubric
+            </div>
+</div>
+<!-- Transcript Trigger -->
+<button class="w-full inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs text-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">play_circle</span>
+<span>Review Full Interview Audio &amp; Diff Replay</span>
+</button>
+</div>
+<!-- Official Academic Ledger & Transcripts Section -->
+<div class="p-space-xl rounded-xl bg-surface-container shadow-md flex flex-col gap-space-md border border-outline-variant/30">
+<div class="flex items-center justify-between pb-space-xs border-b border-outline-variant/30">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+<span class="font-label-tag text-label-tag text-on-surface font-bold uppercase">OFFICIAL REGISTRAR LEDGER</span>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary">SIG: 0x992B</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="font-body-md text-body-md text-on-surface-variant">
+              Coursework Performance (Apex Institute of Technology):
+            </div>
+<div class="space-y-1.5 font-label-mono-wide text-label-mono-wide text-[12px] mt-1">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<span class="text-on-surface font-medium">CS-301: Database Management Systems</span>
+<span class="text-primary font-bold">GRADE: A+ (100/100)</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<span class="text-on-surface font-medium">CS-305: Distributed Operating Systems</span>
+<span class="text-primary font-bold">GRADE: A+ (Honors)</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<span class="text-on-surface font-medium">CS-201: Advanced Data Structures &amp; Algo</span>
+<span class="text-primary font-bold">GRADE: A+ (Top 1%)</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<span class="text-on-surface font-medium">CS-204: Computer Org &amp; x86 Assembly</span>
+<span class="text-secondary font-bold">GRADE: A (High Distinction)</span>
+</div>
+</div>
+</div>
+<!-- Signature block -->
+<div class="pt-space-xs flex items-center justify-between text-on-surface-variant font-label-mono-wide text-[10px]">
+<div>
+<div>ATTESTED BY: Prof. K. Venkatesh</div>
+<div class="text-outline">Dean of Academic Affairs</div>
+</div>
+<div class="text-right">
+<div>STAMP: 2025-02-18T14:32:00Z</div>
+<div class="text-primary">IMMUTABLE ANCHOR #491</div>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="w-full inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Download Signed Official Transcript</span>
+</button>
+<button class="w-full inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-transparent hover:bg-surface-container-low text-primary transition-all font-label-mono-wide text-label-mono-wide text-[11px] gap-space-xs" type="button">
+<span class="material-symbols-outlined text-[14px]">key</span>
+<span>Inspect Dean's GPG Public Key (RSA 4096)</span>
+</button>
+</div>
+</div>
+<!-- Recruiter Pre-Clearance Guarantee Notice -->
+<div class="p-space-lg rounded-xl bg-surface-container-high/60 border border-primary/20 flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5">verified_user</span>
+<div class="flex flex-col gap-0.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold text-sm">Pre-Cleared for Immediate Hiring</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[12px] leading-normal">
+              Candidate possesses an expedited passport, no bonded academic commitments, and is eligible for immediate J-1, H-1B, or Tier 2 UK sponsorship.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive 1-Click Schedule Modal Simulation (hidden by default, triggered by button) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-gutter hidden" id="schedule-modal">
+<div class="bg-surface-container p-space-2xl rounded-xl max-w-lg w-full shadow-2xl border border-outline-variant/30 flex flex-col gap-space-lg relative">
+<button class="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface" id="btn-close-modal" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-tag text-label-tag text-primary uppercase font-bold">1-CLICK RECRUITER CALENDAR</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface font-bold">Connect with Rishabh S.</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+          Select an available slot for a 30-minute technical screens or architecture walkthrough. Synchronized directly with Rishabh's calendar.
+        </p>
+</div>
+<div class="space-y-2 font-label-mono-wide text-label-mono-wide text-sm">
+<button class="w-full text-left p-space-md rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface flex items-center justify-between group transition-colors" type="button">
+<span>Tomorrow • 14:00 GMT (09:00 EST)</span>
+<span class="text-primary font-bold group-hover:translate-x-1 transition-transform">Select →</span>
+</button>
+<button class="w-full text-left p-space-md rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface flex items-center justify-between group transition-colors" type="button">
+<span>Tomorrow • 17:30 GMT (12:30 EST)</span>
+<span class="text-primary font-bold group-hover:translate-x-1 transition-transform">Select →</span>
+</button>
+<button class="w-full text-left p-space-md rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface flex items-center justify-between group transition-colors" type="button">
+<span>Friday • 15:00 GMT (10:00 EST)</span>
+<span class="text-primary font-bold group-hover:translate-x-1 transition-transform">Select →</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-space-xs border-t border-outline-variant/30 text-label-mono-wide text-on-surface-variant text-[11px]">
+<span>Email fallback: rishabh@nivora.me</span>
+<span class="text-secondary font-semibold">Response &lt; 2 hours</span>
+</div>
+</div>
+</div>
+<!-- Inline vanilla script for the modal micro-interaction -->
+<script>
+    (function() {
+      const scheduleBtn = document.getElementById('btn-schedule');
+      const modal = document.getElementById('schedule-modal');
+      const closeBtn = document.getElementById('btn-close-modal');
+
+      if (scheduleBtn && modal && closeBtn) {
+        scheduleBtn.addEventListener('click', () => {
+          modal.classList.remove('hidden');
+        });
+
+        closeBtn.addEventListener('click', () => {
+          modal.classList.add('hidden');
+        });
+
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.add('hidden');
+          }
+        });
+      }
+    })();
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-2xl"><div class="w-full px-gutter flex flex-col md:flex-row items-center justify-between gap-space-lg text-on-surface-variant"><div class="flex flex-col sm:flex-row items-center gap-space-sm sm:gap-space-lg"><span class="font-label-mono-wide text-label-mono-wide uppercase text-on-surface">NIVORA SECURE ATTESTATION NETWORK</span><span class="hidden sm:inline text-outline-variant font-label-tag text-label-tag">•</span><span class="font-body-sm text-body-sm">Cryptographically signed candidate record</span></div><div class="flex items-center gap-space-xl font-label-mono-wide text-label-mono-wide"><span class="text-primary">LATENCY 24ms</span><span class="text-on-surface-variant">© 2025 NIVORA CORP</span></div></div></footer>
+<!-- Interactive Code Replay & Verification Modal Overlay -->
+<div class="fixed inset-0 bg-[#070f13]/85 backdrop-blur-md z-50 flex items-center justify-center p-4 md:p-8 overflow-y-auto" id="code-replay-modal">
+<div class="relative w-full max-w-6xl max-h-[92vh] bg-[#0c1418] border border-[#323a3f]/70 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-neutral-200 font-sans my-auto ring-1 ring-white/10">
+<!-- 1. Modal Top Bar -->
+<div class="flex flex-col border-b border-[#323a3f]/60 bg-[#151d21]/90 px-5 py-3.5 shrink-0 gap-2">
+<div class="flex items-center justify-between gap-4">
+<!-- Monospace Telemetry -->
+<div class="flex items-center gap-2 text-[10.5px] font-mono text-neutral-400 tracking-wider overflow-x-auto whitespace-nowrap">
+<span class="w-2 h-2 rounded-full bg-[#aae1c2] animate-pulse"></span>
+<span class="text-[#aae1c2] font-semibold">AUDIT REPLAY // RAFT-CS305</span>
+<span class="text-[#404943]">•</span>
+<span>COMMIT #8f92da1</span>
+<span class="text-[#404943]">•</span>
+<span class="text-[#a5d0b7]">GO 1.22.4 RUNTIME</span>
+<span class="text-[#404943]">•</span>
+<span class="text-[#efd28e]">JEPSEN VALIDATED</span>
+</div>
+<!-- Top Right Actions -->
+<div class="flex items-center gap-2 shrink-0">
+<button class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#192125] hover:bg-[#232b2f] text-neutral-300 text-[11px] font-mono border border-[#404943]/40 transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px] text-[#aae1c2]">content_copy</span>
+<span>Copy Cryptographic Hash</span>
+</button>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded bg-[#192125] hover:bg-[#232b2f] text-neutral-200 text-[11px] font-medium border border-[#404943]/40 transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">download</span>
+<span>Download Verified Bundle (.tar.gz)</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-[#192125] hover:bg-[#2e363a] text-neutral-400 hover:text-white flex items-center justify-center transition-colors border border-transparent hover:border-[#404943]/40" onclick="document.getElementById('code-replay-modal').style.display='none'" title="Close modal (Esc)" type="button">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Title & Badges Bar -->
+<div class="flex flex-wrap items-center justify-between gap-2.5 pt-0.5">
+<div class="flex items-center gap-2.5 flex-wrap">
+<h2 class="text-[17px] font-semibold tracking-tight text-white flex items-center gap-2">
+<span>Raft Consensus Protocol: Execution &amp; Invariant Diff Replay</span>
+</h2>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase font-bold tracking-wide bg-[#2a513d] text-[#aae1c2] border border-[#aae1c2]/30">GOLD TIER ARTIFACT</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono text-neutral-300 bg-[#192125] border border-[#404943]/40">SHA-256: 0x4b71..ef88</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono text-[#efd28e] bg-[#d2b675]/10 border border-[#efd28e]/30">JEPSEN CHAOS TESTED</span>
+</div>
+<div class="text-[11px] font-mono text-neutral-400 flex items-center gap-1.5">
+<span class="text-[#a5d0b7]">CS-305 CAPSTONE</span>
+<span class="text-[#404943]">|</span>
+<span>FACULTY SIGNED</span>
+</div>
+</div>
+</div>
+<!-- 2. Interactive Execution Scrubber & Transport Bar -->
+<div class="bg-[#0e171c] border-b border-[#323a3f]/60 px-5 py-3 shrink-0 flex flex-col gap-2.5">
+<div class="flex flex-wrap items-center justify-between gap-3 text-xs">
+<!-- Controls Left -->
+<div class="flex items-center gap-2">
+<!-- Play/Pause -->
+<button class="w-8 h-8 rounded-lg bg-[#aae1c2] text-[#003824] flex items-center justify-center hover:bg-[#9cd2b4] transition-colors shadow-sm" title="Pause Replay" type="button">
+<span class="material-symbols-outlined text-[18px] fill-current">pause</span>
+</button>
+<!-- Step Controls -->
+<button class="px-2.5 py-1 rounded bg-[#192125] hover:bg-[#232b2f] text-neutral-300 text-[11px] font-mono flex items-center gap-1 border border-[#404943]/40 transition-colors" type="button">
+<span>⇤ Step</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-[#192125] hover:bg-[#232b2f] text-neutral-300 text-[11px] font-mono flex items-center gap-1 border border-[#404943]/40 transition-colors" type="button">
+<span>Step ⇥</span>
+</button>
+<!-- Speed Selectors -->
+<div class="hidden sm:flex items-center ml-2 rounded-lg bg-[#151d21] p-0.5 border border-[#404943]/30 font-mono text-[10.5px]">
+<button class="px-2 py-0.5 rounded bg-[#2a513d] text-[#aae1c2] font-semibold" type="button">1x (Selected)</button>
+<button class="px-2 py-0.5 rounded text-neutral-400 hover:text-neutral-200" type="button">2x</button>
+<button class="px-2 py-0.5 rounded text-neutral-400 hover:text-neutral-200" type="button">5x</button>
+<button class="px-2 py-0.5 rounded text-neutral-400 hover:text-neutral-200" type="button">Realtime</button>
+</div>
+</div>
+<!-- Timestamp Marker -->
+<div class="flex items-center gap-3 font-mono text-[12px]">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#151d21] border border-[#404943]/40">
+<span class="text-neutral-400">CURSOR:</span>
+<span class="text-[#aae1c2] font-semibold">T+14.280s</span>
+<span class="text-[#404943]">/</span>
+<span class="text-neutral-400">00:45.000s</span>
+</div>
+<span class="hidden md:inline-flex items-center gap-1 text-[11px] text-[#efd28e] bg-[#d2b675]/15 px-2 py-0.5 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-[#efd28e] animate-ping"></span>
+            STEP 4 OF 5 (ASYMMETRIC PARTITION)
+          </span>
+</div>
+</div>
+<!-- Timeline & Progress scrubber -->
+<div class="flex flex-col gap-1.5 pt-1">
+<div class="relative w-full h-2 bg-[#192125] rounded-full overflow-visible flex items-center cursor-pointer border border-[#404943]/30">
+<!-- Active bar fill -->
+<div class="h-full bg-gradient-to-r from-[#aae1c2] via-[#a5d0b7] to-[#efd28e] rounded-full" style="width: 32%"></div>
+<!-- Scrubber handle -->
+<div class="absolute w-3.5 h-3.5 bg-white rounded-full shadow-[0_0_8px_rgba(170,225,194,0.8)] border-2 border-[#0c1418] -ml-1.5 cursor-grab" style="left: 32%"></div>
+</div>
+<!-- Interactive Milestones -->
+<div class="grid grid-cols-5 text-[10px] font-mono pt-1 text-neutral-400">
+<!-- Milestone 1 -->
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#aae1c2]"></span>
+<span class="truncate text-neutral-300">T+0.00s Election (Term 1)</span>
+</div>
+<!-- Milestone 2 -->
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#aae1c2]"></span>
+<span class="truncate text-neutral-300">T+4.12s Steady Log Appends</span>
+</div>
+<!-- Milestone 3 -->
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#efd28e] animate-pulse"></span>
+<span class="truncate text-[#efd28e] font-semibold">T+12.40s Partition 2-3 Split</span>
+</div>
+<!-- Milestone 4 (Current) -->
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full ring-2 ring-[#aae1c2] bg-white"></span>
+<span class="truncate text-[#aae1c2] font-semibold">T+14.28s Quorum Rejection &amp; Term Advance</span>
+</div>
+<!-- Milestone 5 -->
+<div class="flex items-center justify-end gap-1 text-neutral-500">
+<span class="w-1.5 h-1.5 rounded-full bg-[#404943]"></span>
+<span class="truncate">T+22.10s Partition Heal &amp; Rollback</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Two-Column Replay Audit Workspace -->
+<div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-[#323a3f]/60 overflow-y-auto">
+<!-- Left Column: Code Replay & Invariant Annotations (~58% width = 7 cols) -->
+<div class="lg:col-span-7 flex flex-col min-h-0 bg-[#0c1418]">
+<!-- File Tabs Header -->
+<div class="flex items-center justify-between border-b border-[#323a3f]/60 bg-[#151d21] px-3 shrink-0 overflow-x-auto text-[11px] font-mono">
+<div class="flex items-center">
+<button class="flex items-center gap-1.5 px-3 py-2 text-white bg-[#0c1418] border-b-2 border-[#aae1c2] font-medium" type="button">
+<span class="material-symbols-outlined text-[14px] text-[#aae1c2]">terminal</span>
+<span>raft/consensus.go</span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#aae1c2]"></span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-neutral-400 hover:text-neutral-200 transition-colors" type="button">
+<span>raft/rpc_append.go</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-neutral-400 hover:text-neutral-200 transition-colors" type="button">
+<span>raft/election.go</span>
+</button>
+<button class="flex items-center gap-1.5 px-3 py-2 text-neutral-400 hover:text-neutral-200 transition-colors" type="button">
+<span class="text-[#efd28e]">cluster_jepsen_test.go</span>
+</button>
+</div>
+<span class="text-[10px] text-neutral-400 hidden sm:inline-block">Go 1.22 • Linearizability Checker v4.1</span>
+</div>
+<!-- Code Editor Body with Invariant Overlays -->
+<div class="p-4 overflow-y-auto flex-1 font-mono text-[11.5px] leading-relaxed relative bg-[#070f13]/50 select-text">
+<div class="space-y-0.5">
+<div class="flex items-start text-neutral-500">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">138</span>
+<span class="text-[#8a938c]">// sendAppendEntries executes parallel RPCs and evaluates quorum response</span>
+</div>
+<div class="flex items-start text-neutral-500">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">139</span>
+<span class="text-[#8a938c]">// Enforces Raft safety rule: Leader completeness &amp; monotonic term progression</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">140</span>
+<span><span class="text-[#a5d0b7] font-semibold">func</span> (rf *Raft) <span class="text-[#aae1c2] font-semibold">sendAppendEntries</span>(server <span class="text-[#efd28e]">int</span>, args *AppendEntriesArgs, reply *AppendEntriesReply) <span class="text-[#efd28e]">bool</span> {</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">141</span>
+<span class="pl-4">ok := rf.peers[server].Call(<span class="text-[#8fc5a7]">"Raft.AppendEntries"</span>, args, reply)</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">142</span>
+<span class="pl-4"><span class="text-[#a5d0b7]">if</span> !ok { <span class="text-[#a5d0b7]">return</span> <span class="text-[#ffb4ab]">false</span> }</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">143</span>
+<span class="pl-4">rf.mu.Lock()</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">144</span>
+<span class="pl-4"><span class="text-[#a5d0b7]">defer</span> rf.mu.Unlock()</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">145</span>
+<span></span>
+</div>
+<!-- Monotonic Term Check with Highlight & Invariant #1 Callout -->
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">146</span>
+<span class="pl-4"><span class="text-[#a5d0b7] font-semibold">if</span> reply.Term &gt; rf.currentTerm {</span>
+</div>
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">147</span>
+<span class="pl-8 text-neutral-200">rf.currentTerm = reply.Term</span>
+</div>
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">148</span>
+<span class="pl-8 text-neutral-200">rf.becomeFollower(reply.Term)</span>
+</div>
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">149</span>
+<span class="pl-8 text-neutral-200">rf.persistStateAndSnapshot()</span>
+</div>
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">150</span>
+<span class="pl-8"><span class="text-[#a5d0b7]">return</span> <span class="text-[#ffb4ab]">false</span></span>
+</div>
+<div class="flex items-start bg-[#1e533b]/30 -mx-4 px-4 py-0.5 border-l-2 border-[#aae1c2]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#aae1c2] font-bold">151</span>
+<span class="pl-4">}</span>
+</div>
+<!-- Pinned Callout Card for Invariant #1 -->
+<div class="my-2 ml-10 mr-2 p-2.5 rounded-lg bg-[#070f13] border border-[#aae1c2]/40 shadow-lg text-[11px] font-sans flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[16px] text-[#aae1c2] shrink-0 mt-0.5">verified</span>
+<div>
+<div class="font-mono text-[10px] font-bold text-[#aae1c2] uppercase tracking-wide flex items-center gap-1.5">
+<span>INVARIANT #1 VERIFIED AT T+14.280s</span>
+<span class="px-1.5 py-0.2 rounded bg-[#2a513d] text-[9px] text-white">SAFETY GUARANTEE</span>
+</div>
+<p class="text-neutral-200 mt-0.5 leading-snug">
+<span class="font-mono text-[#a5d0b7]">rf.becomeFollower(reply.Term)</span> immediately prevents minority partition split-brain when remote Term exceeds local Term. Node 1 stepped down after Node 3 quorum broadcast.
+                </p>
+</div>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">152</span>
+<span></span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">153</span>
+<span class="pl-4"><span class="text-[#8a938c]">// Check quorum matching index for commit pointer propagation</span></span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">154</span>
+<span class="pl-4"><span class="text-[#a5d0b7]">if</span> rf.state != Leader || args.Term != rf.currentTerm {</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">155</span>
+<span class="pl-8"><span class="text-[#a5d0b7]">return</span> <span class="text-[#ffb4ab]">false</span></span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">156</span>
+<span class="pl-4">}</span>
+</div>
+<!-- Quorum threshold lines with Amber highlight -->
+<div class="flex items-start bg-[#5a4711]/20 -mx-4 px-4 py-0.5 border-l-2 border-[#efd28e]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#efd28e] font-bold">157</span>
+<span class="pl-4"><span class="text-[#a5d0b7]">if</span> reply.Success {</span>
+</div>
+<div class="flex items-start bg-[#5a4711]/20 -mx-4 px-4 py-0.5 border-l-2 border-[#efd28e]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#efd28e] font-bold">158</span>
+<span class="pl-8">rf.matchIndex[server] = args.PrevLogIndex + <span class="text-[#efd28e]">len</span>(args.Entries)</span>
+</div>
+<div class="flex items-start bg-[#5a4711]/20 -mx-4 px-4 py-0.5 border-l-2 border-[#efd28e]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#efd28e] font-bold">159</span>
+<span class="pl-8">rf.nextIndex[server] = rf.matchIndex[server] + 1</span>
+</div>
+<div class="flex items-start bg-[#5a4711]/20 -mx-4 px-4 py-0.5 border-l-2 border-[#efd28e]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#efd28e] font-bold">160</span>
+<span class="pl-8">rf.checkAndAdvanceCommitIndex()</span>
+</div>
+<div class="flex items-start bg-[#5a4711]/20 -mx-4 px-4 py-0.5 border-l-2 border-[#efd28e]">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-[#efd28e] font-bold">161</span>
+<span class="pl-4">}</span>
+</div>
+<!-- Pinned Callout Card for Invariant #2 -->
+<div class="my-2 ml-10 mr-2 p-2.5 rounded-lg bg-[#070f13] border border-[#efd28e]/40 shadow-lg text-[11px] font-sans flex items-start gap-2.5">
+<span class="material-symbols-outlined text-[16px] text-[#efd28e] shrink-0 mt-0.5">policy</span>
+<div>
+<div class="font-mono text-[10px] font-bold text-[#efd28e] uppercase tracking-wide flex items-center gap-1.5">
+<span>INVARIANT #2: STRICT MAJORITY QUORUM THRESHOLD</span>
+<span class="px-1.5 py-0.2 rounded bg-[#3e2e00] text-[9px] text-[#fedf9b]">LEADER COMMIT</span>
+</div>
+<p class="text-neutral-200 mt-0.5 leading-snug">
+                  Strict majority threshold enforced — 3 of 5 positive acks required before advancing <span class="font-mono text-[#efd28e]">commitIndex</span>. Node 1 attempts in isolated Partition A are systematically rejected without state corruption.
+                </p>
+</div>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">162</span>
+<span class="pl-4"><span class="text-[#a5d0b7]">return</span> reply.Success</span>
+</div>
+<div class="flex items-start">
+<span class="w-9 shrink-0 text-right pr-3 select-none text-neutral-600">163</span>
+<span>}</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Live Cluster State & Packet Telemetry (~42% width = 5 cols) -->
+<div class="lg:col-span-5 flex flex-col min-h-0 bg-[#0c1418] divide-y divide-[#323a3f]/60 overflow-y-auto">
+<!-- Section A: Cluster Topology Diagram during Asymmetric Partition -->
+<div class="p-4 flex flex-col gap-3 bg-[#151d21]/40">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-white">
+<span class="material-symbols-outlined text-[16px] text-[#efd28e]">hub</span>
+<span>Cluster Topology (5-Node Simulation)</span>
+</div>
+<span class="font-mono text-[10px] text-[#ffb4ab] bg-[#93000a]/20 px-2 py-0.5 rounded border border-[#ffb4ab]/30 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ffb4ab]"></span>
+              ASYMMETRIC PARTITION ACTIVE
+            </span>
+</div>
+<!-- Partition Visual Split -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px] font-mono">
+<!-- Partition A: Minority (2 nodes) -->
+<div class="p-2.5 rounded-xl bg-[#192125] border border-[#ffb4ab]/30 flex flex-col gap-2">
+<div class="flex items-center justify-between pb-1 border-b border-[#323a3f]/60">
+<span class="text-[#ffb4ab] font-bold text-[10px] tracking-wider uppercase">PARTITION A (MINORITY)</span>
+<span class="text-[9.5px] text-neutral-400">2 NODES (NO QUORUM)</span>
+</div>
+<!-- Node 1 -->
+<div class="p-2 rounded-lg bg-[#070f13] border border-[#ffb4ab]/40 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#ffb4ab]"></span>
+<div>
+<div class="font-bold text-neutral-200">Node 1 (Stale Leader)</div>
+<div class="text-[9.5px] text-neutral-400">State: Isolated • Term: 2</div>
+</div>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-[#93000a]/30 text-[#ffb4ab] text-[9px] font-bold">MUTED</span>
+</div>
+<!-- Node 2 -->
+<div class="p-2 rounded-lg bg-[#070f13] border border-[#323a3f] flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-neutral-500"></span>
+<div>
+<div class="font-bold text-neutral-300">Node 2 (Follower)</div>
+<div class="text-[9.5px] text-neutral-400">matchIdx: 142 • Term: 2</div>
+</div>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-[#192125] text-neutral-400 text-[9px]">IDLE</span>
+</div>
+</div>
+<!-- Partition B: Majority Quorum (3 nodes) -->
+<div class="p-2.5 rounded-xl bg-[#192125] border border-[#aae1c2]/40 flex flex-col gap-2 shadow-[0_0_12px_rgba(170,225,194,0.06)]">
+<div class="flex items-center justify-between pb-1 border-b border-[#323a3f]/60">
+<span class="text-[#aae1c2] font-bold text-[10px] tracking-wider uppercase">PARTITION B (QUORUM)</span>
+<span class="text-[9.5px] text-[#aae1c2]">3 NODES (CAN COMMIT)</span>
+</div>
+<!-- Node 3 (Elected Leader) -->
+<div class="p-2 rounded-lg bg-[#070f13] border border-[#aae1c2] flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-[#aae1c2] animate-ping"></span>
+<div>
+<div class="font-bold text-[#aae1c2]">Node 3 (Elected Leader)</div>
+<div class="text-[9.5px] text-neutral-300">Term: 3 • CommitIdx: 143</div>
+</div>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-[#2a513d] text-[#aae1c2] text-[9px] font-bold">LEADER</span>
+</div>
+<!-- Node 4 & Node 5 -->
+<div class="grid grid-cols-2 gap-1.5">
+<div class="p-1.5 rounded bg-[#070f13] border border-[#323a3f] text-[10px]">
+<span class="text-[#a5d0b7] font-semibold">Node 4</span> (Follower)
+                  <div class="text-[9px] text-neutral-400">Term: 3 • Acked</div>
+</div>
+<div class="p-1.5 rounded bg-[#070f13] border border-[#323a3f] text-[10px]">
+<span class="text-[#a5d0b7] font-semibold">Node 5</span> (Follower)
+                  <div class="text-[9px] text-neutral-400">Term: 3 • Acked</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section B: Live RPC Network Packet Inspector -->
+<div class="p-4 flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-white">
+<span class="material-symbols-outlined text-[16px] text-[#aae1c2]">alt_route</span>
+<span>Live RPC Network Packet Inspector</span>
+</div>
+<span class="font-mono text-[10px] text-neutral-400">BUFFER: 3 PACKETS CAPTURED</span>
+</div>
+<div class="space-y-2 font-mono text-[11px]">
+<!-- Packet 1 (Rejected) -->
+<div class="p-2.5 rounded-lg bg-[#151d21] border border-[#ffb4ab]/30 flex flex-col gap-1">
+<div class="flex items-center justify-between text-[10px]">
+<span class="text-neutral-400">00:14.240 // RPC-REQ #9021</span>
+<span class="text-[#ffb4ab] font-bold bg-[#93000a]/20 px-1.5 py-0.2 rounded">REJECTED</span>
+</div>
+<div class="text-white font-medium">AppendEntries(Term=2, PrevLog=142) -&gt; Node 3</div>
+<div class="text-[10px] text-[#ffb4ab] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">error</span>
+<span>Term Stale: Receiver at Term 3 &gt; Sender at Term 2</span>
+</div>
+</div>
+<!-- Packet 2 (Vote granted) -->
+<div class="p-2.5 rounded-lg bg-[#151d21] border border-[#aae1c2]/30 flex flex-col gap-1">
+<div class="flex items-center justify-between text-[10px]">
+<span class="text-neutral-400">00:13.880 // RPC-VOTE #9019</span>
+<span class="text-[#aae1c2] font-bold bg-[#2a513d]/40 px-1.5 py-0.2 rounded">ACK: GRANTED</span>
+</div>
+<div class="text-white font-medium">RequestVote(Term=3, Candidate=Node 3) -&gt; Node 4</div>
+<div class="text-[10px] text-[#a5d0b7] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Log up-to-date check passed (LastLogTerm=3, LastLogIdx=142)</span>
+</div>
+</div>
+<!-- Packet 3 (Replicated) -->
+<div class="p-2.5 rounded-lg bg-[#151d21] border border-[#aae1c2]/30 flex flex-col gap-1">
+<div class="flex items-center justify-between text-[10px]">
+<span class="text-neutral-400">00:14.195 // RPC-ACK #9020</span>
+<span class="text-[#aae1c2] font-bold bg-[#2a513d]/40 px-1.5 py-0.2 rounded">ACK: REPLICATED</span>
+</div>
+<div class="text-white font-medium">AppendEntries(Term=3, Entries=1) -&gt; Node 5</div>
+<div class="text-[10px] text-[#a5d0b7] flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+<span>Entry committed across quorum [Nodes 3, 4, 5]</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section C: Live Invariant Telemetry Status -->
+<div class="p-4 flex flex-col gap-2.5 bg-[#0e171c]">
+<div class="text-xs font-semibold text-white flex items-center justify-between">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#aae1c2]">security</span>
+<span>Live Invariant Telemetry</span>
+</span>
+<span class="font-mono text-[10px] text-[#aae1c2]">VALIDATED PASS</span>
+</div>
+<div class="grid grid-cols-3 gap-2 font-mono text-[10.5px]">
+<div class="p-2 rounded-lg bg-[#192125] border border-[#404943]/30">
+<div class="text-neutral-400 text-[9px] uppercase">Linearizability</div>
+<div class="text-[#aae1c2] font-bold text-xs mt-0.5">PASS (0 Vio)</div>
+<div class="text-neutral-500 text-[9px]">100k test ops</div>
+</div>
+<div class="p-2 rounded-lg bg-[#192125] border border-[#404943]/30">
+<div class="text-neutral-400 text-[9px] uppercase">Jepsen Pass</div>
+<div class="text-[#efd28e] font-bold text-xs mt-0.5">98.6%</div>
+<div class="text-neutral-500 text-[9px]">Chaos Severity</div>
+</div>
+<div class="p-2 rounded-lg bg-[#192125] border border-[#404943]/30">
+<div class="text-neutral-400 text-[9px] uppercase">Log Divergence</div>
+<div class="text-white font-bold text-xs mt-0.5">0 Leaks</div>
+<div class="text-neutral-500 text-[9px]">Strict zero uncomm.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. Modal Footer -->
+<div class="border-t border-[#323a3f]/60 bg-[#151d21] px-5 py-3 shrink-0 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+<!-- Verification Credential Signature -->
+<div class="flex items-center gap-2 text-neutral-400 font-mono text-[10.5px] min-w-0">
+<span class="material-symbols-outlined text-[#aae1c2] text-[18px] shrink-0">verified_user</span>
+<span class="truncate">
+          Cryptographically Verified by Apex Systems Lab Autograder &amp; Faculty Auditor Dr. S. Ramanujan • Dean GPG Key: <span class="text-[#aae1c2] font-semibold">0x992B..C418</span>
+</span>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end">
+<button class="px-3 py-1.5 rounded-lg bg-[#192125] hover:bg-[#232b2f] text-neutral-200 text-[11.5px] font-mono border border-[#404943]/50 transition-colors flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px]">picture_as_pdf</span>
+<span>Export Audit Packet (PDF)</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-lg bg-[#aae1c2] hover:bg-[#9cd2b4] text-[#003824] text-[11.5px] font-semibold font-mono transition-colors shadow flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+<span>Launch Jepsen In-Browser WASM Sandbox</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

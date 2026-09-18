@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#8a938c", "secondary-container": "#2a513d", "tertiary": "#efd28e", "on-surface-variant": "#c0c9c1", "on-background": "#dbe4e9", "on-primary-fixed-variant": "#1b5039", "on-secondary-fixed": "#002113", "secondary-fixed": "#c1edd2", "surface-variant": "#2e363a", "surface-dim": "#0c1418", "secondary": "#a5d0b7", "error": "#ffb4ab", "tertiary-fixed-dim": "#e0c381", "on-secondary-container": "#98c2a9", "surface-container-low": "#151d21", "primary-container": "#8fc5a7", "on-secondary": "#0e3725", "surface": "#0c1418", "on-error-container": "#ffdad6", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "surface-container-highest": "#2e363a", "on-tertiary-container": "#5a4711", "inverse-primary": "#35684f", "inverse-surface": "#dbe4e9", "inverse-on-surface": "#293236", "on-secondary-fixed-variant": "#274e3b", "surface-container-high": "#232b2f", "primary": "#aae1c2", "on-error": "#690005", "surface-container": "#192125", "surface-tint": "#9cd2b4", "outline-variant": "#404943", "error-container": "#93000a", "on-tertiary-fixed": "#251a00", "background": "#0c1418", "surface-bright": "#323a3f", "on-tertiary-fixed-variant": "#58440e", "tertiary-container": "#d2b675", "on-primary": "#003824", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "primary-fixed-dim": "#9cd2b4", "on-surface": "#dbe4e9", "on-tertiary": "#3e2e00", "primary-fixed": "#b7efcf", "on-primary-container": "#1e533b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-3xl": "2.5rem", "gutter": "1.25rem", "space-sm": "0.75rem", "space-4xl": "3.5rem", "space-md": "1rem", "card-padding": "1.25rem", "sidebar-width": "260px", "space-2xl": "2rem", "space-2xs": "0.25rem", "space-xl": "1.5rem", "space-xs": "0.5rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-sm": [ "Plus Jakarta Sans" ], "label-mono-wide": [ "JetBrains Mono" ], "body-sm": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "label-tag": [ "JetBrains Mono" ], "headline-md": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "button-text": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "display-quote": [ "Newsreader" ] }, "fontSize": { "headline-sm": [ "15px", { "lineHeight": "22px", "fontWeight": "600" } ], "label-mono-wide": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-tag": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "headline-md": [ "18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-lg": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "button-text": [ "13px", { "lineHeight": "18px", "fontWeight": "600" } ], "display-hero": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-quote": [ "18px", { "lineHeight": "26px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md border-b border-outline-variant/20"><div class="flex items-center gap-space-xs"><div class="w-6 h-6 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">N</div><span class="font-headline-md text-headline-md tracking-wider font-bold text-on-surface">NIVORA</span></div><p class="mt-1 font-label-tag text-label-tag tracking-widest uppercase text-on-surface-variant/70">The Student Ecosystem</p></div><nav class="px-space-xs py-space-sm space-y-space-md" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Main</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="home" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Home</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Learn</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="learning" href="#"><span class="material-symbols-outlined text-[18px]">local_library</span><span>Learning</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span>Subjects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="resources" href="#"><span class="material-symbols-outlined text-[18px]">folder</span><span>Resources</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Academics</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="classes" href="#"><span class="material-symbols-outlined text-[18px]">event_seat</span><span>Classes</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="assignments" href="#"><span class="material-symbols-outlined text-[18px]">assignment</span><span>Assignments</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="exams" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Exams</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="attendance" href="#"><span class="material-symbols-outlined text-[18px]">how_to_reg</span><span>Attendance</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Life</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="planner" href="#"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span>Planner</span></a><a aria-current="page" class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-semibold" data-path="reboot" href="#"><span class="material-symbols-outlined text-[18px]">self_improvement</span><span>Reboot</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="music" href="#"><span class="material-symbols-outlined text-[18px]">headphones</span><span>Music</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="connect" href="#"><span class="material-symbols-outlined text-[18px]">forum</span><span>Connect</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Growth</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="skills" href="#"><span class="material-symbols-outlined text-[18px]">psychology</span><span>Skills</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="projects" href="#"><span class="material-symbols-outlined text-[18px]">code</span><span>Projects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="career" href="#"><span class="material-symbols-outlined text-[18px]">work_outline</span><span>Career</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Community</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="groups" href="#"><span class="material-symbols-outlined text-[18px]">groups</span><span>Groups</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="clubs-and-events" href="#"><span class="material-symbols-outlined text-[18px]">celebration</span><span>Clubs &amp; Events</span></a></div></nav></div><div class="p-space-xs space-y-space-xs border-t border-outline-variant/20 bg-surface-container-lowest/40"><nav class="space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="nivora-ai" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-primary">smart_toy</span><span>NIVORA AI</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Beta</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>Settings</span></a></nav><div class="flex items-center gap-space-xs p-space-xs rounded-xl bg-surface-container border border-outline-variant/20"><div class="relative flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container"></span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Rishabh S.</span><span class="font-label-tag text-label-tag text-on-surface-variant truncate">B.Tech CSE Year 3</span></div></div></div></aside><div class="pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant"><span class="uppercase tracking-widest text-on-surface-variant/80">Academic Core</span><span class="text-outline-variant">/</span><span class="text-primary font-semibold">Console</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant cursor-pointer hover:border-outline-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm pr-space-md">Search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">⌘K</kbd></div><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary"></span></button><button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span>AI Assist</span></button><div class="h-4 w-px bg-outline-variant/40"></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida/AEtjO1XQOggMtk-HZrdEK3-xJhgF3aIDtDxnMmk38RT437_RQI_8qM6-idBraQBFSmp3xgKeQBBJfi2Y9vxkFtuKDE-6x1DEPChMr9_cuxzEi-Lkwc45afVsNaP5NXkb7hYjcxu6vFVrMoGr2kjoGcVBRbOZxTODCHKZ8_sJeEpxbW6rxmeFld4POcq2jzxipW8RJyJq_IX0qtaTCOtFPCTVGbuzCZk8zc3Qlm7F30mFhMPBInzMKPwaeIDgHvPJ0rzaGLpUCbdSOHtu84o"/></div></header><main class="w-full pt-16 flex-1 bg-surface px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Top Session Meta & Telemetry Header Bar -->
+<header class="w-full bg-surface-container-low rounded-xl p-space-md shadow-md">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left Track & Topic Info -->
+<div class="flex flex-col space-y-1">
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">SIM-4092</span>
+<span>GROWTH ENGINE</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">AI INTERVIEW SIMULATOR</span>
+<span class="text-outline-variant">•</span>
+<span class="text-tertiary">JANE STREET &amp; GOOGLE SWE L4 TRACK</span>
+</div>
+<div class="flex items-center gap-space-sm pt-1">
+<h1 class="font-display-quote text-display-quote text-on-surface italic">
+            Distributed Consensus: Handling Partition Splits &amp; Split-Brain Mitigation in Raft
+          </h1>
+</div>
+</div>
+<!-- Center / Right Live Status Badges & Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Live Indicator Pill -->
+<div class="flex items-center gap-2 px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface text-label-tag font-label-tag">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="text-primary font-semibold">LIVE REPL + AUDIO ACTIVE</span>
+</div>
+<!-- Latency / Bitrate Telemetry -->
+<div class="hidden sm:flex items-center gap-space-xs font-label-tag text-label-tag px-space-sm py-1 rounded-lg bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
+<span>28ms</span>
+<span class="text-outline-variant">|</span>
+<span>48kHz OPUS</span>
+</div>
+<!-- Elapsed Clock -->
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide px-space-sm py-1 rounded-lg bg-surface-container-highest text-primary">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span class="font-semibold">18:42</span>
+<span class="text-on-surface-variant/60">/ 45:00</span>
+</div>
+<!-- Quick Actions -->
+<div class="flex items-center gap-space-xs">
+<button class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" id="pauseSimBtn" title="Pause Simulation">
+<span class="material-symbols-outlined text-[18px]">pause</span>
+</button>
+<button class="p-1.5 rounded-lg bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Settings (⌘,)">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-button-text text-button-text transition-colors">
+            Restart Q
+          </button>
+<button class="flex items-center gap-1.5 px-space-md py-1.5 rounded-lg bg-primary text-on-primary hover:bg-secondary-fixed font-button-text text-button-text transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">fact_check</span>
+<span>End &amp; Evaluate</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Workspace Grid (Left 65% Stage, Right 35% Intelligence Rail) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT MAIN WORKSPACE (Cols 1-8 / ~66%) -->
+<div class="xl:col-span-8 flex flex-col space-y-space-lg">
+<!-- SECTION A: AI Evaluator & Candidate Dialogue Conduit -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<!-- Subtle Top Glow Accent -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<!-- Evaluator Header Row -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-sm mb-space-sm border-b border-outline-variant/20">
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<div class="w-10 h-10 rounded-xl bg-surface-container-highest flex items-center justify-center text-primary font-headline-sm">
+<span class="material-symbols-outlined text-[24px]">psychology</span>
+</div>
+<span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Dr. Elena Vance</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">STAFF SWE PERSONA</span>
+</div>
+<p class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">
+                NIVORA-Scholar Engine v4.5 • Calibrated on 1,400+ L4/L5 Systems Transcripts
+              </p>
+</div>
+</div>
+<!-- Live Audio Waveform Animation Visualizer -->
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[16px] text-primary">graphic_eq</span>
+<div class="flex items-center gap-0.5 h-4 w-28 px-1">
+<span class="w-1 bg-primary rounded-full animate-pulse h-2.5"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-4 delay-75"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-1.5 delay-150"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-3.5 delay-100"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-2 delay-200"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-4 delay-300"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-3 delay-75"></span>
+<span class="w-1 bg-primary rounded-full animate-pulse h-1 delay-150"></span>
+</div>
+<span class="font-label-tag text-label-tag text-primary">SPEAKING</span>
+</div>
+</div>
+<!-- Transcript Feed Stream -->
+<div class="space-y-space-md max-h-[320px] overflow-y-auto pr-space-xs">
+<!-- AI Speech Bubble -->
+<div class="flex gap-space-sm items-start bg-surface-container/60 rounded-xl p-space-md">
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex-shrink-0 flex items-center justify-center text-primary text-[14px]">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+</div>
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-medium tracking-wide">AI INTERVIEWER • 18:14</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">T=3m42s elapsed on Q2</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                Great explanation of the Raft leader election phase. Now, suppose a network partition isolates the leader with a minority of nodes (Nodes 1 and 2), while Nodes 3, 4, and 5 form a majority partition. A client issues a write request to Node 1. Walk me through the exact <span class="text-tertiary font-mono font-medium">commitIndex</span> behavior and explain how split-brain writes are prevented when the partition heals.
+              </p>
+</div>
+</div>
+<!-- Candidate Live Voice Stream -->
+<div class="flex gap-space-sm items-start bg-surface-container-high/40 rounded-xl p-space-md">
+<div class="w-7 h-7 rounded-lg bg-primary/20 flex-shrink-0 flex items-center justify-center text-primary font-headline-sm text-body-sm font-semibold">
+              RS
+            </div>
+<div class="space-y-1.5 flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-primary font-medium tracking-wide">RISHABH S. (LIVE TRANSCRIPTION) • 18:31</span>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-tag text-label-tag text-primary">MIC ACTIVE</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+                Since Node 1 only has Node 2 in its partition, it appends the entry to its local log with term 3, but when broadcasting <code class="text-primary font-mono text-[12px] bg-surface-container-highest px-1 rounded">AppendEntries</code> RPCs, it can at most collect 2 acknowledgments out of 5 total nodes. Because 2 is strictly less than the majority threshold of 3, the entry remains uncommitted. Meanwhile, the partition containing Nodes 3, 4, and 5 will time out, trigger an election with term 4, elect a new leader, and safely commit writes with a quorum of 3...
+              </p>
+<!-- AI Real-time Whispered Feedback Tag -->
+<div class="flex items-center gap-2 pt-1">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-secondary-container/60 text-on-secondary-container font-label-tag text-label-tag">
+<span class="material-symbols-outlined text-[13px] text-primary">check_circle</span>
+<span>Rigorous quorum verification</span>
+<span class="text-outline-variant">•</span>
+<span>Identified uncommitted log state</span>
+<span class="text-outline-variant">•</span>
+<span class="text-tertiary">Suggested: Explain log overwriting on partition merge</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION B: Live Code & Architecture REPL Sandbox -->
+<section class="bg-surface-container-low rounded-xl overflow-hidden shadow-sm flex flex-col">
+<!-- Editor Top Chrome Bar -->
+<div class="bg-surface-container-highest/60 px-space-md py-2 flex flex-wrap items-center justify-between gap-space-sm border-b border-outline-variant/20">
+<div class="flex items-center gap-space-xs overflow-x-auto">
+<!-- Active Tab -->
+<button class="flex items-center gap-2 px-space-sm py-1 rounded-t-lg bg-surface-container-low text-primary font-label-mono-wide text-label-mono-wide font-medium">
+<span class="material-symbols-outlined text-[15px] text-primary">code</span>
+<span>raft_partition_handler.go</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</button>
+<!-- Secondary Tab -->
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded-t-lg text-on-surface-variant hover:text-on-surface font-label-mono-wide text-label-mono-wide">
+<span>raft_test.go</span>
+</button>
+<!-- Config Tab -->
+<button class="flex items-center gap-1.5 px-space-sm py-1 rounded-t-lg text-on-surface-variant hover:text-on-surface font-label-mono-wide text-label-mono-wide">
+<span>cluster_topology.json</span>
+</button>
+</div>
+<!-- Code Actions -->
+<div class="flex items-center gap-space-xs">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">Go 1.22 Runtime</span>
+<button class="p-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface" title="Format Code">
+<span class="material-symbols-outlined text-[16px]">format_align_left</span>
+</button>
+<button class="flex items-center gap-1 px-space-sm py-1 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 font-button-text text-button-text" id="runTestsBtn">
+<span class="material-symbols-outlined text-[15px]">play_arrow</span>
+<span>Run Tests (⌘Enter)</span>
+</button>
+</div>
+</div>
+<!-- High Fidelity Syntax Code Canvas -->
+<div class="p-space-md font-label-tag text-[12px] leading-5 text-on-surface bg-surface-container-lowest overflow-x-auto select-text font-mono relative">
+<div class="table w-full">
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">1</span>
+<span class="table-cell"><span class="text-tertiary">package</span> consensus</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">2</span>
+<span class="table-cell"><span class="text-tertiary">import</span> ( <span class="text-secondary">"sync"</span>; <span class="text-secondary">"errors"</span>; <span class="text-secondary">"context"</span> )</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">3</span>
+<span class="table-cell"></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">4</span>
+<span class="table-cell"><span class="text-tertiary">type</span> RaftNode <span class="text-tertiary">struct</span> {</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">5</span>
+<span class="table-cell pl-4">mu         sync.RWMutex</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">6</span>
+<span class="table-cell pl-4">peers      []<span class="text-primary">string</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">7</span>
+<span class="table-cell pl-4">currentTerm <span class="text-primary">int</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">8</span>
+<span class="table-cell pl-4">commitIndex <span class="text-primary">int</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">9</span>
+<span class="table-cell pl-4">matchIndex  <span class="text-tertiary">map</span>[<span class="text-primary">int</span>]<span class="text-primary">int</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">10</span>
+<span class="table-cell">}</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">11</span>
+<span class="table-cell"></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">12</span>
+<span class="table-cell"><span class="text-on-surface-variant/60">// ReplicateEntry enforces strict quorum verification before commit increment</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">13</span>
+<span class="table-cell"><span class="text-tertiary">func</span> (r *RaftNode) <span class="text-primary">ReplicateEntry</span>(cmd Command) (<span class="text-primary">bool</span>, <span class="text-primary">error</span>) {</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">14</span>
+<span class="table-cell pl-4">r.mu.Lock()</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">15</span>
+<span class="table-cell pl-4">majorityThreshold := (len(r.peers) / <span class="text-secondary">2</span>) + <span class="text-secondary">1</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">16</span>
+<span class="table-cell pl-4">term := r.currentTerm</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">17</span>
+<span class="table-cell pl-4">r.mu.Unlock()</span>
+</div>
+<!-- Highlighted Callout Row (Line 18) -->
+<div class="table-row bg-primary/10">
+<span class="table-cell select-none text-right pr-4 text-primary font-bold w-10">18</span>
+<span class="table-cell pl-4">
+                acks := r.broadcastAppendEntriesAsync(term, cmd)
+                <span class="ml-2 inline-flex items-center gap-1 text-[10px] text-primary bg-surface-container-high px-2 py-0.5 rounded-full font-sans">
+<span class="material-symbols-outlined text-[12px]">tips_and_updates</span>
+                  Optimal lock granularity; mutex released before network RPC dispatch
+                </span>
+</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">19</span>
+<span class="table-cell pl-4"><span class="text-tertiary">if</span> acks &lt; majorityThreshold {</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">20</span>
+<span class="table-cell pl-8"><span class="text-tertiary">return</span> <span class="text-error">false</span>, errors.New(<span class="text-secondary">"err: isolated partition quorum unreachable"</span>)</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">21</span>
+<span class="table-cell pl-4">}</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">22</span>
+<span class="table-cell pl-4">r.advanceCommitIndex(majorityThreshold)</span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">23</span>
+<span class="table-cell pl-4"><span class="text-tertiary">return</span> <span class="text-primary">true</span>, <span class="text-secondary">nil</span></span>
+</div>
+<div class="table-row">
+<span class="table-cell select-none text-right pr-4 text-on-surface-variant/40 w-10">24</span>
+<span class="table-cell">}</span>
+</div>
+</div>
+</div>
+<!-- Terminal & Autograder Sanity Console Drawer -->
+<div class="bg-surface-container-high p-space-sm border-t border-outline-variant/20 flex flex-col space-y-2">
+<div class="flex items-center justify-between font-label-mono-wide text-label-mono-wide">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
+<span class="font-semibold">TEST RUNNER EXECUTION OUTPUT</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container text-label-tag font-label-tag">9/9 TESTS PASSED</span>
+<span class="text-on-surface-variant text-label-tag font-label-tag">Memory: 14.2 MB • Wall: 0.42s</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-space-sm font-label-tag text-label-tag font-mono space-y-1 text-on-surface-variant">
+<div class="text-secondary">=== RUN   TestPartitionSplitAndHeal</div>
+<div class="pl-3 text-on-surface-variant/80">=== PAIR: Node 1 (Term 3, Isolated) vs Node 3, 4, 5 (Term 4, Majority Quorum)</div>
+<div class="pl-3 text-on-surface-variant/80">=== ACTION: Injected 3x Write RPCs to Partition A (Node 1) → Rejected (Acks: 2 &lt; 3)</div>
+<div class="pl-3 text-on-surface-variant/80">=== ACTION: Injected 5x Write RPCs to Partition B (Node 3) → Committed (Acks: 3 == 3)</div>
+<div class="pl-3 text-on-surface-variant/80">=== MERGE: Simulating partition resolution; healing network topology...</div>
+<div class="pl-3 text-primary">--- PASS: TestPartitionSplitAndHeal (0.42s) [Zero split-brain dirty reads verified]</div>
+</div>
+</div>
+</section>
+<!-- SECTION C: Tactical Emergency Hints & Progressive Evaluation Notes -->
+<section class="bg-surface-container-low rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[20px]">lightbulb</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Tactical Hints &amp; Emergency Clues</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface-variant text-label-tag font-label-tag">Scored Penalty Active</span>
+</div>
+<span class="text-on-surface-variant font-label-tag text-label-tag">Unlock costs -2% rubric weighting</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container flex items-start justify-between gap-space-xs">
+<div>
+<div class="font-label-mono-wide text-label-mono-wide text-primary mb-1">HINT 01 • INVARIANTS</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Recall Raft Figure 8: A leader can never commit an entry from a prior term by counting replicas alone.
+              </p>
+</div>
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-label-tag text-label-tag whitespace-nowrap">
+              Unlocked (Free)
+            </button>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-high/40 flex items-start justify-between gap-space-xs">
+<div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/60 mb-1">HINT 02 • LOG RECONCILIATION</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/60">
+                Hidden clue: State the exact matchIndex rollback mechanism when Node 1 rejoins...
+              </p>
+</div>
+<button class="px-2 py-1 rounded bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 font-label-tag text-label-tag whitespace-nowrap flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">lock_open</span>
+<span>Unlock (-2%)</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COMPANION & TELEMETRY RAIL (Cols 9-12 / ~34%) -->
+<div class="xl:col-span-4 flex flex-col space-y-space-lg">
+<!-- WIDGET 1: Audio / Video Candidate Hardware Health & Framing -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant uppercase tracking-wider">Stream &amp; Video Feed</span>
+<span class="flex items-center gap-1 font-label-tag text-label-tag text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            SHURE MV7 USB (48kHz)
+          </span>
+</div>
+<div class="relative w-full h-44 rounded-xl overflow-hidden bg-surface-container-lowest">
+<!-- Placeholder Candidate Video Feed with Detailed Prompt -->
+<img class="w-full h-full object-cover opacity-85" data-alt="A focused young Indian male software engineering student with glasses sitting in a dimly lit coding studio at night with soft emerald green ambient lighting, looking directly at the camera with confident, calm poise. Modern minimalist workstation aesthetic with microphone visible." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASVEzFCHhY7Wx1WGY4bLAc7DBfLYShFBLqWevhxE8RJmxU9cKU0kdsvecYydCBQ0AHU9OiatiVpb1YaOodXUyDGQecuXDAtjjGhwY-4-49II4GyoUquw3bDoTHQ_pPkn34GvDZuJ8qcytHZGflAlWjVxIvmv16a6KYlLUr1S_TDLIlPpNf85Guu-uJz_oEgvcJi4ZahchFqJ6Mj2x02PVT2XRQ5mr1qqJNrVst6WhBRyXEFZfiYQfbpw"/>
+<!-- Framing HUD Overlay -->
+<div class="absolute inset-0 p-space-xs flex flex-col justify-between pointer-events-none">
+<div class="flex justify-between items-start">
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest/80 text-primary font-label-tag text-label-tag backdrop-blur-sm">
+                FACE TRACKED • EYE CONTACT: 92%
+              </span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest/80 text-secondary font-label-tag text-label-tag backdrop-blur-sm">
+                POSTURE: UPRIGHT
+              </span>
+</div>
+<!-- Bottom Audio Meter Bar in Video Feed -->
+<div class="flex items-center justify-between bg-surface-container-lowest/90 px-space-xs py-1 rounded-lg backdrop-blur-md">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">mic</span>
+<span class="font-label-tag text-label-tag">-18 dB</span>
+</div>
+<div class="flex items-center gap-0.5 w-32 h-2">
+<span class="w-2 h-full rounded bg-primary"></span>
+<span class="w-2 h-full rounded bg-primary"></span>
+<span class="w-2 h-full rounded bg-primary"></span>
+<span class="w-2 h-full rounded bg-primary"></span>
+<span class="w-2 h-full rounded bg-primary"></span>
+<span class="w-2 h-full rounded bg-secondary"></span>
+<span class="w-2 h-full rounded bg-surface-container-highest"></span>
+<span class="w-2 h-full rounded bg-surface-container-highest"></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Mute / Cam Toggles -->
+<div class="grid grid-cols-3 gap-space-xs pt-1">
+<button class="flex items-center justify-center gap-1 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-tag text-label-tag transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary">mic</span>
+<span>Mute</span>
+</button>
+<button class="flex items-center justify-center gap-1 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-tag text-label-tag transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">videocam</span>
+<span>Cam Off</span>
+</button>
+<button class="flex items-center justify-center gap-1 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container font-label-tag text-label-tag hover:bg-secondary-container/80 transition-colors">
+<span class="material-symbols-outlined text-[16px]">record_voice_over</span>
+<span>Push-Talk</span>
+</button>
+</div>
+</div>
+<!-- WIDGET 2: Real-time Voice & Communication Telemetry -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Speech &amp; Delivery Telemetry</h3>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">94% CLARITY</span>
+</div>
+<!-- Cadence Gauge -->
+<div class="space-y-1">
+<div class="flex items-center justify-between font-label-mono-wide text-label-mono-wide">
+<span class="text-on-surface-variant">Speech Pace / Cadence</span>
+<span class="text-primary font-semibold">138 WPM</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 72%;"></div>
+</div>
+<div class="flex justify-between font-label-tag text-label-tag text-on-surface-variant/60">
+<span>Slow (&lt;100)</span>
+<span class="text-primary font-medium">Optimal (120-150 WPM)</span>
+<span>Fast (&gt;180)</span>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-space-sm pt-1">
+<div class="bg-surface-container p-space-sm rounded-lg space-y-1">
+<div class="flex items-center gap-1 font-label-tag text-label-tag text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-tertiary">warning_amber</span>
+<span>Filler Words</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">2 <span class="font-label-tag text-label-tag text-secondary">instances</span></div>
+<p class="font-label-tag text-label-tag text-on-surface-variant/70">"um" at 04:12 • "like" at 11:30</p>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg space-y-1">
+<div class="flex items-center gap-1 font-label-tag text-label-tag text-on-surface-variant">
+<span class="material-symbols-outlined text-[15px] text-primary">menu_book</span>
+<span>Vocabulary Density</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">96%</div>
+<p class="font-label-tag text-label-tag text-primary">5 Systems keywords/min</p>
+</div>
+</div>
+<!-- Circular Clarity Ring Representation -->
+<div class="flex items-center gap-space-md p-space-sm bg-surface-container rounded-lg">
+<svg class="w-14 h-14 -rotate-90 flex-shrink-0" viewbox="0 0 36 36">
+<path class="text-surface-container-highest" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="94, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<div class="space-y-0.5">
+<span class="font-headline-sm text-body-sm font-semibold text-on-surface">Conciseness &amp; Precision</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Structured inductive answer format with minimal wandering or dead air.</p>
+</div>
+</div>
+</div>
+<!-- WIDGET 3: Jane Street / Google L4 Evaluator Rubric -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Staff Competency Rubric</h3>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Calibrated for Jane Street SWE &amp; Google L4</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-primary text-on-primary font-label-tag text-label-tag font-semibold">STRONG HIRE</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Item 1 -->
+<div class="space-y-1">
+<div class="flex justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">Concurrency &amp; Fault Tolerance</span>
+<span class="font-mono text-primary">95% · Exceeds</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 95%;"></div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="space-y-1">
+<div class="flex justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">Distributed State Invariants</span>
+<span class="font-mono text-primary">92% · Strong Hire</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 92%;"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="space-y-1">
+<div class="flex justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">Algorithmic Tradeoffs</span>
+<span class="font-mono text-secondary">88% · Meets Bar</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="space-y-1">
+<div class="flex justify-between font-body-sm text-body-sm">
+<span class="text-on-surface">Structured Technical Reasoning</span>
+<span class="font-mono text-primary">94% · Strong Hire</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 94%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- WIDGET 4: Session Question Timeline & Schedule -->
+<div class="bg-surface-container-low rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant uppercase tracking-wider">Interview Agenda</span>
+<span class="font-label-tag text-label-tag text-primary">2 / 4 Questions</span>
+</div>
+<div class="space-y-2">
+<!-- Question 1 (Done) -->
+<div class="p-space-xs rounded-lg bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface line-through text-on-surface-variant">1. Leader Election &amp; Heartbeats</span>
+</div>
+<span class="font-label-tag text-label-tag text-primary font-mono">96/100</span>
+</div>
+<!-- Question 2 (Active) -->
+<div class="p-space-xs rounded-lg bg-surface-container-high border-l-2 border-primary flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary animate-pulse">radio_button_checked</span>
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">2. Partition Split &amp; Split-Brain</span>
+</div>
+<span class="px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">ACTIVE</span>
+</div>
+<!-- Question 3 (Upcoming) -->
+<div class="p-space-xs rounded-lg bg-surface-container/40 flex items-center justify-between opacity-70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">pending</span>
+<span class="font-body-sm text-body-sm text-on-surface">3. Log Compaction &amp; Snapshotting</span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant font-mono">~12 min</span>
+</div>
+<!-- Question 4 (Upcoming) -->
+<div class="p-space-xs rounded-lg bg-surface-container/40 flex items-center justify-between opacity-70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">pending</span>
+<span class="font-body-sm text-body-sm text-on-surface">4. Jepsen Partition Injections</span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant font-mono">~10 min</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const runBtn = document.getElementById('runTestsBtn');
+    if (runBtn) {
+      runBtn.addEventListener('click', () => {
+        const origText = runBtn.innerHTML;
+        runBtn.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">refresh</span><span>Compiling...</span>';
+        setTimeout(() => {
+          runBtn.innerHTML = '<span class="material-symbols-outlined text-[15px] text-primary">done_all</span><span>9/9 Passing</span>';
+          setTimeout(() => {
+            runBtn.innerHTML = origText;
+          }, 2400);
+        }, 800);
+      });
+    }
+
+    const pauseBtn = document.getElementById('pauseSimBtn');
+    let isPaused = false;
+    if (pauseBtn) {
+      pauseBtn.addEventListener('click', () => {
+        isPaused = !isPaused;
+        pauseBtn.innerHTML = isPaused 
+          ? '<span class="material-symbols-outlined text-[18px] text-tertiary">play_arrow</span>' 
+          : '<span class="material-symbols-outlined text-[18px]">pause</span>';
+      });
+    }
+  })();
+</script></main><footer class="h-8 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-space-xl flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/70"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>NIVORA Workspace v2.4 · Academic Core</span></div><div class="flex items-center gap-space-md"><span>Press <kbd class="text-on-surface-variant font-mono">⌘K</kbd> for Command Palette</span><span>·</span><span>Press <kbd class="text-on-surface-variant font-mono">/</kbd> to search</span></div></footer></div></body></html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#8a938c", "secondary-container": "#2a513d", "tertiary": "#efd28e", "on-surface-variant": "#c0c9c1", "on-background": "#dbe4e9", "on-primary-fixed-variant": "#1b5039", "on-secondary-fixed": "#002113", "secondary-fixed": "#c1edd2", "surface-variant": "#2e363a", "surface-dim": "#0c1418", "secondary": "#a5d0b7", "error": "#ffb4ab", "tertiary-fixed-dim": "#e0c381", "on-secondary-container": "#98c2a9", "surface-container-low": "#151d21", "primary-container": "#8fc5a7", "on-secondary": "#0e3725", "surface": "#0c1418", "on-error-container": "#ffdad6", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "surface-container-highest": "#2e363a", "on-tertiary-container": "#5a4711", "inverse-primary": "#35684f", "inverse-surface": "#dbe4e9", "inverse-on-surface": "#293236", "on-secondary-fixed-variant": "#274e3b", "surface-container-high": "#232b2f", "primary": "#aae1c2", "on-error": "#690005", "surface-container": "#192125", "surface-tint": "#9cd2b4", "outline-variant": "#404943", "error-container": "#93000a", "on-tertiary-fixed": "#251a00", "background": "#0c1418", "surface-bright": "#323a3f", "on-tertiary-fixed-variant": "#58440e", "tertiary-container": "#d2b675", "on-primary": "#003824", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "primary-fixed-dim": "#9cd2b4", "on-surface": "#dbe4e9", "on-tertiary": "#3e2e00", "primary-fixed": "#b7efcf", "on-primary-container": "#1e533b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-3xl": "2.5rem", "gutter": "1.25rem", "space-sm": "0.75rem", "space-4xl": "3.5rem", "space-md": "1rem", "card-padding": "1.25rem", "sidebar-width": "260px", "space-2xl": "2rem", "space-2xs": "0.25rem", "space-xl": "1.5rem", "space-xs": "0.5rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-sm": [ "Plus Jakarta Sans" ], "label-mono-wide": [ "JetBrains Mono" ], "body-sm": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "label-tag": [ "JetBrains Mono" ], "headline-md": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "button-text": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "display-quote": [ "Newsreader" ] }, "fontSize": { "headline-sm": [ "15px", { "lineHeight": "22px", "fontWeight": "600" } ], "label-mono-wide": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-tag": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "headline-md": [ "18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-lg": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "button-text": [ "13px", { "lineHeight": "18px", "fontWeight": "600" } ], "display-hero": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-quote": [ "18px", { "lineHeight": "26px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md border-b border-outline-variant/20"><div class="flex items-center gap-space-xs"><div class="w-6 h-6 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">N</div><span class="font-headline-md text-headline-md tracking-wider font-bold text-on-surface">NIVORA</span></div><p class="mt-1 font-label-tag text-label-tag tracking-widest uppercase text-on-surface-variant/70">The Student Ecosystem</p></div><nav class="px-space-xs py-space-sm space-y-space-md" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Main</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="home" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Home</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Learn</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="learning" href="#"><span class="material-symbols-outlined text-[18px]">local_library</span><span>Learning</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span>Subjects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="resources" href="#"><span class="material-symbols-outlined text-[18px]">folder</span><span>Resources</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Academics</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="classes" href="#"><span class="material-symbols-outlined text-[18px]">event_seat</span><span>Classes</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="assignments" href="#"><span class="material-symbols-outlined text-[18px]">assignment</span><span>Assignments</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="exams" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Exams</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="attendance" href="#"><span class="material-symbols-outlined text-[18px]">how_to_reg</span><span>Attendance</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Life</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="planner" href="#"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span>Planner</span></a><a aria-current="page" class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-semibold" data-path="reboot" href="#"><span class="material-symbols-outlined text-[18px]">self_improvement</span><span>Reboot</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="music" href="#"><span class="material-symbols-outlined text-[18px]">headphones</span><span>Music</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="connect" href="#"><span class="material-symbols-outlined text-[18px]">forum</span><span>Connect</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Growth</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="skills" href="#"><span class="material-symbols-outlined text-[18px]">psychology</span><span>Skills</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="projects" href="#"><span class="material-symbols-outlined text-[18px]">code</span><span>Projects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="career" href="#"><span class="material-symbols-outlined text-[18px]">work_outline</span><span>Career</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Community</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="groups" href="#"><span class="material-symbols-outlined text-[18px]">groups</span><span>Groups</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="clubs-and-events" href="#"><span class="material-symbols-outlined text-[18px]">celebration</span><span>Clubs &amp; Events</span></a></div></nav></div><div class="p-space-xs space-y-space-xs border-t border-outline-variant/20 bg-surface-container-lowest/40"><nav class="space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="nivora-ai" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-primary">smart_toy</span><span>NIVORA AI</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Beta</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>Settings</span></a></nav><div class="flex items-center gap-space-xs p-space-xs rounded-xl bg-surface-container border border-outline-variant/20"><div class="relative flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container"></span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Rishabh S.</span><span class="font-label-tag text-label-tag text-on-surface-variant truncate">B.Tech CSE Year 3</span></div></div></div></aside><div class="pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant"><span class="uppercase tracking-widest text-on-surface-variant/80">Academic Core</span><span class="text-outline-variant">/</span><span class="text-primary font-semibold">Console</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant cursor-pointer hover:border-outline-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm pr-space-md">Search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">⌘K</kbd></div><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary"></span></button><button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span>AI Assist</span></button><div class="h-4 w-px bg-outline-variant/40"></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida/AEtjO1XQOggMtk-HZrdEK3-xJhgF3aIDtDxnMmk38RT437_RQI_8qM6-idBraQBFSmp3xgKeQBBJfi2Y9vxkFtuKDE-6x1DEPChMr9_cuxzEi-Lkwc45afVsNaP5NXkb7hYjcxu6vFVrMoGr2kjoGcVBRbOZxTODCHKZ8_sJeEpxbW6rxmeFld4POcq2jzxipW8RJyJq_IX0qtaTCOtFPCTVGbuzCZk8zc3Qlm7F30mFhMPBInzMKPwaeIDgHvPJ0rzaGLpUCbdSOHtu84o"/></div></header><main class="w-full pt-16 flex-1 bg-surface px-space-xl py-space-lg"><div class="flex flex-col w-full text-on-surface">
+<!-- Ambient Glow Layer -->
+<div class="relative w-full">
+<div class="absolute -top-10 left-1/4 w-96 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute top-20 right-10 w-72 h-40 bg-secondary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<!-- SUB-HEADER & TELEMETRY BANNER -->
+<div class="flex flex-col gap-space-md pb-space-lg">
+<!-- Meta Navigation Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs font-label-tag text-label-tag text-on-surface-variant/80">
+<span class="text-primary font-semibold">GROWTH ENGINE</span>
+<span>/</span>
+<span class="text-on-surface-variant">AI INTERVIEW SIMULATOR</span>
+<span>/</span>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface px-1.5 py-0.5 rounded bg-surface-container-high">SIM-4092</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse ml-1"></span>
+<span class="text-primary font-label-mono-wide text-label-tag uppercase tracking-wider">VERIFIED RUNTIME ARTIFACT</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant/60">SHA-256:</span>
+<span class="font-label-mono-wide text-label-tag text-secondary bg-surface-container px-2 py-0.5 rounded">0xa4f8...82c1</span>
+<button class="text-on-surface-variant hover:text-on-surface p-1 rounded hover:bg-surface-container-high transition-colors" title="Copy Ledger Hash">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Hero Header & Composite Verdict Block -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg bg-surface-container-low p-space-xl rounded-xl shadow-sm">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag tracking-wider font-semibold uppercase">
+<span class="w-2 h-2 rounded-full bg-primary shadow-sm"></span>
+              STRONG HIRE (L4 / SWE II)
+            </span>
+<span class="px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-tag text-label-tag">JANE STREET &amp; GOOGLE SWE CORE INFRA</span>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant/70">CANDIDATE: RISHABH S. (SEM 5)</span>
+</div>
+<h1 class="font-display-quote text-display-hero italic tracking-tight text-on-surface mt-1">
+            Distributed Consensus &amp; Split-Brain Mitigation
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Raft election monotonic invariant preservation, quorum proof generation under 2-node asymmetric partitions, and linearizable write recovery telemetry. Evaluated by Dr. Elena Vance (Staff SWE Persona).
+          </p>
+</div>
+<!-- Metric Counter & Actions -->
+<div class="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-space-md shrink-0">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-display-hero text-display-hero font-bold tracking-tight text-primary">93.4</span>
+<span class="font-label-mono-wide text-headline-sm text-on-surface-variant">/100</span>
+<span class="ml-2 font-label-tag text-label-tag text-on-surface-variant bg-surface-container px-2 py-1 rounded">Top 1.8% Cohort</span>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Dossier PDF</span>
+</button>
+<button class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text">
+<span class="material-symbols-outlined text-[16px]">share</span>
+<span>Push to Portfolio</span>
+</button>
+<button class="flex items-center gap-1 px-space-sm py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed transition-colors font-button-text text-button-text font-semibold">
+<span class="material-symbols-outlined text-[16px]">restart_alt</span>
+<span>Re-run Deltas</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick KPI Strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-xs">
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">timer</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Session Duration</span>
+<span class="font-label-mono-wide text-body-md font-semibold text-on-surface">42m 18s</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">checklist_rtl</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Agenda Cleared</span>
+<span class="font-label-mono-wide text-body-md font-semibold text-on-surface">4 of 4 Milestones</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Code Execution</span>
+<span class="font-label-mono-wide text-body-md font-semibold text-primary">100% Passed (9/9)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm p-space-sm bg-surface-container rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Safety Invariants</span>
+<span class="font-label-mono-wide text-body-md font-semibold text-on-surface">0 Hallucinations</span>
+</div>
+</div>
+</div>
+</div>
+<!-- EXECUTIVE SCORECARD: 4 CORE DIMENSIONS -->
+<div class="pb-space-xl">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-tag text-label-tag uppercase tracking-widest text-on-surface-variant">Core Evaluation Dimensions</span>
+<span class="text-outline-variant">·</span>
+<span class="font-label-mono-wide text-label-tag text-secondary">L4 Infra SWE Rubric v4.2</span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/70">Standardized Jane Street Peer Benchmark</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-sm">
+<!-- Dimension 1 -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low rounded-xl relative overflow-hidden group hover:bg-surface-container transition-all">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider">Concurrency &amp; Faults</span>
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">96</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-space-2xs">System Concurrency</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">
+              Exceptional lock granularity and deep awareness of network split-brain invariants during term transitions.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-semibold">Exceeds L4 Bar</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+</div>
+<!-- Dimension 2 -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low rounded-xl relative overflow-hidden group hover:bg-surface-container transition-all">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider">Distributed State</span>
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">94</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-space-2xs">Quorum Reasoning</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">
+              Flawless mathematical proof of majority quorum (2 &lt; 3) and uncommitted log tail rollback mechanics.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-semibold">Strong Hire</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+</div>
+<!-- Dimension 3 -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low rounded-xl relative overflow-hidden group hover:bg-surface-container transition-all">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider">Production Go</span>
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">91</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-space-2xs">Code Cleanliness</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">
+              Idiomatic Go 1.22 async RPC dispatch, context propagation, and non-blocking sync/atomic primitives.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-semibold">Strong Hire</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+</div>
+<!-- Dimension 4 -->
+<div class="flex flex-col justify-between p-space-md bg-surface-container-low rounded-xl relative overflow-hidden group hover:bg-surface-container transition-all">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div>
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider">Presence &amp; Rigor</span>
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">92</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-space-2xs">Technical Cadence</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">
+              Steady 138 WPM pace; structured first-principles communication with zero conversational stalls.
+            </p>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-secondary font-semibold">Strong Hire</span>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MAIN TWO-COLUMN DEEP DIVE WORKSPACE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Comprehensive Matrix, Transcripts, Code & Evaluator Voice (65%) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- Evaluator Synthesis Card -->
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center font-headline-sm text-headline-sm text-on-secondary-container font-semibold">
+                  EV
+                </div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-primary"></span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Dr. Elena Vance</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Staff Infrastructure Engineer Persona · Verification ID #STAFF-902</span>
+</div>
+</div>
+<div class="flex items-center gap-space-2xs bg-surface-container px-space-sm py-1 rounded-full text-on-surface-variant font-label-tag text-label-tag">
+<span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+<span>SYNTHETIC INTERVIEW RECORD</span>
+</div>
+</div>
+<div class="bg-surface-container p-space-md rounded-lg font-display-quote text-display-quote text-on-surface italic leading-relaxed">
+            "Rishabh attacked the split-brain scenario with remarkable maturity. While most candidates stumble when a minority partition attempts to elect a phantom leader, he immediately framed the invariants via monotonic term numbers and non-overlapping quorum majorities. His code was clean, thread-safe, and decoupled."
+          </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-space-xs">
+<div class="flex flex-col gap-1.5 p-space-sm bg-surface-container rounded-lg">
+<span class="font-label-tag text-label-tag uppercase text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">thumb_up</span>
+                Verified Strengths
+              </span>
+<ul class="flex flex-col gap-1 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+<span>Atomic lock discipline across concurrent RPC handlers</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+<span>Formal inductive logic framing for consensus safety</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+<span>Instant quorum arithmetic under arbitrary odd cluster sizes</span>
+</li>
+</ul>
+</div>
+<div class="flex flex-col gap-1.5 p-space-sm bg-surface-container rounded-lg">
+<span class="font-label-tag text-label-tag uppercase text-tertiary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">upgrade</span>
+                Staff L5 Elevators
+              </span>
+<ul class="flex flex-col gap-1 font-body-sm text-body-sm text-on-surface-variant">
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span>
+<span>Discuss Raft Pre-Vote protocol for partitioned node rejoining</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span>
+<span>Read-Index optimization comparison against leader leases</span>
+</li>
+<li class="flex items-center gap-1.5">
+<span class="w-1 h-1 rounded-full bg-tertiary"></span>
+<span>Evaluate batch pipelining for uncommitted AppendEntries</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- AGENDA QUESTION BREAKDOWN (Interactive Rubric Matrix) -->
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface">Rubric Performance Matrix</h2>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">4 OF 4 MODULES EVALUATED</span>
+</div>
+<!-- Question 1 -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-xs transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-tag text-primary bg-secondary-container/40 px-2 py-0.5 rounded">Q1</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Leader Election &amp; Monotonic Term Jitter</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono-wide text-label-tag text-primary font-bold">96/100</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-tag text-label-tag text-secondary">Exemplary</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Evaluated randomization ranges for election timeouts (150ms-300ms) against cluster heartbeat ping cadence (50ms). Correctly highlighted split-vote degradation if jitter variance collapses.
+            </p>
+<div class="flex items-center gap-space-sm mt-1 text-on-surface-variant font-label-tag text-label-tag">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-primary">check</span> Zero Split-Votes induced</span>
+<span>·</span>
+<span>Response Latency: 4.2s</span>
+</div>
+</div>
+<!-- Question 2: EXPANDED ACTIVE FOCUS -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm relative overflow-hidden shadow-sm">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-tag text-primary bg-secondary-container px-2 py-0.5 rounded">Q2 · FOCUS</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Handling Partition Splits &amp; Split-Brain Invariants</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono-wide text-label-tag text-primary font-bold">94/100</span>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold">Strong Hire</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              In an asymmetric 5-node partition (Nodes [S1, S2] isolated from [S3, S4, S5]), explain why S1 (isolated previous leader) cannot commit client entries despite local acknowledgment.
+            </p>
+<!-- Transcript Callout Snippet -->
+<div class="bg-surface-container p-space-sm rounded-lg flex flex-col gap-space-xs font-body-sm text-body-sm">
+<div class="flex items-center justify-between border-b pb-1 font-label-tag text-label-tag text-on-surface-variant/70 border-outline-variant/30">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">record_voice_over</span> TRANSCRIPT SNIPPET (Timestamp: 18m 42s)</span>
+<span class="font-label-mono-wide">CONFIDENCE: 98.2%</span>
+</div>
+<p class="text-on-surface italic">
+<span class="text-primary font-semibold font-label-mono-wide text-label-tag not-italic">RISHABH:</span>
+                "Even if S1 receives a write request from an un-routed client, its AppendEntries RPC can only gather an ack from S2. That sums to 2 nodes. In a 5-node cluster, a quorum requires floor(5/2) + 1 = 3 nodes. Because 2 &lt; 3, S1 can never advance its commitIndex. When the partition heals and S3 arrives with term T+2, S1's uncommitted entries will be overwritten monotonically."
+              </p>
+<div class="flex items-center gap-space-xs text-on-surface-variant bg-surface-container-high/60 p-2 rounded">
+<span class="material-symbols-outlined text-[15px] text-primary">psychology</span>
+<span class="font-label-tag text-label-tag">Dr. Vance Note: "Immediate mathematical precision without prompting. Did not falter on quorum calculation."</span>
+</div>
+</div>
+</div>
+<!-- Question 3 -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-xs transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-tag text-primary bg-secondary-container/40 px-2 py-0.5 rounded">Q3</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Log Compaction &amp; InstallSnapshot RPC Protocol</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono-wide text-label-tag text-primary font-bold">91/100</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-tag text-label-tag text-secondary">Strong Hire</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Addressed log truncation edge cases when lagged followers lag behind the leader's earliest preserved log index. Correctly chained snapshot metadata persistence.
+            </p>
+</div>
+<!-- Question 4 -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-xs transition-all hover:bg-surface-container">
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-tag text-primary bg-secondary-container/40 px-2 py-0.5 rounded">Q4</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Chaos Injections &amp; Linearizable Read Leases</h3>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-mono-wide text-label-tag text-primary font-bold">92/100</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-tag text-label-tag text-secondary">Strong Hire</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Demonstrated complete awareness of stale reads during clock drifts when employing leader leases vs round-trip heartbeats for read-index queries.
+            </p>
+</div>
+</div>
+<!-- CODE ARTIFACT & STATIC ANALYSIS REVIEW -->
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col gap-space-md shadow-sm">
+<div class="flex flex-wrap items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">code</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Synthesized Code Implementation</h2>
+<span class="font-label-mono-wide text-label-tag text-on-surface-variant">raft_consensus_split.go</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Go 1.22.2</span>
+<span class="px-2 py-0.5 rounded bg-surface-container font-label-tag text-label-tag text-primary">All 9 Tests Passed</span>
+</div>
+</div>
+<!-- Code Snippet Area -->
+<div class="bg-surface-container-lowest p-space-md rounded-lg font-label-mono-wide text-label-tag overflow-x-auto text-on-surface/90 leading-relaxed shadow-inner">
+<div class="flex text-on-surface-variant/40 select-none pb-2 border-b border-surface-container mb-2">
+<span>// Verified candidate submission with inline concurrency annotations</span>
+</div>
+<p><span class="text-secondary">func</span> (rf *Raft) <span class="text-primary">sendAppendEntriesToQuorum</span>(ctx context.Context, term <span class="text-tertiary">int</span>) <span class="text-tertiary">bool</span> {</p>
+<p class="pl-4">rf.mu.Lock()</p>
+<p class="pl-4">defer rf.mu.Unlock()</p>
+<p class="pl-4 text-on-surface-variant/60">// Safety invariant: drop immediately if node lost leadership leadership</p>
+<p class="pl-4"><span class="text-secondary">if</span> rf.currentTerm != term || rf.state != Leader {</p>
+<p class="pl-8"><span class="text-secondary">return false</span></p>
+<p class="pl-4">}</p>
+<p class="pl-4">var successCount int64 = 1 <span class="text-primary">// counting self</span></p>
+<p class="pl-4">quorum := (len(rf.peers) / 2) + 1</p>
+<p class="pl-4 py-1 text-primary bg-primary/10 -mx-2 px-2 rounded">// [VERIFIED]: Non-blocking fan-out prevents slow peer from holding mutex</p>
+<p class="pl-4"><span class="text-secondary">for</span> peer := <span class="text-secondary">range</span> rf.peers {</p>
+<p class="pl-8"><span class="text-secondary">if</span> peer == rf.me { <span class="text-secondary">continue</span> }</p>
+<p class="pl-8"><span class="text-secondary">go func</span>(p <span class="text-tertiary">int</span>) {</p>
+<p class="pl-12">ok := rf.dispatchAppendRPC(p, term)</p>
+<p class="pl-12"><span class="text-secondary">if</span> ok &amp;&amp; atomic.AddInt64(&amp;successCount, 1) &gt;= int64(quorum) {</p>
+<p class="pl-16">rf.commitChan &lt;- <span class="text-secondary">true</span></p>
+<p class="pl-12">}</p>
+<p class="pl-8">}(peer)</p>
+<p class="pl-4">}</p>
+<p class="pl-4"><span class="text-secondary">return true</span></p>
+<p>}</p>
+</div>
+<div class="flex items-center justify-between p-space-sm bg-surface-container rounded-lg text-body-sm">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-tertiary">info</span>
+<span>Refinement Delta: Consider buffering <code class="font-label-mono-wide text-primary">commitChan</code> to prevent potential goroutine leaks if quorum unblocks late.</span>
+</div>
+<span class="font-label-tag text-label-tag text-tertiary uppercase font-semibold">Optimization</span>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Diagnostics, Speech Telemetry, Company Calibration, Remediation Drills (35%) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Speech & Presence Telemetry Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Speech &amp; Telemetry</h2>
+<span class="font-label-tag text-label-tag text-secondary uppercase">Acoustic Model v3</span>
+</div>
+<!-- Pace Indicator -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-tag text-label-tag">
+<span class="text-on-surface-variant">Speaking Pace</span>
+<span class="text-primary font-label-mono-wide font-semibold">138 WPM (Optimal)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden relative">
+<!-- Target band marker: 120-150 -->
+<div class="absolute top-0 left-[35%] w-[35%] h-full bg-surface-container-high"></div>
+<div class="h-full bg-primary rounded-full transition-all" style="width: 58%;"></div>
+</div>
+<div class="flex justify-between font-label-mono-wide text-[9px] text-on-surface-variant/50">
+<span>90 WPM (Slow)</span>
+<span>Target: 120-150</span>
+<span>200 WPM (Fast)</span>
+</div>
+</div>
+<!-- Mini Telemetry Matrix -->
+<div class="grid grid-cols-2 gap-space-xs pt-1">
+<div class="p-space-sm bg-surface-container rounded-lg flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Filler Words</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">2</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/70">total (0.24%)</span>
+</div>
+<span class="font-label-tag text-[9px] text-secondary mt-1">"um" (1), "like" (1)</span>
+</div>
+<div class="p-space-sm bg-surface-container rounded-lg flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Term Density</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-label-mono-wide text-headline-sm font-semibold text-primary">96%</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/70">High</span>
+</div>
+<span class="font-label-tag text-[9px] text-secondary mt-1">Raft invariants, Quorum</span>
+</div>
+<div class="p-space-sm bg-surface-container rounded-lg flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Gaze Stability</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-label-mono-wide text-headline-sm font-semibold text-on-surface">92%</span>
+<span class="font-label-tag text-label-tag text-secondary">Locked</span>
+</div>
+<span class="font-label-tag text-[9px] text-on-surface-variant/70">Minimal lateral shifts</span>
+</div>
+<div class="p-space-sm bg-surface-container rounded-lg flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Latency to Speak</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-label-mono-wide text-headline-sm font-semibold text-on-surface">1.8s</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant/70">Deliberate</span>
+</div>
+<span class="font-label-tag text-[9px] text-secondary mt-1">No rushed interjections</span>
+</div>
+</div>
+</div>
+<!-- Target Company Calibration Matrix -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Company Calibrations</h2>
+<span class="font-label-tag text-label-tag text-on-surface-variant">L4 Standard</span>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Company 1 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface font-semibold">Jane Street (Systems Core)</span>
+<span class="font-label-mono-wide text-primary font-bold">91% Match</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 91%;"></div>
+</div>
+<span class="font-label-tag text-[9px] text-on-surface-variant">Verdict: Direct pass to Superday Round</span>
+</div>
+<!-- Company 2 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface font-semibold">Google L4 Infra (Spanner/Borg)</span>
+<span class="font-label-mono-wide text-primary font-bold">95% Match</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 95%;"></div>
+</div>
+<span class="font-label-tag text-[9px] text-on-surface-variant">Verdict: Ready for HC &amp; Team Matching</span>
+</div>
+<!-- Company 3 -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-body-sm text-body-sm">
+<span class="text-on-surface font-semibold">Databricks (Distributed Engine)</span>
+<span class="font-label-mono-wide text-primary font-bold">98% Match</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 98%;"></div>
+</div>
+<span class="font-label-tag text-[9px] text-secondary font-semibold">Offer Probability: Exceptional (&gt;90%)</span>
+</div>
+</div>
+</div>
+<!-- Recommended Tactical Micro-Drills -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">fitness_center</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target Remediation Drills</h2>
+</div>
+<span class="font-label-tag text-label-tag text-tertiary font-semibold">+6.6 Delta</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<!-- Drill 1 -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-headline-sm text-body-sm text-on-surface truncate">Raft Pre-Vote Phase Implementation</span>
+<div class="flex items-center gap-space-xs font-label-tag text-label-tag text-on-surface-variant mt-0.5">
+<span class="text-primary font-label-mono-wide">+2.4% L5 Lift</span>
+<span>·</span>
+<span>15 min drill</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">arrow_forward</span>
+</div>
+<!-- Drill 2 -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-headline-sm text-body-sm text-on-surface truncate">Read-Index vs Leader Leases Benchmark</span>
+<div class="flex items-center gap-space-xs font-label-tag text-label-tag text-on-surface-variant mt-0.5">
+<span class="text-primary font-label-mono-wide">+1.8% L5 Lift</span>
+<span>·</span>
+<span>20 min code drill</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">arrow_forward</span>
+</div>
+<!-- Drill 3 -->
+<div class="p-space-sm bg-surface-container rounded-lg flex items-center justify-between hover:bg-surface-container-high transition-colors group cursor-pointer">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="font-headline-sm text-body-sm text-on-surface truncate">Jepsen Asymmetric Net-Partition Rig</span>
+<div class="flex items-center gap-space-xs font-label-tag text-label-tag text-on-surface-variant mt-0.5">
+<span class="text-secondary font-label-mono-wide">Live Sandbox</span>
+<span>·</span>
+<span>Interactive</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">play_circle</span>
+</div>
+</div>
+</div>
+<!-- Verified Credential & Share Card -->
+<div class="bg-surface-container-low p-space-md rounded-xl flex flex-col gap-space-sm shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">workspace_premium</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Cryptographic Proof</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            This performance score is immutably stamped and digitally signed by NIVORA Evaluation Core. Recruiters can inspect raw trace tokens without NDAs.
+          </p>
+<div class="pt-1 flex flex-col gap-space-2xs">
+<button class="w-full py-2 px-space-sm rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text font-semibold flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">badge</span>
+<span>Embed in Master Resume</span>
+</button>
+<button class="w-full py-1.5 px-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors font-button-text text-button-text flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">send</span>
+<span>Direct Link to Recruiter</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Micro-interaction handlers for interactive rubric accordion and tabs
+  document.addEventListener('DOMContentLoaded', () => {
+    // Add interactive click feedback if desired
+  });
+</script></main><footer class="h-8 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-space-xl flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/70"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>NIVORA Workspace v2.4 · Academic Core</span></div><div class="flex items-center gap-space-md"><span>Press <kbd class="text-on-surface-variant font-mono">⌘K</kbd> for Command Palette</span><span>·</span><span>Press <kbd class="text-on-surface-variant font-mono">/</kbd> to search</span></div></footer></div></body></html>

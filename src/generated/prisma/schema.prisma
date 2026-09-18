@@ -1,0 +1,329 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  passwordHash   String
+  name           String
+  avatar         String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  profile        StudentProfile?
+  plannerTasks   PlannerTask[]
+  rebootSessions RebootSession[]
+  skills         Skill[]
+  projects       Project[]
+  careerDossier  CareerDossier?
+  notifications  Notification[]
+  achievements   Achievement[]
+  passwordResets PasswordReset[]
+}
+
+model StudentProfile {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  college             String   @default("Indian Institute of Technology")
+  degree              String   @default("B.Tech")
+  stream              String   @default("Computer Science & Engineering")
+  streamCode          String   @default("CSE") // CSE, BBA, MECH, LAW
+  specialization      String   @default("Systems & Distributed Computing")
+  year                Int      @default(3)
+  semester            Int      @default(5)
+  cgpa                Float    @default(9.42)
+  streakDays          Int      @default(14)
+  modulesVerified     Int      @default(38)
+  totalModules        Int      @default(56)
+  hoursPacedWeek      Float    @default(22.5)
+  focusScore          Int      @default(72)
+  reelsToday          Int      @default(47)
+  reelThreshold       Int      @default(30)
+  doomscrollMins      Int      @default(38)
+  doomscrollCap       Int      @default(30)
+  careerGoal          String   @default("Distributed Systems Engineer")
+  bio                 String?
+  onboardingCompleted Boolean  @default(false)
+  onboardingStep      Int      @default(0)
+  academicGoals       String[] @default([])
+  targetCgpa          Float?
+  studyDuration       String?
+  preferredStudyTime  String?
+  studyStyle          String?
+  dailyStudyGoal      String?
+  interests           String[] @default([])
+  updatedAt           DateTime @updatedAt
+}
+
+model Subject {
+  id                String             @id @default(cuid())
+  code              String             @unique
+  name              String
+  streamCode        String             @default("CSE")
+  credits           Float              @default(4.0)
+  semester          Int                @default(5)
+  instructor        String
+  room              String
+  attendanceRate    Float              @default(85.0)
+  safeMissesLeft    Int                @default(4)
+  projectedGrade    String             @default("A")
+  activeModules     Int                @default(12)
+  totalModules      Int                @default(16)
+  color             String             @default("#8fc5a7")
+  topics            Topic[]
+  resources         Resource[]
+  assignments       Assignment[]
+  classes           ClassSchedule[]
+  exams             Exam[]
+  attendanceRecords AttendanceRecord[]
+}
+
+model Topic {
+  id             String  @id @default(cuid())
+  subjectId      String
+  subject        Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  unitNumber     Int
+  unitName       String
+  title          String
+  description    String?
+  order          Int     @default(1)
+  masteryPercent Int     @default(70)
+  status         String  @default("in_progress") // pending, in_progress, completed
+  isWeak         Boolean @default(false)
+}
+
+model Resource {
+  id          String   @id @default(cuid())
+  subjectId   String
+  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  type        String   @default("pdf") // pdf, slides, notes, pyq, cheatsheet
+  url         String   @default("#")
+  fileSize    String   @default("4.2 MB")
+  author      String   @default("Faculty Auth")
+  downloads   Int      @default(142)
+  tags        String   @default("Unit 1, Exam, Reference")
+  createdAt   DateTime @default(now())
+}
+
+model Assignment {
+  id              String    @id @default(cuid())
+  subjectId       String
+  subject         Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  title           String
+  code            String
+  description     String
+  deadline        DateTime
+  estimatedMins   Int       @default(45)
+  weightage       Float     @default(15.0)
+  status          String    @default("pending") // pending, submitted, graded
+  score           Float?
+  maxScore        Float     @default(100.0)
+  testCasesPassed Int       @default(0)
+  totalTestCases  Int       @default(10)
+  submissionUrl   String?
+  submittedAt     DateTime?
+}
+
+model ClassSchedule {
+  id         String  @id @default(cuid())
+  subjectId  String
+  subject    Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  dayOfWeek  Int // 1 = Mon, 2 = Tue, etc.
+  startTime  String // "10:00 AM"
+  endTime    String // "11:30 AM"
+  room       String
+  instructor String
+  meetingUrl String?
+  type       String  @default("lecture") // lecture, lab, tutorial
+}
+
+model Exam {
+  id              String   @id @default(cuid())
+  subjectId       String
+  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  title           String
+  date            DateTime
+  startTime       String   @default("09:30 AM")
+  durationHours   Float    @default(3.0)
+  room            String   @default("Hall C, East Academic Block")
+  proctor         String   @default("Dr. A. Sharma")
+  weightage       Int      @default(30)
+  seatNumber      String   @default("SEAT C-42")
+  syllabusMastery Int      @default(78)
+  status          String   @default("upcoming")
+}
+
+model AttendanceRecord {
+  id        String   @id @default(cuid())
+  subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  date      DateTime @default(now())
+  status    String   @default("present") // present, absent, excused
+  notes     String?
+}
+
+model PlannerTask {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title              String
+  description        String?
+  category           String   @default("personal") // classes, assignments, exams, deepwork, personal
+  date               String // YYYY-MM-DD
+  startTime          String? // "10:00 AM"
+  endTime            String? // "11:30 AM"
+  isCompleted        Boolean  @default(false)
+  priority           String   @default("medium") // high, medium, low
+  relatedSubjectCode String?
+  meetingUrl         String?
+  createdAt          DateTime @default(now())
+}
+
+model RebootSession {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  durationMins    Int      @default(25)
+  focusScoreDelta Int      @default(4)
+  completedAt     DateTime @default(now())
+}
+
+model MusicTrack {
+  id            String   @id @default(cuid())
+  title         String
+  subtitle      String?  @default("")
+  artist        String   @default("Nivora Sounds")
+  album         String?  @default("Nivora Music")
+  genre         String?  @default("Focus")
+  category      String   @default("focus") // focus, lofi, ambient, classical, nature, binaural, campus
+  duration      String   @default("03:00")
+  durationSec   Int      @default(180)
+  audioUrl      String   @default("/audio/ambient.mp3")
+  artworkUrl    String?
+  fileName      String?
+  fileSize      String?
+  fileSizeBytes BigInt?
+  fileHash      String?
+  mimeType      String?  @default("audio/mpeg")
+  userId        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+}
+
+model Skill {
+  id            String  @id @default(cuid())
+  userId        String
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  category      String // Technical, Professional, Leadership, Creative
+  level         String  @default("Intermediate") // Beginner, Intermediate, Advanced, Master
+  progress      Int     @default(80)
+  evidenceCount Int     @default(3)
+  verified      Boolean @default(true)
+}
+
+model Project {
+  id            String  @id @default(cuid())
+  userId        String
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  description   String
+  repoUrl       String  @default("github.com/rishabh/raft-kv")
+  techStack     String  @default("Go, Raft, Jepsen, gRPC")
+  role          String  @default("Core Systems Engineer")
+  progress      Int     @default(94)
+  commitsCount  Int     @default(342)
+  verifiedAudit Boolean @default(true)
+  jepsenPassed  Boolean @default(true)
+}
+
+model CareerDossier {
+  id               String        @id @default(cuid())
+  userId           String        @unique
+  user             User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetRole       String        @default("Distributed Systems / Low Latency Engineer")
+  atsScore         Int           @default(96)
+  dossierNumber    String        @default("#NV-8492")
+  targetPercentile String        @default("Top 3%")
+  applications     Application[]
+}
+
+model Application {
+  id           String        @id @default(cuid())
+  dossierId    String
+  dossier      CareerDossier @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  companyName  String
+  role         String
+  status       String        @default("applied") // applied, oa, interview, offer
+  nextEvent    String?
+  timingNotice String?
+  compensation String?
+  location     String        @default("Hybrid")
+}
+
+model StudyGroup {
+  id           String       @id @default(cuid())
+  name         String
+  subjectCode  String
+  membersCount Int          @default(42)
+  lastActive   String       @default("12m ago")
+  description  String
+  discussions  Discussion[]
+}
+
+model Discussion {
+  id           String     @id @default(cuid())
+  groupId      String
+  group        StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  authorName   String
+  title        String
+  content      String
+  repliesCount Int        @default(5)
+  createdAt    DateTime   @default(now())
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  type        String   @default("academic") // academic, reboot, career, system
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Achievement {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  icon        String   @default("workspace_premium")
+  unlockedAt  DateTime @default(now())
+}
+
+model PasswordReset {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  resetToken String?   @unique
+  expiresAt  DateTime
+  attempts   Int       @default(0)
+  verifiedAt DateTime?
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+}

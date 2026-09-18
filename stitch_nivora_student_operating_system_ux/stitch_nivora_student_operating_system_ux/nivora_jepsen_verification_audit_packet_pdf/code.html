@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "secondary-container": "#2a513d", "primary-fixed-dim": "#9cd2b4", "inverse-surface": "#dbe4e9", "surface-container-highest": "#2e363a", "primary": "#aae1c2", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "on-surface-variant": "#c0c9c1", "inverse-primary": "#35684f", "on-secondary-container": "#98c2a9", "secondary": "#a5d0b7", "on-tertiary": "#3e2e00", "background": "#0c1418", "outline-variant": "#404943", "error-container": "#93000a", "primary-fixed": "#b7efcf", "tertiary": "#efd28e", "on-primary-fixed-variant": "#1b5039", "tertiary-container": "#d2b675", "on-background": "#dbe4e9", "primary-container": "#8fc5a7", "surface": "#0c1418", "outline": "#8a938c", "on-secondary": "#0e3725", "surface-variant": "#2e363a", "tertiary-fixed-dim": "#e0c381", "on-surface": "#dbe4e9", "on-error-container": "#ffdad6", "on-tertiary-container": "#5a4711", "surface-container": "#192125", "on-primary": "#003824", "secondary-fixed": "#c1edd2", "on-tertiary-fixed-variant": "#58440e", "on-error": "#690005", "on-secondary-fixed-variant": "#274e3b", "on-primary-container": "#1e533b", "on-secondary-fixed": "#002113", "surface-tint": "#9cd2b4", "surface-container-low": "#151d21", "on-tertiary-fixed": "#251a00", "surface-dim": "#0c1418", "error": "#ffb4ab", "surface-bright": "#323a3f", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "surface-container-high": "#232b2f", "inverse-on-surface": "#293236" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-4xl": "3.5rem", "space-2xl": "2rem", "card-padding": "1.25rem", "space-xs": "0.5rem", "sidebar-width": "260px", "space-md": "1rem", "space-sm": "0.75rem", "space-3xl": "2.5rem", "space-xl": "1.5rem", "space-lg": "1.25rem", "space-2xs": "0.25rem", "gutter": "1.25rem" }, fontFamily: { "display-quote": ["Newsreader"], "label-tag": ["JetBrains Mono"], "label-mono-wide": ["JetBrains Mono"], "headline-md": ["Plus Jakarta Sans"], "button-text": ["Plus Jakarta Sans"], "display-hero": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"] }, fontSize: { "display-quote": ["18px", { lineHeight: "26px", fontWeight: "400" }], "label-tag": ["10px", { lineHeight: "14px", letterSpacing: "0.08em", fontWeight: "500" }], "label-mono-wide": ["11px", { lineHeight: "16px", letterSpacing: "0.1em", fontWeight: "500" }], "headline-md": ["18px", { lineHeight: "26px", letterSpacing: "-0.01em", fontWeight: "600" }], "button-text": ["13px", { lineHeight: "18px", fontWeight: "600" }], "display-hero": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "600" }], "headline-lg": ["22px", { lineHeight: "30px", letterSpacing: "-0.015em", fontWeight: "600" }], "headline-sm": ["15px", { lineHeight: "22px", fontWeight: "600" }], "body-sm": ["12px", { lineHeight: "18px", fontWeight: "400" }], "body-md": ["13px", { lineHeight: "20px", fontWeight: "400" }], "body-lg": ["15px", { lineHeight: "24px", fontWeight: "400" }] } } } };</script></head><body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen"><header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.25)]"><div class="w-full px-gutter h-20 flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-xl min-w-0"><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="text-primary font-headline-md text-headline-md tracking-tight font-bold">NIVORA</span><span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span><span class="text-on-surface-variant font-label-tag text-label-tag uppercase">Recruiter Dossier</span></div><div class="flex items-center gap-space-xs text-on-surface-variant font-label-mono-wide text-label-mono-wide mt-space-2xs"><span class="text-secondary font-medium">PROTOCOL v2.4</span><span>/</span><span class="truncate text-on-surface">rishabh-s</span></div></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-2xs rounded-full bg-surface-container-high"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-tag text-label-tag text-on-surface-variant uppercase">On-Chain Artifact #NV-8492</span><span class="text-outline-variant font-label-tag text-label-tag">•</span><span class="font-label-tag text-label-tag text-primary uppercase">Sig: Valid</span></div><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-on-surface font-semibold"><a aria-current="page" class="transition-colors text-on-surface font-semibold" data-path="candidate-dossier" href="#">Overview</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="verified-credentials" href="#">Credentials</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="technical-artifacts" href="#">Artifacts</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="academic-evaluations" href="#">Evaluations</a></nav></div><div class="flex items-center gap-space-md shrink-0"><button class="hidden sm:inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">download</span><span>Master PDF</span></button><button class="hidden md:inline-flex items-center justify-center px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">calendar_today</span><span>Screen</span></button><button class="inline-flex items-center justify-center px-space-lg py-space-xs rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-all font-button-text text-button-text gap-space-xs" type="button"><span class="material-symbols-outlined text-[16px]">mail</span><span>Contact</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full">
+<!-- Audit Action & Meta Header Strip -->
+<section class="w-full bg-surface-container-lowest px-gutter py-space-md">
+<div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Breadcrumbs & Status -->
+<div class="flex flex-wrap items-center gap-space-xs text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">NIVORA</a>
+<span>/</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">DOSSIER</a>
+<span>/</span>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">RAFT CONSENSUS</a>
+<span>/</span>
+<span class="text-secondary font-semibold">AUD-2024-RAFT-0914</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container-high text-primary font-label-tag text-label-tag font-semibold ml-2">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">lock</span>
+          CRYPTOGRAPHICALLY VERIFIED
+        </span>
+</div>
+<!-- Action Buttons Toolbar -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="inline-flex items-center justify-center gap-1.5 px-space-md py-space-xs rounded-lg bg-primary text-on-primary hover:bg-primary-fixed-dim transition-colors font-button-text text-button-text shadow-sm" onclick="window.print()" type="button">
+<span class="material-symbols-outlined text-[16px]">print</span>
+<span>Print / Save PDF</span>
+</button>
+<button class="inline-flex items-center justify-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-colors font-button-text text-button-text" type="button">
+<span class="material-symbols-outlined text-[16px]">folder_zip</span>
+<span>Raw Evidence (.tar.gz)</span>
+</button>
+<button class="inline-flex items-center justify-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-on-surface transition-colors font-button-text text-button-text" type="button">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Verify Ed25519</span>
+</button>
+<button class="inline-flex items-center justify-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-container-highest text-secondary transition-colors font-button-text text-button-text" onclick="navigator.clipboard.writeText('https://nivora.me/audit/raft-0914-jepsen'); alert('Audit URL copied to clipboard: nivora.me/audit/raft-0914-jepsen');" type="button">
+<span class="material-symbols-outlined text-[16px]">link</span>
+<span>Copy URL</span>
+</button>
+<a class="inline-flex items-center justify-center gap-1 px-space-sm py-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant transition-colors font-button-text text-button-text" href="#">
+<span class="material-symbols-outlined text-[16px]">arrow_back</span>
+<span>Back to Replay</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Main Publication Canvas -->
+<div class="w-full px-gutter py-space-2xl bg-surface">
+<div class="max-w-[1340px] mx-auto flex flex-col gap-space-3xl">
+<!-- Archival Engineering Publication Header -->
+<article class="bg-surface-container-low rounded-xl p-space-xl md:p-space-3xl relative overflow-hidden shadow-xl">
+<!-- Watermark/Security Seal Backdrop -->
+<div class="absolute right-0 top-0 translate-x-12 -translate-y-8 pointer-events-none opacity-5 select-none font-display-hero text-[180px] font-bold text-primary">
+          JEPSEN
+        </div>
+<div class="relative z-10 flex flex-col gap-space-lg">
+<!-- Top Classification Bar -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm font-label-mono-wide text-label-mono-wide text-on-surface-variant">
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold">NIVORA-PUB-SYS-2024-0982</span>
+<span>CLASSIFICATION: PUBLIC ATTESTATION</span>
+<span>•</span>
+<span>FORMAL PROOF LEVEL: L4</span>
+</div>
+<div class="flex items-center gap-2 text-primary font-label-tag text-label-tag uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              Cryptographic Seal Affixed
+            </div>
+</div>
+<!-- Publication Title -->
+<div class="flex flex-col gap-space-xs">
+<span class="text-secondary font-label-mono-wide text-label-mono-wide uppercase tracking-widest">NIVORA SYSTEMS &amp; CONSENSUS AUDIT GROUP</span>
+<h1 class="font-display-quote text-[28px] md:text-[34px] leading-tight text-on-surface italic font-normal max-w-5xl">
+              Formal Verification &amp; Jepsen Chaos Audit Report
+            </h1>
+<p class="font-headline-md text-headline-md text-on-surface-variant max-w-4xl font-normal">
+              Evaluation of Distributed Consensus Invariants, Strict Linearizability, and Network Fault Tolerance under Asymmetric Partitioning in Go Raft v1.4.2
+            </p>
+</div>
+<!-- Metadata Dossier Strip -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md p-space-md bg-surface-container rounded-lg mt-space-sm">
+<div class="flex flex-col gap-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Investigator / Candidate</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Rishabh Sharma</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">B.Tech CSE, 3rd Year • NIVORA Lab</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Target System Implementation</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Go Raft v1.4.2 (§5.1–§5.4)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dynamic ConfChange + Log Compaction</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Audit Token / Reference</span>
+<span class="font-label-mono-wide text-label-mono-wide text-primary">AUD-RAFT-2024-0982-FVR</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Completed: September 8, 2024</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Verification Engine</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Jepsen 0.3.4 + Knossos WGL</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Cluster: us-east-c2 (5 bare-metal nodes)</span>
+</div>
+</div>
+<!-- SHA256 & Signature Box -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm p-space-sm rounded-lg bg-surface-container-highest">
+<div class="flex items-center gap-space-xs min-w-0 font-label-mono-wide text-label-mono-wide">
+<span class="text-tertiary uppercase font-semibold shrink-0">SHA-256 DIGEST:</span>
+<span class="text-on-surface-variant truncate select-all">9e4f2b1a8c90d8174f88219ae03b41e523f0447384a511c6d3b9e4a05581cb49</span>
+</div>
+<div class="flex items-center gap-space-xs shrink-0 font-label-tag text-label-tag text-secondary">
+<span class="material-symbols-outlined text-[16px]">security</span>
+<span>Ed25519 SIG: VALID (KeyID: #NV-CLUSTER-98)</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Executive Verification Summary KPI Badges (4 Cards Grid) -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide uppercase text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>SECTION 01 // CRITICAL VERIFICATION METRICS</span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Knossos Linearizability Spec</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant">Knossos Model Checker</span>
+<span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+</span>
+</div>
+<div>
+<div class="font-display-hero text-[30px] font-bold text-primary tracking-tight">100%</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">Strict Linearizable</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">0 stale reads, 0 lost writes over 100,000 register ops.</p>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-full"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant">Jepsen Chaos Drill</span>
+<span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+</span>
+</div>
+<div>
+<div class="font-display-hero text-[30px] font-bold text-on-surface tracking-tight">99.42%</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">Chaos Pass Rate</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">48 of 48 adversarial drills passed over 12-hour continuous fuzz.</p>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 99.42%;"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant">Convergence Speed</span>
+<span class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+</span>
+</div>
+<div>
+<div class="font-display-hero text-[30px] font-bold text-secondary tracking-tight">184<span class="text-[18px] font-normal text-on-surface-variant ml-1">ms</span></div>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">Partition Healing Latency</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Sub-200ms quorum stabilization post-heal with zero election loops.</p>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 82%;"></div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="p-space-lg rounded-xl bg-surface-container-low shadow-md flex flex-col justify-between gap-space-md relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant">Consensus Invariants</span>
+<span class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[14px]">verified_user</span>
+</span>
+</div>
+<div>
+<div class="font-display-hero text-[30px] font-bold text-primary tracking-tight">0</div>
+<div class="font-headline-sm text-headline-sm text-on-surface mt-1">Anomalies Detected</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Election Safety, Leader Append-Only, and Log Matching hold 100%.</p>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Knossos Linearizability Verification Graph & Timeline -->
+<section class="bg-surface-container-low rounded-xl p-space-xl md:p-space-2xl shadow-xl flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-xs">
+<div>
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide uppercase text-secondary">
+<span>SECTION 02</span>
+<span>//</span>
+<span>KNOSSOS WGL INTERLEAVING TIMELINE</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1 font-semibold">
+              Concurrent Register Execution under Asymmetric Partition (T+12.0s → T+22.5s)
+            </h2>
+</div>
+<!-- Legend -->
+<div class="flex flex-wrap items-center gap-space-md font-label-tag text-label-tag uppercase">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-3 h-2 rounded bg-primary"></span>
+              Committed Majority Write
+            </span>
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-3 h-2 rounded bg-tertiary"></span>
+              Minority Reject / Timeout
+            </span>
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-3 h-2 rounded bg-secondary"></span>
+              Post-Heal Linearized Read
+            </span>
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-3 h-0.5 bg-error"></span>
+              Partition Window
+            </span>
+</div>
+</div>
+<!-- SVG Timeline Chart -->
+<div class="w-full bg-surface-container-lowest rounded-lg p-space-md overflow-x-auto">
+<div class="min-w-[850px] flex flex-col gap-space-xs">
+<!-- Timeline Axis -->
+<div class="flex justify-between items-center text-on-surface-variant font-label-mono-wide text-label-mono-wide px-2 py-1">
+<span>T+12.0s (Normal)</span>
+<span>T+14.5s (Partition Introduced)</span>
+<span>T+17.0s (Split-Brain Attack)</span>
+<span>T+19.8s (Heal Triggered)</span>
+<span>T+22.5s (Converged)</span>
+</div>
+<!-- SVG Graph -->
+<svg class="w-full h-72 text-on-surface" fill="none" viewbox="0 0 900 250" xmlns="http://www.w3.org/2000/svg">
+<!-- Grid lines -->
+<line stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.1" x1="50" x2="50" y1="20" y2="210"></line>
+<line stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.1" x1="250" x2="250" y1="20" y2="210"></line>
+<line stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.1" x1="480" x2="480" y1="20" y2="210"></line>
+<line stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.1" x1="700" x2="700" y1="20" y2="210"></line>
+<line stroke="currentColor" stroke-dasharray="4 4" stroke-opacity="0.1" x1="880" x2="880" y1="20" y2="210"></line>
+<!-- Partition Backdrop Shadow -->
+<rect fill="#93000a" fill-opacity="0.08" height="200" rx="6" width="450" x="250" y="15"></rect>
+<text fill="#ffb4ab" font-family="JetBrains Mono" font-size="10" letter-spacing="0.08em" text-anchor="middle" x="475" y="32">
+                ASYMMETRIC PARTITION ACTIVE: QUORUM ISOLATION {N1, N2} vs {N3, N4, N5}
+              </text>
+<!-- Node Row Track lines -->
+<line stroke="currentColor" stroke-opacity="0.15" x1="120" x2="880" y1="60" y2="60"></line>
+<line stroke="currentColor" stroke-opacity="0.15" x1="120" x2="880" y1="95" y2="95"></line>
+<line stroke="currentColor" stroke-opacity="0.15" x1="120" x2="880" y1="130" y2="130"></line>
+<line stroke="currentColor" stroke-opacity="0.15" x1="120" x2="880" y1="165" y2="165"></line>
+<line stroke="currentColor" stroke-opacity="0.15" x1="120" x2="880" y1="200" y2="200"></line>
+<!-- Row Labels -->
+<text fill="#a5d0b7" font-family="JetBrains Mono" font-size="11" font-weight="600" x="15" y="64">Client 1 (W)</text>
+<text fill="#a5d0b7" font-family="JetBrains Mono" font-size="11" font-weight="600" x="15" y="99">Client 2 (W)</text>
+<text fill="#efd28e" font-family="JetBrains Mono" font-size="11" font-weight="600" x="15" y="134">Minority C3</text>
+<text fill="#9cd2b4" font-family="JetBrains Mono" font-size="11" font-weight="600" x="15" y="169">Client 4 (R)</text>
+<text fill="#c0c9c1" font-family="JetBrains Mono" font-size="11" font-weight="600" x="15" y="204">Leader (N3)</text>
+<!-- Transaction Bars -->
+<!-- C1: Write x=1 committed in majority -->
+<rect fill="#8fc5a7" height="16" rx="4" width="140" x="60" y="52"></rect>
+<text fill="#003824" font-family="JetBrains Mono" font-size="9" font-weight="600" text-anchor="middle" x="130" y="64">w(x, 1) -&gt; :ok</text>
+<!-- C2: Write x=2 committed during partition via majority {N3,N4,N5} -->
+<rect fill="#8fc5a7" height="16" rx="4" width="160" x="290" y="87"></rect>
+<text fill="#003824" font-family="JetBrains Mono" font-size="9" font-weight="600" text-anchor="middle" x="370" y="99">w(x, 2) -&gt; :ok [Term 3]</text>
+<!-- C3: Attempted minority write to old leader N1 -> rejected -->
+<rect fill="#d2b675" height="16" rx="4" width="190" x="270" y="122"></rect>
+<text fill="#3e2e00" font-family="JetBrains Mono" font-size="9" font-weight="600" text-anchor="middle" x="365" y="134">w(x, 3) -&gt; :timeout (no quorum)</text>
+<!-- Another minority write rejected -->
+<rect fill="#d2b675" height="16" rx="4" width="160" x="500" y="122"></rect>
+<text fill="#3e2e00" font-family="JetBrains Mono" font-size="9" font-weight="600" text-anchor="middle" x="580" y="134">w(x, 4) -&gt; :dropped</text>
+<!-- Read operations post heal -->
+<rect fill="#a5d0b7" height="16" rx="4" width="150" x="710" y="157"></rect>
+<text fill="#0e3725" font-family="JetBrains Mono" font-size="9" font-weight="600" text-anchor="middle" x="785" y="169">r(x) =&gt; 2 [Linearized]</text>
+<!-- Leader append log timeline events -->
+<circle cx="130" cy="200" fill="#8fc5a7" r="5"></circle>
+<circle cx="370" cy="200" fill="#8fc5a7" r="5"></circle>
+<circle cx="700" cy="200" fill="#fedf9b" r="6"></circle>
+<circle cx="785" cy="200" fill="#8fc5a7" r="5"></circle>
+<!-- Verification Point Marker -->
+<line stroke="#8fc5a7" stroke-dasharray="2 2" stroke-width="2" x1="790" x2="790" y1="40" y2="215"></line>
+<polygon fill="#8fc5a7" points="790,36 786,44 794,44"></polygon>
+</svg>
+</div>
+</div>
+<!-- Annotation Callout -->
+<div class="p-space-md rounded-lg bg-surface-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Knossos Linearizability Witness Attestation</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              At <code class="text-primary font-label-mono-wide px-1.5 py-0.5 rounded bg-surface-container-highest">T+22.100s</code>, network partitioning was resolved. Nodes {N1, N2} executed log rollback using <code class="text-secondary font-label-mono-wide">ConflictIndex</code> optimization in 12ms. All 5 state machines converged at <code class="text-primary font-label-mono-wide">commitIndex 146</code>. Zero stale read anomalies or orphaned commits recorded across the model space.
+            </p>
+</div>
+</div>
+</section>
+<!-- Testbed Configuration & Fault Injection Matrix -->
+<section class="flex flex-col gap-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide uppercase text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>SECTION 03 // JEPSEN TESTBED TOPOLOGY &amp; CHAOS MATRIX</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-1 font-semibold">
+              Cluster Fault-Injection Suite (5 Bare-Metal Nodes)
+            </h2>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">RUN DURATION: 12h 00m 00s</span>
+</div>
+<!-- Node Topology Overview Pill-Bar -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface font-semibold">Node 1 (c2-01)</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-tag text-label-tag text-primary uppercase">Initial Leader (Term 1)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IP: 10.0.4.11 • Linux 6.8</span>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface font-semibold">Node 2 (c2-02)</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Follower</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IP: 10.0.4.12 • Linux 6.8</span>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface font-semibold">Node 3 (c2-03)</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<span class="font-label-tag text-label-tag text-primary uppercase">Partition Leader (Term 2)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IP: 10.0.4.13 • Linux 6.8</span>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface font-semibold">Node 4 (c2-04)</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Follower / Voter</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IP: 10.0.4.14 • Linux 6.8</span>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface font-semibold">Node 5 (c2-05)</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Follower / Voter</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">IP: 10.0.4.15 • Linux 6.8</span>
+</div>
+</div>
+<!-- Chaos Scenario Table Container -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden shadow-lg">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-mono-wide text-label-mono-wide uppercase">
+<th class="py-space-sm px-space-md">Scenario ID</th>
+<th class="py-space-sm px-space-md">Nemesis / Fault Injection</th>
+<th class="py-space-sm px-space-md">Invariants Verified</th>
+<th class="py-space-sm px-space-md">Observed System Behavior</th>
+<th class="py-space-sm px-space-md text-right">Attestation</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="py-space-md px-space-md font-label-mono-wide text-label-mono-wide text-secondary font-semibold">
+                    SCN-01-SPLIT
+                  </td>
+<td class="py-space-md px-space-md">
+<div class="font-headline-sm text-headline-sm text-on-surface">Asymmetric 2-3 Split</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Concurrent client writes directed at both partitions simultaneously</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag">Leader Safety</span>
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag mt-1">Append-Only</span>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">
+                    Minority partition {N1, N2} rejected writes with RPC quorum timeout. Majority elected N3 in term 2. Zero uncommitted logs propagated.
+                  </td>
+<td class="py-space-md px-space-md text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-label-tag text-label-tag font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> PASS
+                    </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="py-space-md px-space-md font-label-mono-wide text-label-mono-wide text-secondary font-semibold">
+                    SCN-02-KILL
+                  </td>
+<td class="py-space-md px-space-md">
+<div class="font-headline-sm text-headline-sm text-on-surface">Rolling Leader SIGKILL</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">SIGKILL sent to active leader every 1.5s with randomized network jitter</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag">Election Safety</span>
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag mt-1">Liveness</span>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">
+                    Followers transitioned to Candidate state with randomized election timers [150ms-300ms]. Zero split votes occurred across 14 consecutive rounds.
+                  </td>
+<td class="py-space-md px-space-md text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-label-tag text-label-tag font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> PASS
+                    </span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="py-space-md px-space-md font-label-mono-wide text-label-mono-wide text-secondary font-semibold">
+                    SCN-03-FLAP
+                  </td>
+<td class="py-space-md px-space-md">
+<div class="font-headline-sm text-headline-sm text-on-surface">High-Freq Network Flapping</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bridge partitions cycled every 350ms with iptables DROP rules</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag">Log Matching</span>
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag mt-1">State Machine Safety</span>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">
+                    Uncommitted divergent tail logs pruned back to common ancestor via optimized Fast-Rollback RPC. Log indices converged without manual intervention.
+                  </td>
+<td class="py-space-md px-space-md text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-label-tag text-label-tag font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> PASS
+                    </span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container/60 transition-colors">
+<td class="py-space-md px-space-md font-label-mono-wide text-label-mono-wide text-secondary font-semibold">
+                    SCN-04-REPLAY
+                  </td>
+<td class="py-space-md px-space-md">
+<div class="font-headline-sm text-headline-sm text-on-surface">Stale Term RPC Injection</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Replay of Term 1 AppendEntries packets while cluster is executing Term 4</div>
+</td>
+<td class="py-space-md px-space-md">
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag">Monotonic Terms</span>
+<span class="inline-block px-2 py-0.5 rounded bg-surface-container text-primary font-label-tag text-label-tag mt-1">Stale Leader Rejection</span>
+</td>
+<td class="py-space-md px-space-md text-on-surface-variant">
+                    Candidate and Follower engines silently dropped all out-of-order Term 1 RPCs with immediate term correction replies. No state rollback triggered.
+                  </td>
+<td class="py-space-md px-space-md text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary-container font-label-tag text-label-tag font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> PASS
+                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Cryptographic Proof & Formal Signatures Block -->
+<section class="bg-surface-container-low rounded-xl p-space-xl md:p-space-2xl shadow-xl flex flex-col gap-space-xl">
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide uppercase text-on-surface-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>SECTION 04 // CRYPTOGRAPHIC AUDIT CERTIFICATE &amp; ATTESTATION SIGNATURES</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl">
+<!-- Merkle & Git Hash Column -->
+<div class="lg:col-span-2 flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm">
+<span class="font-headline-md text-headline-md text-on-surface font-semibold">Merkle DAG Attestation &amp; Immutability Record</span>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                This document and its companion test harness binary have been permanently registered on the NIVORA Secure Attestation Network. Any discrepancy between cluster node logs and the Merkle root below invalidates this audit.
+              </p>
+<!-- Hash Metadata Grid -->
+<div class="flex flex-col gap-space-xs mt-space-xs font-label-mono-wide text-label-mono-wide">
+<div class="p-space-sm rounded bg-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-on-surface-variant">Git Commit SHA:</span>
+<span class="text-primary select-all">e94a8f3b4912cd310f823a9d90184e55418b76ce (tag: v1.4.2-verified)</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-on-surface-variant">Merkle Log Root:</span>
+<span class="text-secondary select-all">0x7f43a912e618bd00249c5e31d99e01ab8832a819c991847e</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-on-surface-variant">Ed25519 Public Key:</span>
+<span class="text-on-surface select-all">ed25519:MC4CAQAwBQYDK2VwBCIEIF81zV7wD11lKnY0...</span>
+</div>
+<div class="p-space-sm rounded bg-surface-container flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+<span class="text-on-surface-variant">Audit Run Epoch:</span>
+<span class="text-on-surface">1725793840 (2024-09-08 11:10:40 UTC)</span>
+</div>
+</div>
+</div>
+<!-- Signature Seal Rows -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md pt-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-2">
+<div class="font-display-quote text-[19px] italic text-on-surface font-semibold">
+                  Prof. K. Sharma
+                </div>
+<div class="font-label-mono-wide text-label-mono-wide text-primary">SIG: 4e91...bf12 [VERIFIED]</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+                  Distributed Systems Lead • Faculty Evaluator
+                </div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container flex flex-col gap-2">
+<div class="font-display-quote text-[19px] italic text-on-surface font-semibold">
+                  NIVORA Consensus Engine
+                </div>
+<div class="font-label-mono-wide text-label-mono-wide text-secondary">AUTONOMOUS ATTESTATION #8492</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+                  us-east-c2 Testbed Controller Daemon
+                </div>
+</div>
+</div>
+</div>
+<!-- Cryptographic QR / Verification Seal Card -->
+<div class="p-space-xl rounded-xl bg-surface-container flex flex-col items-center justify-center text-center gap-space-md">
+<!-- Stylized QR / Seal Stamp -->
+<div class="w-36 h-36 p-3 rounded-lg bg-surface-container-highest flex items-center justify-center relative">
+<!-- Inline Stylized QR code representation -->
+<svg class="w-full h-full text-primary" fill="currentColor" viewbox="0 0 100 100">
+<!-- QR Position Detection Patterns -->
+<rect height="30" rx="2" width="30" x="0" y="0"></rect>
+<rect fill="#2e363a" height="20" width="20" x="5" y="5"></rect>
+<rect height="10" width="10" x="10" y="10"></rect>
+<rect height="30" rx="2" width="30" x="70" y="0"></rect>
+<rect fill="#2e363a" height="20" width="20" x="75" y="5"></rect>
+<rect height="10" width="10" x="80" y="10"></rect>
+<rect height="30" rx="2" width="30" x="0" y="70"></rect>
+<rect fill="#2e363a" height="20" width="20" x="5" y="75"></rect>
+<rect height="10" width="10" x="10" y="80"></rect>
+<!-- Mock QR Data Matrix dots -->
+<rect height="6" width="6" x="36" y="8"></rect>
+<rect height="6" width="12" x="46" y="8"></rect>
+<rect height="8" width="8" x="36" y="20"></rect>
+<rect height="8" width="8" x="50" y="24"></rect>
+<rect height="8" width="8" x="8" y="36"></rect>
+<rect height="8" width="8" x="22" y="46"></rect>
+<rect height="6" width="6" x="36" y="36"></rect>
+<rect height="8" width="8" x="46" y="44"></rect>
+<rect height="6" width="12" x="60" y="38"></rect>
+<rect height="8" width="8" x="78" y="44"></rect>
+<rect height="6" width="10" x="36" y="60"></rect>
+<rect height="8" width="6" x="52" y="60"></rect>
+<rect height="8" width="8" x="64" y="54"></rect>
+<rect height="6" width="12" x="78" y="66"></rect>
+<rect height="6" width="14" x="36" y="76"></rect>
+<rect height="14" width="8" x="56" y="76"></rect>
+<rect height="6" width="16" x="70" y="80"></rect>
+</svg>
+<!-- Center tiny badge -->
+<div class="absolute inset-0 m-auto w-8 h-8 rounded bg-surface-container-low flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Permanent Audit Identifier</span>
+<span class="font-label-mono-wide text-label-mono-wide text-primary uppercase">CERT #NV-8492-RAFT</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant max-w-xs mt-1">
+                Scan with any standard Ed25519 or PGP-compatible cryptographic validator for instant chain verification.
+              </span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-space-md py-space-xs rounded-lg bg-surface-container-highest hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text" onclick="alert('Public Certificate downloaded for Rishabh Sharma Raft implementation.');" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Export .CRT File</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Archival Footer Clearance Note -->
+<div class="w-full flex flex-col sm:flex-row items-center justify-between text-on-surface-variant font-label-mono-wide text-label-mono-wide pt-space-md pb-space-lg">
+<span>DOCUMENT STATUS: ARCHIVAL GRADE • CERTIFICATE UNALTERABLE</span>
+<span class="text-primary">NIVORA RECRUITER VERIFICATION DOSSIER v2.4</span>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest py-space-2xl"><div class="w-full px-gutter flex flex-col md:flex-row items-center justify-between gap-space-lg text-on-surface-variant"><div class="flex flex-col sm:flex-row items-center gap-space-sm sm:gap-space-lg"><span class="font-label-mono-wide text-label-mono-wide uppercase text-on-surface">NIVORA SECURE ATTESTATION NETWORK</span><span class="hidden sm:inline text-outline-variant font-label-tag text-label-tag">•</span><span class="font-body-sm text-body-sm">Cryptographically signed candidate record</span></div><div class="flex items-center gap-space-xl font-label-mono-wide text-label-mono-wide"><span class="text-primary">LATENCY 24ms</span><span class="text-on-surface-variant">© 2025 NIVORA CORP</span></div></div></footer></body></html>

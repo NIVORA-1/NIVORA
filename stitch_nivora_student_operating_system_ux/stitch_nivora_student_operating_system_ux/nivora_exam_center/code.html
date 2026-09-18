@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-secondary-container": "#98c2a9", "surface-bright": "#323a3f", "on-secondary": "#0e3725", "on-secondary-fixed-variant": "#274e3b", "inverse-surface": "#dbe4e9", "on-tertiary": "#3e2e00", "secondary-fixed": "#c1edd2", "inverse-on-surface": "#293236", "surface": "#0c1418", "tertiary": "#efd28e", "surface-container-lowest": "#070f13", "surface-variant": "#2e363a", "on-surface": "#dbe4e9", "on-secondary-fixed": "#002113", "on-surface-variant": "#c0c9c1", "inverse-primary": "#35684f", "tertiary-container": "#d2b675", "surface-dim": "#0c1418", "on-primary-fixed": "#002113", "surface-container": "#192125", "tertiary-fixed-dim": "#e0c381", "surface-container-highest": "#2e363a", "on-background": "#dbe4e9", "on-primary-fixed-variant": "#1b5039", "surface-container-high": "#232b2f", "background": "#0c1418", "on-primary-container": "#1e533b", "error-container": "#93000a", "surface-tint": "#9cd2b4", "on-error": "#690005", "on-tertiary-container": "#5a4711", "primary-fixed": "#b7efcf", "secondary-container": "#2a513d", "primary-container": "#8fc5a7", "on-primary": "#003824", "primary": "#aae1c2", "secondary": "#a5d0b7", "outline-variant": "#404943", "primary-fixed-dim": "#9cd2b4", "surface-container-low": "#151d21", "error": "#ffb4ab", "outline": "#8a938c", "on-tertiary-fixed": "#251a00", "on-error-container": "#ffdad6", "on-tertiary-fixed-variant": "#58440e", "tertiary-fixed": "#fedf9b", "secondary-fixed-dim": "#a5d0b7" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-2xs": "0.25rem", "card-padding": "1.25rem", "gutter": "1.25rem", "space-3xl": "2.5rem", "space-xl": "1.5rem", "space-sm": "0.75rem", "space-2xl": "2rem", "space-xs": "0.5rem", "space-md": "1rem", "space-4xl": "3.5rem", "space-lg": "1.25rem", "sidebar-width": "260px" }, "fontFamily": { "label-mono-wide": [ "JetBrains Mono" ], "label-tag": [ "JetBrains Mono" ], "body-lg": [ "Plus Jakarta Sans" ], "headline-sm": [ "Plus Jakarta Sans" ], "button-text": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "display-quote": [ "Newsreader" ], "headline-md": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "body-sm": [ "Plus Jakarta Sans" ] }, "fontSize": { "label-mono-wide": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "label-tag": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "headline-sm": [ "15px", { "lineHeight": "22px", "fontWeight": "600" } ], "button-text": [ "13px", { "lineHeight": "18px", "fontWeight": "600" } ], "headline-lg": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "display-quote": [ "18px", { "lineHeight": "26px", "fontWeight": "400" } ], "headline-md": [ "18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "display-hero": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md border-b border-outline-variant/20"><div class="flex items-center gap-space-xs"><div class="w-6 h-6 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">N</div><span class="font-headline-md text-headline-md tracking-wider font-bold text-on-surface">NIVORA</span></div><p class="mt-1 font-label-tag text-label-tag tracking-widest uppercase text-on-surface-variant/70">The Student Ecosystem</p></div><nav class="px-space-xs py-space-sm space-y-space-md" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Main</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="home" href="#">Home</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Learn</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="learning" href="#">Learn</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="subjects" href="#">Subjects</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="resources" href="#">Resources</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Academics</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="classes" href="#">Classes</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="assignments" href="#">Assignments</a><a aria-current="page" class="block px-space-sm py-1.5 rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-semibold" data-path="exams" href="#">Exams</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="attendance" href="#">Attendance</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Life</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="planner" href="#">Planner</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="reboot" href="#">Reboot</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="music" href="#">Music</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="connect" href="#">Connect</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Growth</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="skills" href="#">Skills</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="projects" href="#">Projects</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="career" href="#">Career</a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Community</div><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="groups" href="#">Groups</a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="clubs-and-events" href="#">Clubs &amp; Events</a></div></nav></div><div class="p-space-xs space-y-space-xs border-t border-outline-variant/20 bg-surface-container-lowest/40"><nav class="space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="nivora-ai" href="#"><span>NIVORA AI</span><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Beta</span></a><a class="block px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#">Settings</a></nav><div class="flex items-center gap-space-xs p-space-xs rounded-xl bg-surface-container border border-outline-variant/20"><div class="relative flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container"></span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Rishabh S.</span><span class="font-label-tag text-label-tag text-on-surface-variant truncate">B.Tech CSE Year 3</span></div></div></div></aside><div class="pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant"><span class="uppercase tracking-widest text-on-surface-variant/80">Academic Core</span><span class="text-outline-variant">/</span><span class="text-primary font-semibold">Exams</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant cursor-pointer hover:border-outline-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm pr-space-md">Search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">⌘K</kbd></div><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary"></span></button><button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span>AI Assist</span></button><div class="h-4 w-px bg-outline-variant/40"></div><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div></div></header><main class="w-full pt-16 flex-1 bg-surface px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-xl">
+<!-- Top Context Subheader & Breadcrumb -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
+<div class="space-y-space-xs max-w-3xl">
+<div class="flex items-center gap-space-xs">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container font-label-tag text-label-tag text-on-surface-variant uppercase tracking-widest">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          Academic Core / Assessment Cadence • Fall '25
+        </span>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/60">SYS-REV: 4.8.2</span>
+</div>
+<h1 class="font-display-quote text-[34px] leading-[40px] text-on-surface font-normal tracking-tight">
+        Exam Center
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+        Strategic preparation cadence, cognitive syllabus mastery, and spaced revision timelines designed for composed retention.
+      </p>
+</div>
+<!-- Header Stats & Revision Action Trigger -->
+<div class="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
+<div class="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">event_note</span>
+<div class="flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant/80 uppercase">Term</span>
+<span class="font-headline-sm text-body-sm text-on-surface">Mid-Semester Eval</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container shadow-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">fact_check</span>
+<div class="flex flex-col">
+<span class="font-label-tag text-label-tag text-on-surface-variant/80 uppercase">Papers</span>
+<span class="font-headline-sm text-body-sm text-on-surface">5 Scheduled</span>
+</div>
+</div>
+<button class="flex items-center gap-1.5 px-space-md py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all font-button-text text-button-text shadow-md shadow-primary/10" id="btnGenerateCycle">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+<span>Generate Revision Cycle</span>
+</button>
+</div>
+</div>
+<!-- Prominent Hero Focus — Impending Exam Banner -->
+<section class="relative rounded-2xl bg-surface-container-low p-space-lg lg:p-space-xl overflow-hidden shadow-xl">
+<div class="absolute -right-16 -top-16 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-xl">
+<!-- Left Info Block -->
+<div class="space-y-space-md max-w-3xl">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold uppercase tracking-wider">
+            Immediate Next Evaluation
+          </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+            SEAT C-42
+          </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+            WEIGHTAGE 30%
+          </span>
+</div>
+<div class="space-y-1">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">
+            CS-301: Database Management Systems (DBMS)
+          </h2>
+<p class="font-display-quote text-display-quote text-on-surface-variant italic">
+            Mid-Term Theory Examination • Core Relational Theory &amp; Concurrency
+          </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-1">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span>Thursday, September 18, 2025 • 09:30 AM – 12:30 PM (3.0 hrs)</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">meeting_room</span>
+<span>Hall C, East Academic Block • Proctor: Dr. A. Sharma</span>
+</div>
+</div>
+<!-- Progress & Telemetry -->
+<div class="space-y-1.5 pt-1">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-on-surface font-medium">Preparation Velocity: 78% Syllabus Mastered</span>
+<span class="font-label-mono-wide text-label-mono-wide text-primary">4 of 5 Core Modules Cleared</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-700" style="width: 78%;"></div>
+</div>
+</div>
+<!-- Spaced Retrieval Notice -->
+<div class="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-tertiary text-[18px]">history_edu</span>
+<span><strong class="text-on-surface font-medium">Spaced Retrieval Trigger:</strong> B+ Tree Concurrency scheduled for 40m review today at 16:00.</span>
+</div>
+</div>
+<!-- Right Countdown and Action Suite -->
+<div class="w-full xl:w-80 flex flex-col justify-between self-stretch bg-surface-container p-space-lg rounded-xl space-y-space-md">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag uppercase tracking-widest text-on-surface-variant">Time Remaining</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="font-headline-lg text-[44px] leading-none font-bold text-primary tracking-tight">08</span>
+<div class="flex flex-col">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface uppercase font-semibold">Days to Exam</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">192 Hours Buffer</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg bg-primary text-on-primary font-button-text text-button-text hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-[18px]">play_circle</span>
+<span>Launch Focused Mock Test</span>
+</button>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span>PYQs (20-24)</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm">
+<span class="material-symbols-outlined text-[16px]">segment</span>
+<span>Syllabus</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Asynchronous Content Grid (2 Columns) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl">
+<!-- Left / Main Column (Detailed Exam Schedule & Preparation Breakdown) -->
+<div class="xl:col-span-8 flex flex-col space-y-space-lg">
+<!-- Section Header with View Toggles -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-1">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Upcoming Examinations Schedule</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Structured chronological pipeline with mastery diagnostics</p>
+</div>
+<div class="flex items-center bg-surface-container p-1 rounded-lg">
+<button class="px-3 py-1 rounded text-body-sm font-semibold bg-surface-container-high text-primary transition-all" id="tabChronological">
+            Chronological Timeline
+          </button>
+<button class="px-3 py-1 rounded text-body-sm text-on-surface-variant hover:text-on-surface transition-all" id="tabReadiness">
+            Readiness Matrix
+          </button>
+</div>
+</div>
+<!-- Schedule Cards Container -->
+<div class="flex flex-col space-y-space-md" id="scheduleContainer">
+<!-- Paper 1: DSA -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md hover:bg-surface-container/90 transition-all shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-xs">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-mono-wide text-primary">CS-302</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">12 DAYS AWAY</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">LAB + WRITTEN</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Data Structures &amp; Algorithms (DSA)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Computing Center 2 • Sept 22, 2025 • 09:30 AM</p>
+</div>
+<div class="flex items-center gap-2 self-start">
+<span class="font-headline-md text-headline-md font-semibold text-primary">86%</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Mastery</span>
+</div>
+</div>
+<!-- Progress Track -->
+<div class="space-y-1">
+<div class="flex justify-between font-label-mono-wide text-label-mono-wide text-on-surface-variant">
+<span>PROGRESS VELOCITY</span>
+<span class="text-on-surface">Avg 92% • 18/20 on Mock 2</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest">
+<div class="h-full bg-primary rounded-full" style="width: 86%;"></div>
+</div>
+</div>
+<!-- Diagnostic Chips -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-xs pt-1">
+<div class="p-2 rounded bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">verified</span>
+<div class="text-body-sm">
+<span class="text-on-surface-variant font-label-tag text-label-tag uppercase block">Strong Retention</span>
+<span class="text-on-surface">AVL Trees, Graph Traversals, Heaps</span>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5">warning</span>
+<div class="text-body-sm">
+<span class="text-on-surface-variant font-label-tag text-label-tag uppercase block">Intervention Required</span>
+<span class="text-on-surface">Red-Black Tree Deletions (62% confidence)</span>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="flex items-center justify-between pt-1 border-t border-surface-container-high/40">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">3 REVISION SHEETS AVAILABLE</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-button-text text-body-sm transition-colors">Study Roadmap</button>
+<button class="px-3 py-1.5 rounded bg-primary/20 text-primary hover:bg-primary/30 font-button-text text-body-sm transition-colors">Start Drill</button>
+</div>
+</div>
+</div>
+<!-- Paper 2: OS -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md hover:bg-surface-container/90 transition-all shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-xs">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-mono-wide text-label-mono-wide text-tertiary">CS-303</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">15 DAYS AWAY</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container/40 text-error font-label-tag text-label-tag">NEEDS REVISION</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Operating Systems Architecture (OS)</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hall A-104 • Sept 25, 2025 • Prof. Verma</p>
+</div>
+<div class="flex items-center gap-2 self-start">
+<span class="font-headline-md text-headline-md font-semibold text-tertiary">64%</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">Mastery</span>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-mono-wide text-label-mono-wide text-on-surface-variant">
+<span>PROGRESS VELOCITY</span>
+<span class="text-tertiary">Avg 74% • Pending Thread Sync review</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest">
+<div class="h-full bg-tertiary rounded-full" style="width: 64%;"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-xs pt-1">
+<div class="p-2 rounded bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">verified</span>
+<div class="text-body-sm">
+<span class="text-on-surface-variant font-label-tag text-label-tag uppercase block">Strong Retention</span>
+<span class="text-on-surface">Process Scheduling, Paging Mechanisms</span>
+</div>
+</div>
+<div class="p-2 rounded bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-error text-[18px] mt-0.5">error_outline</span>
+<div class="text-body-sm">
+<span class="text-on-surface-variant font-label-tag text-label-tag uppercase block">High Priority Weakness</span>
+<span class="text-on-surface">Deadlock Banker's Algorithm, Semaphore Proofs</span>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-surface-container-high/40">
+<span class="font-label-tag text-label-tag text-on-surface-variant">RECOMMENDED: 2 HRS TARGETED RECALL</span>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-button-text text-body-sm transition-colors">Study Roadmap</button>
+<button class="px-3 py-1.5 rounded bg-tertiary/20 text-tertiary hover:bg-tertiary/30 font-button-text text-body-sm transition-colors">Sync Notes</button>
+</div>
+</div>
+</div>
+<!-- Paper 3 & 4 Compressed Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Paper 3: Computer Networks -->
+<div class="rounded-xl bg-surface-container p-space-md space-y-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-primary">CS-304</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">ON TRACK</span>
+</div>
+<div>
+<h5 class="font-headline-sm text-body-lg text-on-surface font-semibold">Computer Networks (CN)</h5>
+<p class="font-label-tag text-label-tag text-on-surface-variant">Sept 29, 2025 • 19 Days away</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Subnetting mastery high. TCP Congestion window mechanics scheduled for next week.
+            </p>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between font-label-tag text-label-tag text-on-surface-variant">
+<span>COMPLETION</span>
+<span>55%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest">
+<div class="h-full bg-secondary rounded-full" style="width: 55%;"></div>
+</div>
+</div>
+</div>
+<!-- Paper 4: Distributed Systems -->
+<div class="rounded-xl bg-surface-container p-space-md space-y-space-sm shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">CS-305</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">EARLY STAGE</span>
+</div>
+<div>
+<h5 class="font-headline-sm text-body-lg text-on-surface font-semibold">Distributed Systems</h5>
+<p class="font-label-tag text-label-tag text-on-surface-variant">Oct 03, 2025 • 23 Days away</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Foundational theory reading active. Consensus algorithms (Raft/Paxos) queued for module 3.
+            </p>
+<div class="space-y-1 pt-1">
+<div class="flex justify-between font-label-tag text-label-tag text-on-surface-variant">
+<span>COMPLETION</span>
+<span>40%</span>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-highest">
+<div class="h-full bg-on-surface-variant/40 rounded-full" style="width: 40%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column (Contextual Intelligence, Spaced Retrieval & Vault) -->
+<div class="xl:col-span-4 flex flex-col space-y-space-lg">
+<!-- Card 1: Cognitive Readiness & Spaced Repetition -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">psychology</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Cognitive Cadence</h4>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high font-label-tag text-label-tag text-primary font-mono">12-DAY STREAK</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Ebbinghaus forgetting curve protection algorithm tuned to morning peak alertness.
+        </p>
+<!-- Inline SVG Retention Curve -->
+<div class="rounded-lg bg-surface-container-low p-space-sm space-y-2">
+<div class="flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant">
+<span>RETENTION OPTIMIZATION MODEL</span>
+<span class="text-primary font-semibold">89.4% STABILITY</span>
+</div>
+<svg class="w-full h-20 overflow-visible text-primary" fill="none" viewbox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="curveGradient" x1="0" x2="0" y1="0" y2="80">
+<stop stop-color="currentColor" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 60 C 40 20, 70 50, 100 15 C 130 35, 160 20, 200 10 C 240 25, 270 12, 300 8" stroke="currentColor" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 60 C 40 20, 70 50, 100 15 C 130 35, 160 20, 200 10 C 240 25, 270 12, 300 8 L 300 80 L 0 80 Z" fill="url(#curveGradient)"></path>
+<!-- Retention nodes -->
+<circle class="fill-primary" cx="100" cy="15" r="3.5"></circle>
+<circle class="fill-primary" cx="200" cy="10" r="3.5"></circle>
+<circle class="fill-primary" cx="300" cy="8" r="3.5"></circle>
+</svg>
+<div class="flex justify-between font-label-mono-wide text-label-tag text-on-surface-variant/80">
+<span>Day 01</span>
+<span>Day 04 (Review)</span>
+<span>Day 08 (Lock)</span>
+<span>Exam Day</span>
+</div>
+</div>
+<!-- Optimal Window Specs -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-high">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">wb_twilight</span>
+<span class="font-body-sm text-body-sm text-on-surface">Prime Retention Window</span>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary font-semibold">07:00 – 08:30 AM</span>
+</div>
+<div class="p-2.5 rounded bg-surface-container-low border-l-2 border-primary space-y-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase font-medium">Recommended Drill Today</span>
+<p class="font-body-sm text-body-sm text-on-surface">
+              15m formula recall on DBMS Normal Forms (BCNF vs 3NF Decomposition).
+            </p>
+</div>
+</div>
+</div>
+<!-- Card 2: Weak Topic Interventions (Curated diagnostic items) -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[20px]">troubleshoot</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">Weak Topic Interventions</h4>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high font-label-tag text-label-tag text-on-surface-variant">3 DIAGNOSTICS</span>
+</div>
+<div class="space-y-space-xs">
+<!-- Intervention 1 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-2 hover:bg-surface-container-high transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div>
+<span class="font-label-tag text-label-tag text-tertiary uppercase">DBMS • Relational Theory</span>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">Multi-Valued Dependency Proofs</p>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-error font-semibold">54%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-on-surface-variant">Est. 20 min drill</span>
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-button-text text-[11px] transition-colors">
+                Quick 20m Drill →
+              </button>
+</div>
+</div>
+<!-- Intervention 2 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-2 hover:bg-surface-container-high transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div>
+<span class="font-label-tag text-label-tag text-tertiary uppercase">OS • Concurrency</span>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">Dining Philosophers Deadlock Conditions</p>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-tertiary font-semibold">58%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-on-surface-variant">Annotated Diagrams</span>
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-button-text text-[11px] transition-colors">
+                View Annotated Notes →
+              </button>
+</div>
+</div>
+<!-- Intervention 3 -->
+<div class="p-3 rounded-lg bg-surface-container-low space-y-2 hover:bg-surface-container-high transition-colors">
+<div class="flex items-start justify-between gap-2">
+<div>
+<span class="font-label-tag text-label-tag text-primary uppercase">DSA • Dynamic Programming</span>
+<p class="font-body-sm text-body-sm font-semibold text-on-surface">Memoization Matrix Reconstruction</p>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary font-semibold">65%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-tag text-label-tag text-on-surface-variant">LeetCode Target #72</span>
+<button class="px-2 py-1 rounded bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface font-button-text text-[11px] transition-colors">
+                Solve Challenge →
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: High-Yield PYQ Vault -->
+<div class="rounded-xl bg-surface-container p-space-lg space-y-space-md shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">folder_special</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface">High-Yield PYQ Vault</h4>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase">ARCHIVE</span>
+</div>
+<div class="space-y-space-xs">
+<!-- Paper 1 -->
+<a class="group flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors" href="#">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">picture_as_pdf</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-medium text-on-surface group-hover:text-primary transition-colors">DBMS Mid-Term 2024</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Solved with Scheme Solutions • 4.2 MB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-0.5 transition-transform text-[18px]">download</span>
+</a>
+<!-- Paper 2 -->
+<a class="group flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors" href="#">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">picture_as_pdf</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-medium text-on-surface group-hover:text-primary transition-colors">DBMS End-Term 2023 Comprehensive</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Past Exam Paper &amp; Keys • 6.8 MB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-0.5 transition-transform text-[18px]">download</span>
+</a>
+<!-- Paper 3 -->
+<a class="group flex items-center justify-between p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high transition-colors" href="#">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm font-medium text-on-surface group-hover:text-primary transition-colors">DSA Unit-wise Question Bank</span>
+<span class="font-label-tag text-label-tag text-on-surface-variant">Prof. Rao Curated • Markdown • 1.1 MB</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-0.5 transition-transform text-[18px]">download</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Client-side Interactive Logic -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnCycle = document.getElementById('btnGenerateCycle');
+      if (btnCycle) {
+        btnCycle.addEventListener('click', () => {
+          const originalText = btnCycle.innerHTML;
+          btnCycle.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span><span>Synthesizing Cadence...</span>';
+          btnCycle.disabled = true;
+          setTimeout(() => {
+            btnCycle.innerHTML = '<span class="material-symbols-outlined text-[18px]">done</span><span>Cycle Refreshed!</span>';
+            setTimeout(() => {
+              btnCycle.innerHTML = originalText;
+              btnCycle.disabled = false;
+            }, 2000);
+          }, 1200);
+        });
+      }
+
+      const tabChrono = document.getElementById('tabChronological');
+      const tabReady = document.getElementById('tabReadiness');
+      if (tabChrono && tabReady) {
+        tabChrono.addEventListener('click', () => {
+          tabChrono.className = 'px-3 py-1 rounded text-body-sm font-semibold bg-surface-container-high text-primary transition-all';
+          tabReady.className = 'px-3 py-1 rounded text-body-sm text-on-surface-variant hover:text-on-surface transition-all';
+        });
+        tabReady.addEventListener('click', () => {
+          tabReady.className = 'px-3 py-1 rounded text-body-sm font-semibold bg-surface-container-high text-primary transition-all';
+          tabChrono.className = 'px-3 py-1 rounded text-body-sm text-on-surface-variant hover:text-on-surface transition-all';
+        });
+      }
+    });
+  </script>
+</div></main><footer class="h-8 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-space-xl flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/70"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>NIVORA Workspace v2.4 · Academic Core</span></div><div class="flex items-center gap-space-md"><span>Press <kbd class="text-on-surface-variant font-mono">⌘K</kbd> for Command Palette</span><span>·</span><span>Press <kbd class="text-on-surface-variant font-mono">/</kbd> to search</span></div></footer></div></body></html>

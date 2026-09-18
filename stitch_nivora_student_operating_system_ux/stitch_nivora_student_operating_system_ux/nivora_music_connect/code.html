@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "outline": "#8a938c", "secondary-container": "#2a513d", "tertiary": "#efd28e", "on-surface-variant": "#c0c9c1", "on-background": "#dbe4e9", "on-primary-fixed-variant": "#1b5039", "on-secondary-fixed": "#002113", "secondary-fixed": "#c1edd2", "surface-variant": "#2e363a", "surface-dim": "#0c1418", "secondary": "#a5d0b7", "error": "#ffb4ab", "tertiary-fixed-dim": "#e0c381", "on-secondary-container": "#98c2a9", "surface-container-low": "#151d21", "primary-container": "#8fc5a7", "on-secondary": "#0e3725", "surface": "#0c1418", "on-error-container": "#ffdad6", "on-primary-fixed": "#002113", "tertiary-fixed": "#fedf9b", "surface-container-highest": "#2e363a", "on-tertiary-container": "#5a4711", "inverse-primary": "#35684f", "inverse-surface": "#dbe4e9", "inverse-on-surface": "#293236", "on-secondary-fixed-variant": "#274e3b", "surface-container-high": "#232b2f", "primary": "#aae1c2", "on-error": "#690005", "surface-container": "#192125", "surface-tint": "#9cd2b4", "outline-variant": "#404943", "error-container": "#93000a", "on-tertiary-fixed": "#251a00", "background": "#0c1418", "surface-bright": "#323a3f", "on-tertiary-fixed-variant": "#58440e", "tertiary-container": "#d2b675", "on-primary": "#003824", "surface-container-lowest": "#070f13", "secondary-fixed-dim": "#a5d0b7", "primary-fixed-dim": "#9cd2b4", "on-surface": "#dbe4e9", "on-tertiary": "#3e2e00", "primary-fixed": "#b7efcf", "on-primary-container": "#1e533b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-3xl": "2.5rem", "gutter": "1.25rem", "space-sm": "0.75rem", "space-4xl": "3.5rem", "space-md": "1rem", "card-padding": "1.25rem", "sidebar-width": "260px", "space-2xl": "2rem", "space-2xs": "0.25rem", "space-xl": "1.5rem", "space-xs": "0.5rem", "space-lg": "1.25rem" }, "fontFamily": { "headline-sm": [ "Plus Jakarta Sans" ], "label-mono-wide": [ "JetBrains Mono" ], "body-sm": [ "Plus Jakarta Sans" ], "body-lg": [ "Plus Jakarta Sans" ], "label-tag": [ "JetBrains Mono" ], "headline-md": [ "Plus Jakarta Sans" ], "body-md": [ "Plus Jakarta Sans" ], "headline-lg": [ "Plus Jakarta Sans" ], "button-text": [ "Plus Jakarta Sans" ], "display-hero": [ "Plus Jakarta Sans" ], "display-quote": [ "Newsreader" ] }, "fontSize": { "headline-sm": [ "15px", { "lineHeight": "22px", "fontWeight": "600" } ], "label-mono-wide": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" } ], "body-sm": [ "12px", { "lineHeight": "18px", "fontWeight": "400" } ], "body-lg": [ "15px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-tag": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "500" } ], "headline-md": [ "18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-md": [ "13px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-lg": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "button-text": [ "13px", { "lineHeight": "18px", "fontWeight": "600" } ], "display-hero": [ "36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "display-quote": [ "18px", { "lineHeight": "26px", "fontWeight": "400" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-[260px] bg-surface-container-low border-r border-outline-variant/30 z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="px-space-lg pt-space-lg pb-space-md border-b border-outline-variant/20"><div class="flex items-center gap-space-xs"><div class="w-6 h-6 rounded-lg bg-primary flex items-center justify-center text-on-primary font-headline-sm text-headline-sm font-bold">N</div><span class="font-headline-md text-headline-md tracking-wider font-bold text-on-surface">NIVORA</span></div><p class="mt-1 font-label-tag text-label-tag tracking-widest uppercase text-on-surface-variant/70">The Student Ecosystem</p></div><nav class="px-space-xs py-space-sm space-y-space-md" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Main</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="home" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Home</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Learn</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="learning" href="#"><span class="material-symbols-outlined text-[18px]">local_library</span><span>Learning</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="subjects" href="#"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span>Subjects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="resources" href="#"><span class="material-symbols-outlined text-[18px]">folder</span><span>Resources</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Academics</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="classes" href="#"><span class="material-symbols-outlined text-[18px]">event_seat</span><span>Classes</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="assignments" href="#"><span class="material-symbols-outlined text-[18px]">assignment</span><span>Assignments</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="exams" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Exams</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="attendance" href="#"><span class="material-symbols-outlined text-[18px]">how_to_reg</span><span>Attendance</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Life</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="planner" href="#"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span>Planner</span></a><a aria-current="page" class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg transition-colors bg-secondary-container text-on-secondary-container font-semibold" data-path="reboot" href="#"><span class="material-symbols-outlined text-[18px]">self_improvement</span><span>Reboot</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="music" href="#"><span class="material-symbols-outlined text-[18px]">headphones</span><span>Music</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="connect" href="#"><span class="material-symbols-outlined text-[18px]">forum</span><span>Connect</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Growth</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="skills" href="#"><span class="material-symbols-outlined text-[18px]">psychology</span><span>Skills</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="projects" href="#"><span class="material-symbols-outlined text-[18px]">code</span><span>Projects</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="career" href="#"><span class="material-symbols-outlined text-[18px]">work_outline</span><span>Career</span></a></div><div class="space-y-1"><div class="px-space-sm py-1 font-label-tag text-label-tag text-on-surface-variant/60 uppercase tracking-widest">Community</div><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="groups" href="#"><span class="material-symbols-outlined text-[18px]">groups</span><span>Groups</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="clubs-and-events" href="#"><span class="material-symbols-outlined text-[18px]">celebration</span><span>Clubs &amp; Events</span></a></div></nav></div><div class="p-space-xs space-y-space-xs border-t border-outline-variant/20 bg-surface-container-lowest/40"><nav class="space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container font-semibold"><a class="flex items-center justify-between px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="nivora-ai" href="#"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[18px] text-primary">smart_toy</span><span>NIVORA AI</span></div><span class="px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">Beta</span></a><a class="flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-body-md text-body-md" data-path="settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>Settings</span></a></nav><div class="flex items-center gap-space-xs p-space-xs rounded-xl bg-surface-container border border-outline-variant/20"><div class="relative flex items-center justify-center"><div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-headline-sm text-headline-sm font-semibold text-primary">RS</div><span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container"></span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Rishabh S.</span><span class="font-label-tag text-label-tag text-on-surface-variant truncate">B.Tech CSE Year 3</span></div></div></div></aside><div class="pl-[260px] min-h-screen flex flex-col"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-space-xl flex items-center justify-between"><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant"><span class="uppercase tracking-widest text-on-surface-variant/80">Academic Core</span><span class="text-outline-variant">/</span><span class="text-primary font-semibold">Console</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant cursor-pointer hover:border-outline-variant"><span class="material-symbols-outlined text-[18px]">search</span><span class="font-body-sm text-body-sm pr-space-md">Search...</span><kbd class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">⌘K</kbd></div><button class="relative p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-primary"></span></button><button class="flex items-center gap-space-2xs px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"><span class="material-symbols-outlined text-[18px]">auto_awesome</span><span>AI Assist</span></button><div class="h-4 w-px bg-outline-variant/40"></div><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-outline-variant/40" src="https://lh3.googleusercontent.com/aida/AEtjO1XQOggMtk-HZrdEK3-xJhgF3aIDtDxnMmk38RT437_RQI_8qM6-idBraQBFSmp3xgKeQBBJfi2Y9vxkFtuKDE-6x1DEPChMr9_cuxzEi-Lkwc45afVsNaP5NXkb7hYjcxu6vFVrMoGr2kjoGcVBRbOZxTODCHKZ8_sJeEpxbW6rxmeFld4POcq2jzxipW8RJyJq_IX0qtaTCOtFPCTVGbuzCZk8zc3Qlm7F30mFhMPBInzMKPwaeIDgHvPJ0rzaGLpUCbdSOHtu84o"/></div></header><main class="w-full pt-16 flex-1 bg-surface px-space-xl py-space-lg"><div class="flex flex-col w-full text-on-surface">
+<!-- TOP CONSOLE / BREADCRUMB & TELEMETRY STRIP -->
+<section class="flex flex-col gap-space-sm mb-space-xl">
+<div class="flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-lowest/70 px-space-md py-space-xs rounded-lg shadow-sm">
+<div class="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant/80 uppercase">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>LIFE CORE</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-semibold">ACOUSTICS &amp; PEER SPACES</span>
+<span class="text-outline-variant">•</span>
+<span>SEMESTER 5</span>
+<span class="text-outline-variant">•</span>
+<span>FALL '25</span>
+<span class="text-outline-variant">•</span>
+<span class="text-secondary tracking-widest font-semibold">LIVE SYNC ACTIVE</span>
+</div>
+<div class="flex items-center gap-space-md font-label-tag text-label-tag text-on-surface-variant/70">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-primary">sensors</span> 128 Peers Online</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span> Oxford Bodleian Relay (14ms)</span>
+</div>
+</div>
+<!-- TITLE & PRIMARY ACTIONS -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg pt-space-xs">
+<div class="space-y-1">
+<h1 class="font-display-quote text-display-hero italic tracking-tight text-on-surface font-normal">
+          Music &amp; Connect
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+          Adaptive cognitive audio engine, binaural study soundscapes, and synchronized peer study lounges built for sustained academic flow.
+        </p>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<button class="flex items-center gap-space-2xs px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text shadow-sm">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Host Study Room</span>
+</button>
+<button class="flex items-center gap-space-2xs px-space-md py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-secondary">sync</span>
+<span>Sync Audio Stream</span>
+</button>
+<button class="flex items-center gap-space-2xs px-space-lg py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all font-button-text text-button-text shadow-md shadow-primary/10">
+<span class="material-symbols-outlined text-[18px]">headphones</span>
+<span>Quick Binaural Boost</span>
+</button>
+</div>
+</div>
+<!-- TELEMETRY / STATUS METRICS PILLS -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-sm pt-space-xs">
+<!-- Pill 1: Sonic Mode -->
+<div class="bg-surface-container-low p-space-sm rounded-xl shadow-sm flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-tag text-label-tag text-on-surface-variant/70 uppercase">Active Sonic Mode</div>
+<div class="font-headline-sm text-headline-sm text-primary flex items-center gap-1.5 font-semibold">
+<span>40Hz Gamma Focus</span>
+</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">Binaural • Neuro-locked</div>
+</div>
+<!-- Animated Mini Equalizer -->
+<div class="flex items-end gap-1 h-7 px-2 py-1 bg-surface-container rounded-lg">
+<span class="w-1 bg-primary rounded-full animate-bounce h-4"></span>
+<span class="w-1 bg-primary-container rounded-full animate-bounce h-6" style="animation-delay: 150ms;"></span>
+<span class="w-1 bg-secondary rounded-full animate-bounce h-3" style="animation-delay: 300ms;"></span>
+<span class="w-1 bg-primary rounded-full animate-bounce h-5" style="animation-delay: 75ms;"></span>
+</div>
+</div>
+<!-- Pill 2: Study Session Duration -->
+<div class="bg-surface-container-low p-space-sm rounded-xl shadow-sm flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-tag text-label-tag text-on-surface-variant/70 uppercase">Current Session</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">52 mins</div>
+<div class="font-label-mono-wide text-label-mono-wide text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Deep Work State
+          </div>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+</div>
+</div>
+<!-- Pill 3: Campus Lounges -->
+<div class="bg-surface-container-low p-space-sm rounded-xl shadow-sm flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-tag text-label-tag text-on-surface-variant/70 uppercase">Campus Lounges</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold">14 Rooms Live</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">128 peers connected now</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+</div>
+<!-- Pill 4: Interop Status -->
+<div class="bg-surface-container-low p-space-sm rounded-xl shadow-sm flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-tag text-label-tag text-on-surface-variant/70 uppercase">Music Interop</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold flex items-center gap-1.5">
+<span>Spotify &amp; Apple</span>
+</div>
+<div class="font-label-mono-wide text-label-mono-wide text-primary">Low-Latency Bridge Active</div>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">graphic_eq</span>
+</div>
+</div>
+</div>
+</section>
+<!-- MAIN TWO-COLUMN CONTENT GRID -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- ========================================== -->
+<!-- LEFT / CENTER MAIN WORKSPACE (~65% width)  -->
+<!-- ========================================== -->
+<div class="xl:col-span-8 flex flex-col gap-space-xl">
+<!-- SUB-NAVIGATION TABS -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mt-2">
+<button class="px-space-md py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag uppercase tracking-wider font-semibold whitespace-nowrap shadow-sm">
+          All Soundscapes &amp; Lounges (Active)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag uppercase tracking-wider whitespace-nowrap transition-colors">
+          Binaural Focus &amp; Lo-Fi
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag uppercase tracking-wider whitespace-nowrap transition-colors">
+          Campus Study Rooms (Live)
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag uppercase tracking-wider whitespace-nowrap transition-colors">
+          White Noise &amp; Ambience
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag uppercase tracking-wider whitespace-nowrap transition-colors">
+          Shared Playlists
+        </button>
+<button class="px-space-md py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag uppercase tracking-wider whitespace-nowrap transition-colors">
+          Study Stats
+        </button>
+</div>
+<!-- HERO AUDIO PLAYER CARD (NOW PLAYING SOUNDSCAPE) -->
+<section class="relative overflow-hidden bg-surface-container-low rounded-2xl p-space-xl shadow-xl flex flex-col gap-space-lg">
+<!-- Ambient subtle background glow -->
+<div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<!-- Card Header & Metadata -->
+<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-space-md relative z-10">
+<div class="space-y-1.5">
+<div class="flex items-center gap-space-xs">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag uppercase font-semibold">
+                ACTIVE FOCUS SOUNDSCAPE
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+                48 dB Optimal Cognitive Load
+              </span>
+</div>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight pt-1">
+              Deep Academic Focus — 40Hz Gamma Waves + Rain on Library Glass
+            </h2>
+<p class="font-display-quote italic text-on-surface-variant text-body-lg">
+              Oxford Bodleian preset • Calibrated for complex deductive reasoning &amp; algorithmic proofs
+            </p>
+</div>
+<!-- Retention & Academic Badge -->
+<div class="flex flex-col items-end gap-1 shrink-0">
+<div class="flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container text-primary font-label-mono-wide text-label-mono-wide">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Cognitive retention +18%</span>
+</div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/70">Verified for CS-301 Normalization</span>
+</div>
+</div>
+<!-- Rich Visualizer Display (SVG Waveform) -->
+<div class="relative bg-surface-container rounded-xl p-space-md flex flex-col gap-space-xs z-10">
+<div class="flex items-center justify-between font-label-mono-wide text-label-mono-wide text-on-surface-variant/70">
+<span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span> SPECTRUM 40Hz BINAURAL CARRIER</span>
+<span>STEREO DUAL-CONDUIT · 48.0 kHz 24-BIT</span>
+</div>
+<div class="w-full h-20 flex items-center">
+<svg class="w-full h-full text-primary" fill="none" preserveaspectratio="none" viewbox="0 0 700 80">
+<!-- Visualizer waves -->
+<path d="M0 40 Q 25 15, 50 40 T 100 40 T 150 20 T 200 60 T 250 10 T 300 40 T 350 70 T 400 30 T 450 40 T 500 15 T 550 65 T 600 35 T 650 40 T 700 40" fill="none" opacity="0.85" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+<path d="M0 40 Q 30 55, 60 40 T 120 40 T 180 30 T 240 50 T 300 25 T 360 40 T 420 55 T 480 30 T 540 45 T 600 20 T 660 40 T 700 40" fill="none" opacity="0.45" stroke="#9cd2b4" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<!-- Ambient bar graph beneath -->
+<rect fill="currentColor" height="16" opacity="0.6" rx="2" width="6" x="20" y="32"></rect>
+<rect fill="currentColor" height="32" opacity="0.8" rx="2" width="6" x="36" y="24"></rect>
+<rect fill="currentColor" height="48" opacity="0.5" rx="2" width="6" x="52" y="16"></rect>
+<rect fill="currentColor" height="24" opacity="0.7" rx="2" width="6" x="68" y="28"></rect>
+<rect fill="currentColor" height="60" opacity="0.9" rx="2" width="6" x="84" y="10"></rect>
+<rect fill="currentColor" height="36" opacity="0.6" rx="2" width="6" x="100" y="22"></rect>
+<rect fill="currentColor" height="20" opacity="0.5" rx="2" width="6" x="116" y="30"></rect>
+<rect fill="currentColor" height="52" opacity="0.85" rx="2" width="6" x="132" y="14"></rect>
+<rect fill="currentColor" height="28" opacity="0.6" rx="2" width="6" x="148" y="26"></rect>
+<rect fill="currentColor" height="12" opacity="0.4" rx="2" width="6" x="164" y="34"></rect>
+<rect fill="currentColor" height="44" opacity="0.75" rx="2" width="6" x="180" y="18"></rect>
+<rect fill="currentColor" height="64" opacity="0.95" rx="2" width="6" x="196" y="8"></rect>
+<rect fill="currentColor" height="30" opacity="0.6" rx="2" width="6" x="212" y="25"></rect>
+<rect fill="currentColor" height="16" opacity="0.5" rx="2" width="6" x="228" y="32"></rect>
+<rect fill="currentColor" height="56" opacity="0.8" rx="2" width="6" x="244" y="12"></rect>
+<rect fill="currentColor" height="36" opacity="0.7" rx="2" width="6" x="260" y="22"></rect>
+<rect fill="currentColor" height="8" opacity="0.4" rx="2" width="6" x="276" y="36"></rect>
+<rect fill="currentColor" height="48" opacity="0.85" rx="2" width="6" x="292" y="16"></rect>
+<rect fill="currentColor" height="24" opacity="0.6" rx="2" width="6" x="308" y="28"></rect>
+<rect fill="currentColor" height="60" opacity="0.9" rx="2" width="6" x="324" y="10"></rect>
+<rect fill="currentColor" height="40" opacity="0.7" rx="2" width="6" x="340" y="20"></rect>
+<rect fill="currentColor" height="20" opacity="0.5" rx="2" width="6" x="356" y="30"></rect>
+<rect fill="currentColor" height="52" opacity="0.85" rx="2" width="6" x="372" y="14"></rect>
+<rect fill="currentColor" height="28" opacity="0.6" rx="2" width="6" x="388" y="26"></rect>
+<rect fill="currentColor" height="44" opacity="0.75" rx="2" width="6" x="404" y="18"></rect>
+<rect fill="currentColor" height="68" opacity="0.95" rx="2" width="6" x="420" y="6"></rect>
+<rect fill="currentColor" height="32" opacity="0.65" rx="2" width="6" x="436" y="24"></rect>
+<rect fill="currentColor" height="16" opacity="0.5" rx="2" width="6" x="452" y="32"></rect>
+<rect fill="currentColor" height="50" opacity="0.8" rx="2" width="6" x="468" y="15"></rect>
+<rect fill="currentColor" height="24" opacity="0.6" rx="2" width="6" x="484" y="28"></rect>
+<rect fill="currentColor" height="64" opacity="0.95" rx="2" width="6" x="500" y="8"></rect>
+<rect fill="currentColor" height="36" opacity="0.7" rx="2" width="6" x="516" y="22"></rect>
+<rect fill="currentColor" height="12" opacity="0.4" rx="2" width="6" x="532" y="34"></rect>
+<rect fill="currentColor" height="44" opacity="0.75" rx="2" width="6" x="548" y="18"></rect>
+<rect fill="currentColor" height="56" opacity="0.85" rx="2" width="6" x="564" y="12"></rect>
+<rect fill="currentColor" height="28" opacity="0.6" rx="2" width="6" x="580" y="26"></rect>
+<rect fill="currentColor" height="16" opacity="0.5" rx="2" width="6" x="596" y="32"></rect>
+<rect fill="currentColor" height="52" opacity="0.8" rx="2" width="6" x="612" y="14"></rect>
+<rect fill="currentColor" height="30" opacity="0.65" rx="2" width="6" x="628" y="25"></rect>
+<rect fill="currentColor" height="10" opacity="0.4" rx="2" width="6" x="644" y="35"></rect>
+<rect fill="currentColor" height="40" opacity="0.7" rx="2" width="6" x="660" y="20"></rect>
+</svg>
+</div>
+<!-- Track scrubber timeline -->
+<div class="flex items-center gap-space-sm pt-1">
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">52:14</span>
+<div class="relative w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-2/3 bg-primary rounded-full"></div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant">90:00</span>
+</div>
+</div>
+<!-- Primary Playback Controls & Decibel Meter -->
+<div class="flex flex-wrap items-center justify-between gap-space-md pt-space-xs z-10">
+<div class="flex items-center gap-space-md">
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Shuffle Sound Layers">
+<span class="material-symbols-outlined text-[20px]">shuffle</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Previous Variation">
+<span class="material-symbols-outlined text-[24px]">skip_previous</span>
+</button>
+<!-- Big Glowing Sage Play/Pause Button -->
+<button class="w-13 h-13 rounded-full bg-primary text-on-primary flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[30px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors" title="Next Soundscape Preset">
+<span class="material-symbols-outlined text-[24px]">skip_next</span>
+</button>
+<button class="p-2 text-primary hover:text-primary-container transition-colors" title="Loop Session">
+<span class="material-symbols-outlined text-[20px]">repeat</span>
+</button>
+</div>
+<!-- Volume & Sound Pressure Meter -->
+<div class="flex items-center gap-space-md bg-surface-container px-space-md py-2 rounded-xl">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">volume_up</span>
+<div class="w-28 h-1.5 bg-surface-container-high rounded-full overflow-hidden relative">
+<div class="absolute left-0 top-0 bottom-0 w-3/4 bg-primary rounded-full"></div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary font-semibold">48 dB</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">CALM</span>
+</div>
+</div>
+<!-- SOUNDSCAPE MULTI-TRACK MIXER SLIDERS -->
+<div class="bg-surface-container rounded-xl p-space-md space-y-space-sm z-10">
+<div class="flex items-center justify-between pb-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-wider font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-secondary">tune</span>
+              Interactive Acoustic Layer Mixer
+            </span>
+<button class="font-label-tag text-label-tag text-primary hover:underline">Reset to Default Mix</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md pt-space-2xs">
+<!-- Track 1: Binaural 40Hz -->
+<div class="bg-surface-container-low p-space-xs rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-tag text-label-tag">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  Binaural Carrier (Gamma 40Hz)
+                </span>
+<span class="font-label-mono-wide text-primary">75%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden relative">
+<div class="w-3/4 h-full bg-primary rounded-full"></div>
+</div>
+</div>
+<!-- Track 2: Library Ambient -->
+<div class="bg-surface-container-low p-space-xs rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-tag text-label-tag">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Library Ambient (Pages &amp; Oak)
+                </span>
+<span class="font-label-mono-wide text-secondary">40%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden relative">
+<div class="w-2/5 h-full bg-secondary rounded-full"></div>
+</div>
+</div>
+<!-- Track 3: Rain on Skylight -->
+<div class="bg-surface-container-low p-space-xs rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-tag text-label-tag">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                  Gentle Rain on Skylight
+                </span>
+<span class="font-label-mono-wide text-tertiary">60%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden relative">
+<div class="w-3/5 h-full bg-tertiary rounded-full"></div>
+</div>
+</div>
+<!-- Track 4: Brown Noise -->
+<div class="bg-surface-container-low p-space-xs rounded-lg flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-tag text-label-tag">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+                  Brown Noise Dampener
+                </span>
+<span class="font-label-mono-wide text-on-surface-variant">30%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden relative">
+<div class="w-3/10 h-full bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: LIVE PEER STUDY LOUNGES & VIRTUAL TABLES -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-mono-wide text-label-mono-wide text-primary uppercase font-medium">REAL-TIME PEER SYNCHRONIZATION</div>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface">Campus Study Lounges</h3>
+</div>
+<div class="flex items-center gap-space-xs font-label-tag text-label-tag text-on-surface-variant">
+<span>Filter:</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-semibold">Active Courses</span>
+<span class="px-2 py-0.5 rounded hover:bg-surface-container text-on-surface-variant cursor-pointer">Open Space</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Room 01: CS-301 DBMS Normalization -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold">
+                  ROOM 01 • COURSE TABLE
+                </span>
+<div class="flex items-center gap-1 text-primary font-label-mono-wide text-label-mono-wide font-semibold">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+<span>18:24 REMAINING</span>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md font-semibold text-on-surface pt-1 group-hover:text-primary transition-colors">
+                CS-301 DBMS Normalization Sprint
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Silent Room • Synchronized Lo-Fi Stream &amp; LaTeX scratchpad. Strict Pomodoro round 3 of 4.
+              </p>
+</div>
+<!-- Avatars & Peer Counter -->
+<div class="pt-space-xs space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center -space-x-2">
+<img class="w-7 h-7 rounded-full object-cover" data-alt="University student profile picture smiling in library setting with headphones on in dark atmospheric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM-xNUlLMn5hES_cDTotPOfuilG0TYeRsIXabiD6bnGY7kkfn0j7jF0LoxRpPRBjj7pavrmFLnG1EBz2q4nW_KhtlXDE-0U2qmNyUPaecPhuuIUM3T_w2ZZ2C-Z4cKO053HzL75KrLxA5s3Pj7cQCgxBZDeXJqJVOF4qA-T2GZOZP8gJZbwoe_hD0yHYJRftM1nDcwC9Ajp8q-paR_mgja7uvpZoTob39pE38pZ6grpLmI6cfgaKcitw"/>
+<img class="w-7 h-7 rounded-full object-cover" data-alt="Computer science student working on code on laptop in modern ambient campus lounge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA3ddmkAAgUtJN4NDQ2ygAUVpr8NF5tcT2SQ34pc4zLyGNTtxJTgkU1eIP5-7uSV7qfvL0QKN12wKp-zO3A5_iFiwCoJ5mWfa3lSjOcZZqOknIySYFqfJRvf5wvQq-p_kPp_BJmBUOCScrLLjRx0qrA7dhfuqre82VVQk-ARRTh1sLFrZ7-O0cT5hXrBBDjL185rsX37KKgdR0xTvib8euYIFdypek12D11tIiQmAwTFEtxaYQo58LRw"/>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-label-tag text-label-tag font-bold">AK</div>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-secondary flex items-center justify-center font-label-tag text-label-tag font-bold">SS</div>
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-tag text-label-tag">+2</div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">6 / 8 Seats Filled</span>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-2 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-colors font-button-text text-button-text font-semibold flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">chair</span>
+<span>Join Table</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant" title="Preview Audio Stream">
+<span class="material-symbols-outlined text-[18px]">volume_up</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Room 02: Night Owls Algorithms -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container text-tertiary font-label-tag text-label-tag font-semibold">
+                  ROOM 02 • SPRINT ARENA
+                </span>
+<div class="flex items-center gap-1 text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span>OPEN FORUM</span>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md font-semibold text-on-surface pt-1 group-hover:text-primary transition-colors">
+                Night Owls: Algorithms &amp; LeetCode Hard
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Ambient Synthwave • Host: <span class="text-on-surface font-medium">Alex M. (TA)</span> • Solving Dynamic Programming on trees.
+              </p>
+</div>
+<!-- Avatars & Peer Counter -->
+<div class="pt-space-xs space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center -space-x-2">
+<img class="w-7 h-7 rounded-full object-cover" data-alt="Teaching assistant student in dark room reviewing algorithm complexity notes on tablet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_U3d1Z02zsN6omvbcNhRa6QvRlrHA1rTFW6LSqIiXIzvaLWb3Mu4xSG95NIbTHDky4vLg6-2d4THZpZzXn7YKfHLzBHBvGrwhwZs04m_09lOIeDAD_TY324mkLdeVZMzVn67UXizUNenUdMAGEelhhKgfldR8F6-KCTrO7J4-vP_Wc7ovziYaj0qqulL_Pr9GSjXbh30zmTzAwn5-7DDJxjbNyl4WR2fPHDvMEn3tVMUJhAB8YgEHOQ"/>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-tertiary flex items-center justify-center font-label-tag text-label-tag font-bold">TX</div>
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-tag text-label-tag">+10</div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">12 Peers Active</span>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-button-text text-button-text font-semibold flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">login</span>
+<span>Drop In</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant" title="Room Info">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Room 03: Quiet Library Stacks -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-label-tag text-label-tag font-semibold">
+                  ROOM 03 • DEEP IMMERSION
+                </span>
+<div class="flex items-center gap-1 text-secondary font-label-mono-wide text-label-mono-wide font-semibold">
+<span>FOCUS AVG: 2.4 HRS</span>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md font-semibold text-on-surface pt-1 group-hover:text-primary transition-colors">
+                Quiet Library Stacks — Zero Talk
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Classical Piano &amp; Tape Hiss • Mics locked off • High accountability quiet room with reading cameras.
+              </p>
+</div>
+<!-- Avatars & Peer Counter -->
+<div class="pt-space-xs space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-tag text-label-tag font-bold">LN</div>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-tag text-label-tag font-bold">PR</div>
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-tag text-label-tag">+22</div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">24 / 30 Desks</span>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-button-text text-button-text font-semibold flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">desk</span>
+<span>Join Table</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant" title="Mute Audio">
+<span class="material-symbols-outlined text-[18px]">mic_off</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Room 04: Operating Systems Kernel Hacking -->
+<div class="bg-surface-container-low p-space-lg rounded-xl shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-space-md group">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-tag text-label-tag font-semibold">
+                  ROOM 04 • LAB INTEGRATED
+                </span>
+<div class="flex items-center gap-1 text-primary font-label-mono-wide text-label-mono-wide">
+<span class="material-symbols-outlined text-[14px]">cell_tower</span>
+<span>DISCORD BRIDGE</span>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md font-semibold text-on-surface pt-1 group-hover:text-primary transition-colors">
+                Operating Systems Kernel Hacking
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Cyberpunk Ambient Drone • Synchronized GDB debug session &amp; C memory architecture notes.
+              </p>
+</div>
+<!-- Avatars & Peer Counter -->
+<div class="pt-space-xs space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center -space-x-2">
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-label-tag text-label-tag font-bold">OS</div>
+<div class="w-7 h-7 rounded-full bg-surface-container-high text-tertiary flex items-center justify-center font-label-tag text-label-tag font-bold">KG</div>
+<div class="w-7 h-7 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center font-label-tag text-label-tag">+2</div>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80">4 Peers Active</span>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-button-text text-button-text font-semibold flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>Join Terminal Table</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant" title="Code Link">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: CURATED COGNITIVE AUDIO PRESETS -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<div class="font-label-mono-wide text-label-mono-wide text-secondary uppercase font-medium">NEURO-ACOUSTIC CATALOG</div>
+<h3 class="font-headline-lg text-headline-lg font-bold text-on-surface">Curated Cognitive Audio Presets</h3>
+</div>
+<button class="font-label-tag text-label-tag text-primary hover:underline flex items-center gap-1">
+<span>Explore All 32 Soundscapes</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Preset 1 -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex items-center justify-between gap-space-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">psychology</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-headline-sm font-semibold text-on-surface truncate">40Hz Gamma Wave Focus</h4>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate">Math proofs, LaTeX &amp; logic synthesis</div>
+<div class="font-label-mono-wide text-label-mono-wide text-primary pt-0.5">42 peers listening now</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface-variant flex items-center justify-center shrink-0 transition-colors" title="Play Preset">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+<!-- Preset 2 -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex items-center justify-between gap-space-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-xl bg-surface-container text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">auto_stories</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-headline-sm font-semibold text-on-surface truncate">Alpha Wave 10Hz Flow</h4>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate">Reading textbooks &amp; slide decks</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80 pt-0.5">28 peers listening now</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface-variant flex items-center justify-center shrink-0 transition-colors" title="Play Preset">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+<!-- Preset 3 -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex items-center justify-between gap-space-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-xl bg-surface-container text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">coffee</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-headline-sm font-semibold text-on-surface truncate">Café de Flore Rain Ambience</h4>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate">Casual problem sets &amp; flashcard review</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80 pt-0.5">19 peers listening now</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface-variant flex items-center justify-center shrink-0 transition-colors" title="Play Preset">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+<!-- Preset 4 -->
+<div class="bg-surface-container-low p-space-md rounded-xl shadow-sm flex items-center justify-between gap-space-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-12 h-12 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">nightlight</span>
+</div>
+<div class="min-w-0">
+<h4 class="font-headline-sm text-headline-sm font-semibold text-on-surface truncate">Sub-Bass Lo-Fi Chillhop</h4>
+<div class="font-body-sm text-body-sm text-on-surface-variant truncate">Late night coding sprints &amp; refactoring</div>
+<div class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/80 pt-0.5">54 peers listening now</div>
+</div>
+</div>
+<button class="w-9 h-9 rounded-lg bg-surface-container hover:bg-primary hover:text-on-primary text-on-surface-variant flex items-center justify-center shrink-0 transition-colors" title="Play Preset">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- ========================================== -->
+<!-- RIGHT COMPANION RAIL (~35% width)          -->
+<!-- ========================================== -->
+<div class="xl:col-span-4 flex flex-col gap-space-lg">
+<!-- CARD 1: ACTIVE STUDY ROOM TABLE -->
+<section class="bg-surface-container-low p-space-lg rounded-2xl shadow-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-label-tag text-label-tag uppercase text-primary font-semibold">CURRENT LIVE TABLE</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Your Virtual Desk</h3>
+</div>
+<span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> 4 Connected
+          </span>
+</div>
+<!-- Participants List -->
+<div class="space-y-space-xs">
+<!-- Participant: Rishabh (You) -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-headline-sm text-body-sm font-semibold">RS</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface flex items-center gap-1">
+<span>Rishabh S.</span>
+<span class="font-label-tag text-label-tag text-primary bg-surface-container-high px-1 rounded">YOU</span>
+</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Sharing: CS-301 LaTeX Proofs</div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-error">mic_off</span>
+<span class="material-symbols-outlined text-[16px] text-primary">videocam</span>
+</div>
+</div>
+<!-- Participant: Ankit M. -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container/60 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-secondary flex items-center justify-center font-headline-sm text-body-sm font-semibold">AM</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface">Ankit M.</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Focus Cam On • Pomodoro Sync</div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-error">mic_off</span>
+<span class="material-symbols-outlined text-[16px] text-primary">videocam</span>
+</div>
+</div>
+<!-- Participant: Sneha Sen -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container/60 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-tertiary flex items-center justify-center font-headline-sm text-body-sm font-semibold">SS</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface">Sneha Sen</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Solving DBMS Chapter 4</div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-error">mic_off</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant/40">videocam_off</span>
+</div>
+</div>
+<!-- Participant: Kevin R. -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container/60 hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-sm text-body-sm font-semibold">KR</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface">Kevin R.</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Reading Normalization PDF</div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-error">mic_off</span>
+<span class="material-symbols-outlined text-[16px] text-primary">videocam</span>
+</div>
+</div>
+</div>
+<!-- Collab Quick Tools -->
+<div class="grid grid-cols-3 gap-space-xs pt-1">
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-tag text-label-tag flex flex-col items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-primary">av_timer</span>
+<span>Sync (25/5)</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-tag text-label-tag flex flex-col items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-secondary">draw</span>
+<span>Whiteboard</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-tag text-label-tag flex flex-col items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-tertiary">celebration</span>
+<span>High-Five</span>
+</button>
+</div>
+</section>
+<!-- CARD 2: ACOUSTIC FOCUS ANALYTICS -->
+<section class="bg-surface-container-low p-space-lg rounded-2xl shadow-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant font-semibold">TELEMETRY CORRELATION</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Acoustic Focus Analytics</h3>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary font-bold">4.8h / DAY AVG</span>
+</div>
+<!-- Weekly Study Audio Bar Chart (SVG) -->
+<div class="bg-surface-container rounded-xl p-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/80">
+<span>HOURS LOGGED WITH SOUNDSCAPES</span>
+<span class="text-primary font-semibold">THIS WEEK</span>
+</div>
+<div class="w-full h-24 flex items-end justify-between pt-2 px-1">
+<!-- Mon -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">3.8</span>
+<div class="w-3 bg-surface-container-high rounded-full h-14"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">M</span>
+</div>
+<!-- Tue -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">4.2</span>
+<div class="w-3 bg-surface-container-high rounded-full h-16"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">T</span>
+</div>
+<!-- Wed -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">5.1</span>
+<div class="w-3 bg-secondary rounded-full h-20"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">W</span>
+</div>
+<!-- Thu -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">4.5</span>
+<div class="w-3 bg-surface-container-high rounded-full h-18"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">T</span>
+</div>
+<!-- Fri -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-primary font-bold">6.2</span>
+<div class="w-3 bg-primary rounded-full h-24"></div>
+<span class="font-label-tag text-label-tag text-primary font-bold">F</span>
+</div>
+<!-- Sat -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">5.0</span>
+<div class="w-3 bg-surface-container-high rounded-full h-20"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">S</span>
+</div>
+<!-- Sun -->
+<div class="flex flex-col items-center gap-1 flex-1">
+<span class="font-label-tag text-label-tag text-on-surface-variant">2.4</span>
+<div class="w-3 bg-surface-container-high rounded-full h-10"></div>
+<span class="font-label-tag text-label-tag text-on-surface-variant/60">S</span>
+</div>
+</div>
+</div>
+<div class="p-space-sm rounded-xl bg-surface-container flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-tertiary shrink-0 mt-0.5">lightbulb</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong class="text-on-surface">Optimal soundscape correlation:</strong> Gamma 40Hz yielded your highest quiz retention score (<span class="text-primary font-semibold">94.2%</span>) during Friday's OS lab prep.
+          </p>
+</div>
+</section>
+<!-- CARD 3: CONNECTED STREAMING INTEGRATIONS -->
+<section class="bg-surface-container-low p-space-lg rounded-2xl shadow-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant font-semibold">EXTERNAL PLATFORMS</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Streaming Interop</h3>
+</div>
+<span class="flex items-center gap-1 text-primary font-label-tag text-label-tag">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> CONNECTED
+          </span>
+</div>
+<!-- Spotify Card -->
+<div class="p-space-sm rounded-xl bg-surface-container flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">podcasts</span>
+</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Lo-Fi Beats to Solve Recurrences To</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Synced to Campus Playlist #42</div>
+</div>
+</div>
+<button class="p-1.5 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface" title="Audio routing">
+<span class="material-symbols-outlined text-[16px]">sync_alt</span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-1">
+<button class="font-label-tag text-label-tag text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">swap_horiz</span>
+<span>Switch to Apple Music Relay</span>
+</button>
+<span class="font-label-mono-wide text-label-mono-wide text-on-surface-variant/60">FLAC 24-bit direct</span>
+</div>
+</section>
+<!-- CARD 4: CAMPUS STUDY PRESENCE -->
+<section class="bg-surface-container-low p-space-lg rounded-2xl shadow-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="space-y-0.5">
+<span class="font-label-tag text-label-tag uppercase text-on-surface-variant font-semibold">CAMPUS RADAR</span>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface">Friends Studying Now</h3>
+</div>
+<span class="font-label-mono-wide text-label-mono-wide text-primary">3 ACTIVE</span>
+</div>
+<div class="space-y-space-sm">
+<!-- Friend 1 -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-headline-sm text-body-sm font-semibold shrink-0">AM</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Ankit M.</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Room B-204 (DBMS Lab)</div>
+</div>
+</div>
+<button class="px-2 py-1 rounded-md bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface-variant font-label-tag text-label-tag font-semibold transition-colors">
+              Join Room
+            </button>
+</div>
+<!-- Friend 2 -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-tertiary flex items-center justify-center font-headline-sm text-body-sm font-semibold shrink-0">SS</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Sneha Sen</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Central Library 3rd Floor</div>
+</div>
+</div>
+<button class="px-2 py-1 rounded-md bg-surface-container-high hover:bg-secondary-container hover:text-on-secondary-container text-on-surface-variant font-label-tag text-label-tag font-semibold transition-colors">
+              Nudge
+            </button>
+</div>
+<!-- Friend 3 -->
+<div class="flex items-center justify-between p-space-xs rounded-xl bg-surface-container">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-primary flex items-center justify-center font-headline-sm text-body-sm font-semibold shrink-0">TM</div>
+<div class="min-w-0">
+<div class="font-headline-sm text-body-sm font-semibold text-on-surface truncate">Tanmay D.</div>
+<div class="font-label-tag text-label-tag text-on-surface-variant truncate">Virtual Room 02 (LeetCode)</div>
+</div>
+</div>
+<button class="px-2 py-1 rounded-md bg-surface-container-high hover:bg-primary hover:text-on-primary text-on-surface-variant font-label-tag text-label-tag font-semibold transition-colors">
+              Join Room
+            </button>
+</div>
+</div>
+<button class="w-full py-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-button-text text-button-text transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span>Invite Study Peer</span>
+</button>
+</section>
+</div>
+</div>
+<!-- BOTTOM STATUS ACCORDION / QUICK TELEMETRY FOOTER EXTENSION -->
+<div class="mt-space-xl pt-space-md border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-space-sm font-label-tag text-label-tag text-on-surface-variant/70">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>Acoustic Session Engine Active • 40Hz Audio Output Calibrated (Zero Distraction Protocol)</span>
+</div>
+<div class="flex items-center gap-space-md">
+<span>Bandwidth: 142 kbps</span>
+<span>•</span>
+<span>Audio Latency: 12ms</span>
+<span>•</span>
+<span class="text-primary cursor-pointer hover:underline">Download Offline Stems</span>
+</div>
+</div>
+</div></main><footer class="h-8 w-full bg-surface-container-lowest border-t border-outline-variant/20 px-space-xl flex items-center justify-between font-label-tag text-label-tag text-on-surface-variant/70"><div class="flex items-center gap-space-xs"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>NIVORA Workspace v2.4 · Academic Core</span></div><div class="flex items-center gap-space-md"><span>Press <kbd class="text-on-surface-variant font-mono">⌘K</kbd> for Command Palette</span><span>·</span><span>Press <kbd class="text-on-surface-variant font-mono">/</kbd> to search</span></div></footer></div></body></html>
