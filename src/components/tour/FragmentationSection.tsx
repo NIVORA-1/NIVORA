@@ -9,7 +9,7 @@ export default function FragmentationSection() {
       title: 'MESSAGING DISASTER',
       desc: 'WhatsApp group chats for team assignments losing critical files & deadlines in 500+ unread noise.',
       tag: 'DISPERSED',
-      tagColor: 'text-[#D5B978] bg-[#D5B978]/10 border-[#D5B978]/30',
+      tagColor: 'text-coral bg-coral/10 border-coral/30',
       icon: 'chat_bubble',
       offsetClass: 'md:translate-x-0',
       preview: {
@@ -28,7 +28,7 @@ export default function FragmentationSection() {
       title: 'PDF HELL',
       desc: 'Career opportunities buried in unread PDFs & dead institutional portals. Application deadline passed 2 days ago.',
       tag: 'MISSED',
-      tagColor: 'text-[#C98282] bg-[#C98282]/10 border-[#C98282]/30',
+      tagColor: 'text-deep-coral bg-deep-coral/10 border-deep-coral/30',
       icon: 'picture_as_pdf',
       offsetClass: 'md:translate-x-6 md:translate-y-2',
       preview: {
@@ -47,7 +47,7 @@ export default function FragmentationSection() {
       title: 'PORTAL CONFUSION',
       desc: 'College ERP broken on mobile. Attendance marks locked behind 2000s UX and CAPTCHA timeouts.',
       tag: 'BROKEN UX',
-      tagColor: 'text-[#A6ADA9] bg-[#1C2A30] border-[#29383D]',
+      tagColor: 'text-muted-sand bg-muted-sand/20 border-muted-sand/40',
       icon: 'desktop_access_disabled',
       offsetClass: 'md:-translate-x-4 md:translate-y-4',
       preview: {
@@ -66,7 +66,7 @@ export default function FragmentationSection() {
       title: 'BURNOUT & ANXIETY',
       desc: 'Constant low-grade anxiety of something forgotten across 7 different open browser tabs and Google Drive folders.',
       tag: 'COGNITIVE DRAIN',
-      tagColor: 'text-[#C98282] bg-[#C98282]/10 border-[#C98282]/30',
+      tagColor: 'text-deep-coral bg-deep-coral/10 border-deep-coral/30',
       icon: 'warning',
       offsetClass: 'md:translate-x-8 md:translate-y-2',
       preview: {
@@ -85,7 +85,7 @@ export default function FragmentationSection() {
       title: 'LOST CONTEXT',
       desc: 'Four years of projects and learning disappear into the void when your student email account expires.',
       tag: 'PERMANENT LOSS',
-      tagColor: 'text-[#D5B978] bg-[#D5B978]/10 border-[#D5B978]/30',
+      tagColor: 'text-coral bg-coral/10 border-coral/30',
       icon: 'delete_sweep',
       offsetClass: 'md:col-span-2 md:max-w-md md:mx-auto md:translate-y-6',
       preview: {
@@ -106,57 +106,57 @@ export default function FragmentationSection() {
       {/* Connecting filaments between fragmented tools */}
       <svg
         data-frag-filaments
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-20 transition-opacity duration-500 hidden md:block"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-25 transition-opacity duration-500 hidden md:block"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <line x1="20%" y1="35%" x2="50%" y2="45%" stroke="#C98282" strokeWidth="1" strokeDasharray="4 6" />
-        <line x1="80%" y1="30%" x2="50%" y2="45%" stroke="#D5B978" strokeWidth="1" strokeDasharray="4 6" />
-        <line x1="30%" y1="70%" x2="50%" y2="50%" stroke="#8FC5A7" strokeWidth="1" strokeDasharray="3 5" />
-        <line x1="75%" y1="75%" x2="50%" y2="50%" stroke="#C98282" strokeWidth="1" strokeDasharray="4 6" />
-        <circle cx="20%" cy="35%" r="2" fill="#C98282" />
-        <circle cx="80%" cy="30%" r="2" fill="#D5B978" />
-        <circle cx="30%" cy="70%" r="2" fill="#8FC5A7" />
-        <circle cx="75%" cy="75%" r="2" fill="#C98282" />
+        <line x1="20%" y1="35%" x2="50%" y2="45%" stroke="#E85A4F" strokeWidth="1" strokeDasharray="4 6" />
+        <line x1="80%" y1="30%" x2="50%" y2="45%" stroke="#D8C3A5" strokeWidth="1" strokeDasharray="4 6" />
+        <line x1="30%" y1="70%" x2="50%" y2="50%" stroke="#E98074" strokeWidth="1" strokeDasharray="3 5" />
+        <line x1="75%" y1="75%" x2="50%" y2="50%" stroke="#E85A4F" strokeWidth="1" strokeDasharray="4 6" />
+        <circle cx="20%" cy="35%" r="2" fill="#E85A4F" />
+        <circle cx="80%" cy="30%" r="2" fill="#D8C3A5" />
+        <circle cx="30%" cy="70%" r="2" fill="#E98074" />
+        <circle cx="75%" cy="75%" r="2" fill="#E85A4F" />
       </svg>
 
       {/* Header Label */}
-      <div data-frag-heading className="text-center space-y-3 mb-12 will-change-transform">
-        <div className="font-mono text-[10px] tracking-[0.25em] text-[#747F7B] uppercase font-bold">
+      <div data-frag-heading className="text-center space-y-3 mb-12">
+        <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           FROM DAY 01 — TO PLACEMENT
         </div>
-        <h2 className="text-3xl sm:text-5xl font-display font-bold tracking-[-0.025em] text-[#F1F0E8] leading-[1.15]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
           College life is{' '}
-          <span className="font-serif italic text-[#C98282] font-normal">
+          <span className="italic text-primary">
             fragmented.
           </span>
         </h2>
-        <p className="mt-4 font-sans text-sm sm:text-base text-[#A6ADA9] max-w-2xl mx-auto leading-relaxed font-normal">
+        <p className="mt-4 font-sans text-sm sm:text-base text-on-surface-variant max-w-2xl mx-auto leading-relaxed font-normal">
           Academic record portals. Departmental assignments in Google Classroom. Career portals buried in PDFs. Team chats spread across WhatsApp, Discord, Slack. None of it talks to each other.
         </p>
       </div>
 
       {/* Asymmetric Offset Problem Cards Grid */}
-      <div data-frag-cards-grid className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-4 pb-12 will-change-transform">
+      <div data-frag-cards-grid className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-4 pb-12">
         {painPoints.map((item) => (
           <div
             key={item.id}
             data-frag-card
-            className={`rounded-xl bg-[#172329] border border-[#29383D] p-5 sm:p-6 shadow-sm w-full text-left will-change-transform ${item.offsetClass}`}
+            className={`rounded-xl bg-surface-container border border-border p-5 sm:p-6 shadow-sm w-full text-left ${item.offsetClass}`}
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px] text-[#A6ADA9]">
+                <span className="material-symbols-outlined text-[18px] text-on-surface-variant">
                   {item.icon}
                 </span>
-                <span className="font-mono text-[11px] font-bold tracking-wider text-[#F1F0E8]">
+                <span className="font-sans text-xs sm:text-sm font-bold tracking-wide text-on-surface">
                   {item.title}
                 </span>
               </div>
-              <span className={`px-2 py-0.5 rounded-full border text-[9px] font-mono font-bold tracking-wider uppercase ${item.tagColor}`}>
+              <span className={`px-2 py-0.5 rounded-full border text-[10px] font-sans font-bold tracking-wider uppercase ${item.tagColor}`}>
                 {item.tag}
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-[#A6ADA9] leading-relaxed font-sans font-normal">
+            <p className="text-xs sm:text-sm text-on-surface-variant leading-relaxed font-sans font-normal">
               {item.desc}
             </p>
           </div>
@@ -164,8 +164,8 @@ export default function FragmentationSection() {
       </div>
 
       {/* Bottom Punchline Quote */}
-      <div data-frag-quote className="text-center pt-8 border-t border-[#29383D]/40 will-change-transform">
-        <p className="font-mono text-[11px] tracking-[0.2em] text-[#747F7B] uppercase font-medium">
+      <div data-frag-quote className="text-center pt-8">
+        <p className="font-sans text-xs sm:text-sm tracking-[0.14em] text-on-surface-variant uppercase font-semibold">
           THE RESULT: 4 YEARS OF DISCONNECTED FRAGMENTS INSTEAD OF ONE COMPOUNDING ADVANTAGE.
         </p>
       </div>

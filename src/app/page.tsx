@@ -11,29 +11,25 @@ import MinimalistSection from '@/components/tour/MinimalistSection';
 import ModulesSection from '@/components/tour/ModulesSection';
 import InvitationSection from '@/components/tour/InvitationSection';
 import TourFooter from '@/components/tour/TourFooter';
-import CinematicScrollExperience from '@/components/tour/CinematicScrollExperience';
 
 export default function LandingPage() {
   const [activeSection, setActiveSection] = useState<string>('');
 
-  // Smooth scroll handler targeting scene containers or inner IDs
+  // Smooth scroll handler targeting section IDs
   const handleNavigate = (sectionId: string) => {
-    const el =
-      document.getElementById(`scene-${sectionId}`) ||
-      document.getElementById(sectionId) ||
-      document.getElementById(`frame-${sectionId}`);
+    const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
-  // Scrollspy active section tracking
+  // Scrollspy active section tracking for navbar navigation indicators
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const philEl = document.getElementById('scene-philosophy');
-      const modulesEl = document.getElementById('scene-modules');
-      const connectEl = document.getElementById('scene-connect');
+      const philEl = document.getElementById('philosophy');
+      const modulesEl = document.getElementById('modules');
+      const connectEl = document.getElementById('connect');
 
       if (connectEl && scrollY >= connectEl.offsetTop - 300) {
         setActiveSection('connect');
@@ -51,98 +47,57 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#0F171B] text-[#F1F0E8] selection:bg-[#8FC5A7] selection:text-[#0F171B]">
+    <div className="min-h-screen w-full bg-background text-on-surface selection:bg-coral selection:text-white transition-colors duration-250">
       {/* Public Floating Header */}
       <PublicHeader activeSection={activeSection} onNavigate={handleNavigate} />
 
-      <main className="relative w-full">
-        <CinematicScrollExperience>
-          {/* FRAME 01 — HERO (scroll space: 200vh) */}
-          <section id="scene-hero" className="cinematic-scene relative w-full h-[200vh]">
-            <div
-              id="frame-hero"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <HeroSection
-                onExplore={() => handleNavigate('fragmentation')}
-                onReadArchitecture={() => handleNavigate('architecture')}
-              />
-            </div>
-          </section>
+      {/* Main Content: Completely Static, Natural Document Flow */}
+      <main className="w-full">
+        {/* FRAME 01 — HERO */}
+        <section id="hero" className="w-full">
+          <HeroSection
+            onExplore={() => handleNavigate('fragmentation')}
+            onReadArchitecture={() => handleNavigate('architecture')}
+          />
+        </section>
 
-          {/* FRAME 02 — "College life is fragmented." (scroll space: 180vh) */}
-          <section id="scene-fragmentation" className="cinematic-scene relative w-full h-[180vh]">
-            <div
-              id="frame-fragmentation"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <FragmentationSection />
-            </div>
-          </section>
+        {/* FRAME 02 — "College life is fragmented." */}
+        <section id="fragmentation" className="w-full py-12 sm:py-20">
+          <FragmentationSection />
+        </section>
 
-          {/* FRAME 03 — "Bring it together." (scroll space: 220vh) */}
-          <section id="scene-architecture" className="cinematic-scene relative w-full h-[220vh]">
-            <div
-              id="frame-architecture"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <SingleInterfaceSection />
-            </div>
-          </section>
+        {/* FRAME 03 — "Bring it together." */}
+        <section id="architecture" className="w-full py-12 sm:py-20">
+          <SingleInterfaceSection />
+        </section>
 
-          {/* FRAME 04 — STREAM ADAPTATION (scroll space: 180vh) */}
-          <section id="scene-adaptation" className="cinematic-scene relative w-full h-[180vh]">
-            <div
-              id="frame-adaptation"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <AdaptationSection />
-            </div>
-          </section>
+        {/* FRAME 04 — STREAM ADAPTATION */}
+        <section id="adaptation" className="w-full py-12 sm:py-20">
+          <AdaptationSection />
+        </section>
 
-          {/* FRAME 05 — "More than a planner." (scroll space: 180vh) */}
-          <section id="scene-philosophy" className="cinematic-scene relative w-full h-[180vh]">
-            <div
-              id="frame-philosophy"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <PhilosophySection />
-            </div>
-          </section>
+        {/* FRAME 05 — "More than a planner." */}
+        <section id="philosophy" className="w-full py-12 sm:py-20">
+          <PhilosophySection />
+        </section>
 
-          {/* FRAME 06 — "Only what matters. When it matters." (scroll space: 160vh) */}
-          <section id="scene-minimalist" className="cinematic-scene relative w-full h-[160vh]">
-            <div
-              id="frame-minimalist"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <MinimalistSection />
-            </div>
-          </section>
+        {/* FRAME 06 — "Only what matters. When it matters." */}
+        <section id="minimalist" className="w-full py-12 sm:py-20">
+          <MinimalistSection />
+        </section>
 
-          {/* FRAME 07 — "Learn. Plan. Focus. Grow. Connect." (scroll space: 160vh) */}
-          <section id="scene-modules" className="cinematic-scene relative w-full h-[160vh]">
-            <div
-              id="frame-modules"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <ModulesSection />
-            </div>
-          </section>
+        {/* FRAME 07 — "Learn. Plan. Focus. Grow. Connect." */}
+        <section id="modules" className="w-full py-12 sm:py-20">
+          <ModulesSection />
+        </section>
 
-          {/* FRAME 08 — FINAL INVITATION (scroll space: 140vh) */}
-          <section id="scene-connect" className="cinematic-scene relative w-full h-[140vh]">
-            <div
-              id="frame-connect"
-              className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center pt-14 pb-8"
-            >
-              <InvitationSection
-                onScrollToTop={() => handleNavigate('hero')}
-                onExploreArchitecture={() => handleNavigate('architecture')}
-              />
-            </div>
-          </section>
-        </CinematicScrollExperience>
+        {/* FRAME 08 — FINAL INVITATION */}
+        <section id="connect" className="w-full py-12 sm:py-20">
+          <InvitationSection
+            onScrollToTop={() => handleNavigate('hero')}
+            onExploreArchitecture={() => handleNavigate('architecture')}
+          />
+        </section>
       </main>
 
       {/* Public Footer */}

@@ -260,26 +260,8 @@ async function main() {
     ]
   });
 
-  // 6. Exams
-  const examDate = new Date();
-  examDate.setDate(examDate.getDate() + 18);
-  examDate.setHours(9, 30, 0, 0);
+  // 6. Exams (No seeded exams - students add real exams via upload or manual entry)
 
-  await prisma.exam.create({
-    data: {
-      subjectId: dbms.id,
-      title: 'CS-301: Mid-Term Theory Examination',
-      date: examDate,
-      startTime: '09:30 AM',
-      durationHours: 3.0,
-      room: 'Hall C, East Academic Block',
-      proctor: 'Dr. A. Sharma',
-      weightage: 30,
-      seatNumber: 'SEAT C-42',
-      syllabusMastery: 78,
-      status: 'upcoming'
-    }
-  });
 
   // 7. Planner Tasks
   const todayStr = new Date().toISOString().split('T')[0];
@@ -371,14 +353,50 @@ async function main() {
     ]
   });
 
-  // 9. Music Tracks
+  // 9. Music Tracks (External HTTPS Streams)
   await prisma.musicTrack.createMany({
     data: [
-      { title: '40Hz Gamma Focus', subtitle: 'Binaural • Neuro-locked alpha frequency', category: 'gamma', duration: '45:00', audioUrl: '/audio/gamma.mp3' },
-      { title: 'Library Rain on Glass', subtitle: 'Bodleian library acoustics & soft rain', category: 'rain', duration: '60:00', audioUrl: '/audio/rain.mp3' },
-      { title: 'Deep Academic Flow', subtitle: 'Low-BPM minimalist organic synth', category: 'focus', duration: '52:00', audioUrl: '/audio/flow.mp3' },
-      { title: 'Lofi Study Companion', subtitle: 'Analog tape saturation, warm beats', category: 'lofi', duration: '48:00', audioUrl: '/audio/lofi.mp3' }
-    ]
+      {
+        title: 'Redwood Trail Focus',
+        subtitle: 'Acoustic Guitar • Algorithmic Velocity',
+        artist: 'Jason Shaw (Audionautix)',
+        category: 'focus',
+        duration: '01:58',
+        durationSec: 118,
+        audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Audionautix-com-ccby-redwoodtrail.mp3',
+        artworkUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
+      },
+      {
+        title: 'Chill Wave Study',
+        subtitle: 'Lo-Fi Chillhop • Analog Tape Saturation',
+        artist: 'Kevin MacLeod',
+        category: 'lofi',
+        duration: '04:00',
+        durationSec: 240,
+        audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Chill_Wave_%28ISRC_USUAN1600048%29.mp3',
+        artworkUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop&q=80',
+      },
+      {
+        title: 'Ossuary 3 - Words',
+        subtitle: 'Ambient Space • Deep Academic Flow',
+        artist: 'Kevin MacLeod',
+        category: 'ambient',
+        duration: '05:00',
+        durationSec: 300,
+        audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/63/Ossuary_3_-_Words_%28ISRC_USUAN1500045%29.mp3',
+        artworkUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&auto=format&fit=crop&q=80',
+      },
+      {
+        title: 'Bourne Woods Birdsong',
+        subtitle: 'Nature Acoustics • Spring Rain & Forest',
+        artist: 'Public Domain Soundscape',
+        category: 'nature',
+        duration: '04:05',
+        durationSec: 245,
+        audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/8/80/Bourne_Woods_2020-04-26_0815a.mp3',
+        artworkUrl: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=600&auto=format&fit=crop&q=80',
+      },
+    ],
   });
 
   // 10. Skills

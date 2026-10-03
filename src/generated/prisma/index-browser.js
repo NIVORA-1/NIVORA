@@ -136,6 +136,9 @@ exports.Prisma.StudentProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   college: 'college',
+  collegeId: 'collegeId',
+  branchId: 'branchId',
+  regulation: 'regulation',
   degree: 'degree',
   stream: 'stream',
   streamCode: 'streamCode',
@@ -199,10 +202,14 @@ exports.Prisma.TopicScalarFieldEnum = {
 exports.Prisma.ResourceScalarFieldEnum = {
   id: 'id',
   subjectId: 'subjectId',
+  topicId: 'topicId',
   title: 'title',
   description: 'description',
   type: 'type',
   url: 'url',
+  thumbnailUrl: 'thumbnailUrl',
+  channel: 'channel',
+  duration: 'duration',
   fileSize: 'fileSize',
   author: 'author',
   downloads: 'downloads',
@@ -212,6 +219,7 @@ exports.Prisma.ResourceScalarFieldEnum = {
 
 exports.Prisma.AssignmentScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   subjectId: 'subjectId',
   title: 'title',
   code: 'code',
@@ -225,34 +233,101 @@ exports.Prisma.AssignmentScalarFieldEnum = {
   testCasesPassed: 'testCasesPassed',
   totalTestCases: 'totalTestCases',
   submissionUrl: 'submissionUrl',
-  submittedAt: 'submittedAt'
+  submittedAt: 'submittedAt',
+  source: 'source',
+  externalId: 'externalId',
+  externalCourseId: 'externalCourseId',
+  externalUrl: 'externalUrl',
+  dueDate: 'dueDate',
+  dueTime: 'dueTime',
+  priority: 'priority',
+  workType: 'workType',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.GoogleClassroomConnectionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  googleAccountId: 'googleAccountId',
+  googleEmail: 'googleEmail',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  scopes: 'scopes',
+  connectedAt: 'connectedAt',
+  updatedAt: 'updatedAt',
+  lastSyncedAt: 'lastSyncedAt',
+  status: 'status'
+};
+
+exports.Prisma.GoogleClassroomCourseScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  googleCourseId: 'googleCourseId',
+  courseName: 'courseName',
+  courseSection: 'courseSection',
+  courseDescription: 'courseDescription',
+  courseState: 'courseState',
+  nivoraSubjectId: 'nivoraSubjectId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ClassScheduleScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   subjectId: 'subjectId',
+  academicSubjectId: 'academicSubjectId',
   dayOfWeek: 'dayOfWeek',
+  dayName: 'dayName',
   startTime: 'startTime',
   endTime: 'endTime',
-  room: 'room',
+  subjectName: 'subjectName',
+  subjectCode: 'subjectCode',
   instructor: 'instructor',
+  room: 'room',
+  type: 'type',
+  section: 'section',
   meetingUrl: 'meetingUrl',
-  type: 'type'
+  notes: 'notes',
+  needsReview: 'needsReview',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TimetableUploadScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  imageUrl: 'imageUrl',
+  fileName: 'fileName',
+  fileSize: 'fileSize',
+  entriesCount: 'entriesCount',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ExamScalarFieldEnum = {
   id: 'id',
+  userId: 'userId',
   subjectId: 'subjectId',
   title: 'title',
   date: 'date',
   startTime: 'startTime',
+  endTime: 'endTime',
   durationHours: 'durationHours',
   room: 'room',
   proctor: 'proctor',
   weightage: 'weightage',
   seatNumber: 'seatNumber',
   syllabusMastery: 'syllabusMastery',
-  status: 'status'
+  status: 'status',
+  examType: 'examType',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AttendanceRecordScalarFieldEnum = {
@@ -261,6 +336,23 @@ exports.Prisma.AttendanceRecordScalarFieldEnum = {
   date: 'date',
   status: 'status',
   notes: 'notes'
+};
+
+exports.Prisma.AttendanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subjectId: 'subjectId',
+  subjectCode: 'subjectCode',
+  subjectName: 'subjectName',
+  attendedClasses: 'attendedClasses',
+  totalClasses: 'totalClasses',
+  absentClasses: 'absentClasses',
+  attendancePercentage: 'attendancePercentage',
+  lastUpdated: 'lastUpdated',
+  source: 'source',
+  sourceRecordId: 'sourceRecordId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PlannerTaskScalarFieldEnum = {
@@ -405,6 +497,302 @@ exports.Prisma.PasswordResetScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ClubScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  description: 'description',
+  category: 'category',
+  logo: 'logo',
+  bannerImage: 'bannerImage',
+  leaderId: 'leaderId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ClubMembershipScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  clubId: 'clubId',
+  role: 'role',
+  joinedAt: 'joinedAt'
+};
+
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  date: 'date',
+  eventDate: 'eventDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  venue: 'venue',
+  organizerName: 'organizerName',
+  clubId: 'clubId',
+  capacity: 'capacity',
+  registrationDeadline: 'registrationDeadline',
+  prizePool: 'prizePool',
+  isCancelled: 'isCancelled',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EventRegistrationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  status: 'status',
+  registeredAt: 'registeredAt'
+};
+
+exports.Prisma.ClubAnnouncementScalarFieldEnum = {
+  id: 'id',
+  clubId: 'clubId',
+  authorId: 'authorId',
+  title: 'title',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.TopicProgressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  topicId: 'topicId',
+  subjectId: 'subjectId',
+  isCompleted: 'isCompleted',
+  completedAt: 'completedAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SavedResourceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  resourceId: 'resourceId',
+  savedAt: 'savedAt'
+};
+
+exports.Prisma.LearningActivityScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subjectId: 'subjectId',
+  topicId: 'topicId',
+  resourceId: 'resourceId',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.HealthProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  waterGoalMl: 'waterGoalMl',
+  sleepGoalHours: 'sleepGoalHours',
+  weeklyWorkoutGoal: 'weeklyWorkoutGoal',
+  dailyCalorieGoal: 'dailyCalorieGoal',
+  heightCm: 'heightCm',
+  weightKg: 'weightKg',
+  activityLevel: 'activityLevel',
+  fitnessGoal: 'fitnessGoal',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkoutPlanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  description: 'description',
+  goal: 'goal',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WorkoutPlanDayScalarFieldEnum = {
+  id: 'id',
+  planId: 'planId',
+  dayOfWeek: 'dayOfWeek',
+  name: 'name',
+  muscleGroups: 'muscleGroups',
+  isRestDay: 'isRestDay',
+  estimatedDuration: 'estimatedDuration'
+};
+
+exports.Prisma.PlanExerciseScalarFieldEnum = {
+  id: 'id',
+  planDayId: 'planDayId',
+  exerciseName: 'exerciseName',
+  muscleGroup: 'muscleGroup',
+  targetSets: 'targetSets',
+  targetReps: 'targetReps',
+  targetWeightKg: 'targetWeightKg',
+  restSeconds: 'restSeconds',
+  order: 'order',
+  notes: 'notes'
+};
+
+exports.Prisma.WorkoutSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  planId: 'planId',
+  planName: 'planName',
+  title: 'title',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  durationMinutes: 'durationMinutes',
+  totalVolumeKg: 'totalVolumeKg',
+  totalSets: 'totalSets',
+  totalReps: 'totalReps',
+  status: 'status',
+  notes: 'notes'
+};
+
+exports.Prisma.WorkoutSessionExerciseScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  exerciseName: 'exerciseName',
+  muscleGroup: 'muscleGroup',
+  order: 'order'
+};
+
+exports.Prisma.WorkoutSetScalarFieldEnum = {
+  id: 'id',
+  sessionExerciseId: 'sessionExerciseId',
+  setNumber: 'setNumber',
+  reps: 'reps',
+  weightKg: 'weightKg',
+  isCompleted: 'isCompleted'
+};
+
+exports.Prisma.WaterLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  amountMl: 'amountMl',
+  loggedAt: 'loggedAt'
+};
+
+exports.Prisma.SleepLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  bedtime: 'bedtime',
+  wakeTime: 'wakeTime',
+  durationMinutes: 'durationMinutes',
+  quality: 'quality',
+  notes: 'notes',
+  loggedAt: 'loggedAt'
+};
+
+exports.Prisma.MealLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  mealType: 'mealType',
+  name: 'name',
+  calories: 'calories',
+  proteinGrams: 'proteinGrams',
+  carbsGrams: 'carbsGrams',
+  fatGrams: 'fatGrams',
+  notes: 'notes',
+  loggedAt: 'loggedAt'
+};
+
+exports.Prisma.HealthGoalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  target: 'target',
+  unit: 'unit',
+  frequency: 'frequency',
+  category: 'category',
+  currentProgress: 'currentProgress',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  isCompleted: 'isCompleted',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.DailyCheckInScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  energyLevel: 'energyLevel',
+  workoutCompleted: 'workoutCompleted',
+  waterIntakeMl: 'waterIntakeMl',
+  sleepHours: 'sleepHours',
+  mealsCount: 'mealsCount',
+  mood: 'mood',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.StudentConnectionScalarFieldEnum = {
+  id: 'id',
+  senderId: 'senderId',
+  receiverId: 'receiverId',
+  status: 'status',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AcademicUniversityScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AcademicCollegeScalarFieldEnum = {
+  id: 'id',
+  externalCollegeId: 'externalCollegeId',
+  name: 'name',
+  universityId: 'universityId',
+  state: 'state',
+  district: 'district',
+  website: 'website',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AcademicBranchScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  normalizedName: 'normalizedName',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AcademicCollegeBranchScalarFieldEnum = {
+  collegeId: 'collegeId',
+  branchId: 'branchId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AcademicSyllabusVersionScalarFieldEnum = {
+  id: 'id',
+  universityId: 'universityId',
+  branchId: 'branchId',
+  regulation: 'regulation',
+  academicYear: 'academicYear',
+  sourceUrl: 'sourceUrl',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AcademicSubjectScalarFieldEnum = {
+  id: 'id',
+  syllabusId: 'syllabusId',
+  semester: 'semester',
+  code: 'code',
+  name: 'name',
+  subjectType: 'subjectType',
+  credits: 'credits',
+  lectureHours: 'lectureHours',
+  tutorialHours: 'tutorialHours',
+  practicalHours: 'practicalHours',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -428,9 +816,13 @@ exports.Prisma.ModelName = {
   Topic: 'Topic',
   Resource: 'Resource',
   Assignment: 'Assignment',
+  GoogleClassroomConnection: 'GoogleClassroomConnection',
+  GoogleClassroomCourse: 'GoogleClassroomCourse',
   ClassSchedule: 'ClassSchedule',
+  TimetableUpload: 'TimetableUpload',
   Exam: 'Exam',
   AttendanceRecord: 'AttendanceRecord',
+  Attendance: 'Attendance',
   PlannerTask: 'PlannerTask',
   RebootSession: 'RebootSession',
   MusicTrack: 'MusicTrack',
@@ -442,7 +834,34 @@ exports.Prisma.ModelName = {
   Discussion: 'Discussion',
   Notification: 'Notification',
   Achievement: 'Achievement',
-  PasswordReset: 'PasswordReset'
+  PasswordReset: 'PasswordReset',
+  Club: 'Club',
+  ClubMembership: 'ClubMembership',
+  Event: 'Event',
+  EventRegistration: 'EventRegistration',
+  ClubAnnouncement: 'ClubAnnouncement',
+  TopicProgress: 'TopicProgress',
+  SavedResource: 'SavedResource',
+  LearningActivity: 'LearningActivity',
+  HealthProfile: 'HealthProfile',
+  WorkoutPlan: 'WorkoutPlan',
+  WorkoutPlanDay: 'WorkoutPlanDay',
+  PlanExercise: 'PlanExercise',
+  WorkoutSession: 'WorkoutSession',
+  WorkoutSessionExercise: 'WorkoutSessionExercise',
+  WorkoutSet: 'WorkoutSet',
+  WaterLog: 'WaterLog',
+  SleepLog: 'SleepLog',
+  MealLog: 'MealLog',
+  HealthGoal: 'HealthGoal',
+  DailyCheckIn: 'DailyCheckIn',
+  StudentConnection: 'StudentConnection',
+  AcademicUniversity: 'AcademicUniversity',
+  AcademicCollege: 'AcademicCollege',
+  AcademicBranch: 'AcademicBranch',
+  AcademicCollegeBranch: 'AcademicCollegeBranch',
+  AcademicSyllabusVersion: 'AcademicSyllabusVersion',
+  AcademicSubject: 'AcademicSubject'
 };
 
 /**

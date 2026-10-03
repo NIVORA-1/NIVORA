@@ -2,306 +2,393 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { useApp } from '@/context/AppContext';
+import { getSubjectByCode } from '@/lib/curriculumData';
 
 export default function SubjectDetailPage({ params }: { params: { id: string } }) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'topics' | 'notes' | 'resources' | 'quizzes'>('overview');
-  const [showSqlDrawer, setShowSqlDrawer] = useState(false);
-  const [sqlQuery, setSqlQuery] = useState('SELECT r.id, r.name, COUNT(a.id) AS assignments_due\nFROM Relations r\nLEFT JOIN Assignments a ON r.id = a.rel_id\nGROUP BY r.id;\n');
-  const [sqlResults, setSqlResults] = useState<{ id: number; name: string; assignments_due: number }[]>([
-    { id: 101, name: 'Relational Schema R(A,B,C,D)', assignments_due: 2 },
-    { id: 102, name: 'B+ Tree Leaf Page Split Invariant', assignments_due: 1 },
-    { id: 103, name: 'Two-Phase Locking (2PL) Protocol', assignments_due: 0 },
-  ]);
-  const [quizScore, setQuizScore] = useState<number | null>(null);
-  const [quizAnswer, setQuizAnswer] = useState<string>('');
+  const { setIsAiAssistOpen } = useApp();
+  const subjectCode = params.id ? decodeURIComponent(params.id) : 'CS301';
+  const subject = getSubjectByCode(subjectCode);
 
-  const subjectCode = params.id || 'CS-301';
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'topics' | 'notes' | 'resources' | 'tasks'
+  >('overview');
+  const [studentNotes, setStudentNotes] = useState<string>('');
+  const [completedTopics, setCompletedTopics] = useState<Record<number, boolean>>({});
 
-  const executeSql = () => {
-    // Interactive mock query execution
-    setSqlResults([
-      { id: 101, name: 'Bernstein 3NF Minimal Cover', assignments_due: 1 },
-      { id: 102, name: 'BCNF Lossless Preservation Check', assignments_due: 2 },
-      { id: 104, name: 'Multi-Version Concurrency (MVCC)', assignments_due: 1 },
-    ]);
+  // If code is not found in curriculum data, show a clean generic template
+  const subName = subject?.name || `${subjectCode} Academic Module`;
+  const subCode = subject?.code || subjectCode;
+  const subCredits = subject?.credits ?? 4;
+  const subType = subject?.type || 'Core';
+  const subSemester = subject?.semester ?? 3;
+  const subDescription =
+    subject?.description ||
+    'Comprehensive syllabus module encompassing theoretical principles, analytical methods, and practical computing applications.';
+  const subTopics = subject?.topics || [
+    'Fundamental Principles & Definitions',
+    'Mathematical Modeling & Algorithmic Analysis',
+    'System Implementations & Architectures',
+    'Evaluation, Benchmarking & Practical Applications',
+  ];
+  const subInstructor = subject?.instructor || 'Department Faculty Lead';
+  const subRoom = subject?.room || 'Academic Block Hall';
+
+  const toggleTopic = (index: number) => {
+    setCompletedTopics((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
-  const submitQuiz = () => {
-    if (quizAnswer === 'C') {
-      setQuizScore(100);
-    } else {
-      setQuizScore(50);
-    }
-  };
+  const completedCount = Object.values(completedTopics).filter(Boolean).length;
 
   return (
     <div className="flex flex-col w-full max-w-[1400px] mx-auto space-y-space-lg pb-space-3xl animate-in fade-in duration-200">
-      {/* Top Control Bar */}
-      <div className="bg-surface-container-low p-space-lg rounded-xl shadow-md space-y-space-md border border-outline-variant/30">
-        {/* Breadcrumb & Code Tag */}
+      {/* ── Top Navigation / Breadcrumbs Bar ── */}
+      <div className="bg-surface-container-low p-space-lg rounded-2xl shadow-sm space-y-space-md border border-outline-variant/30">
         <div className="flex flex-wrap items-center justify-between gap-space-sm">
-          <div className="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant">
+          <div className="flex items-center gap-space-xs font-label-mono-wide text-label-mono-wide text-on-surface-variant flex-wrap">
             <Link href="/subjects" className="hover:text-primary transition-colors">
               ACADEMIC CORE
             </Link>
             <span className="text-outline-variant">/</span>
-            <Link href="/subjects" className="hover:text-primary transition-colors">
-              SUBJECTS
+            <Link
+              href={`/subjects?sem=${subSemester}`}
+              className="hover:text-primary transition-colors"
+            >
+              SEMESTER {subSemester}
             </Link>
             <span className="text-outline-variant">/</span>
-            <span className="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold tracking-wider">
-              {subjectCode}
+            <span className="px-2 py-0.5 rounded-md bg-secondary-container text-on-secondary-container font-bold tracking-wider">
+              {subCode}
             </span>
           </div>
 
-          <div className="flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag">
+          <div className="flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant font-label-tag text-label-tag">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-on-surface">SYLLABUS ACTIVE</span>
+            <span className="text-on-surface font-semibold">{subType.toUpperCase()} MODULE</span>
             <span className="text-outline-variant">•</span>
-            <span>TERM V (AUTUMN 2025)</span>
+            <span>B.TECH CSE SEMESTER {subSemester}</span>
           </div>
         </div>
 
-        {/* Title + Quick Actions Row */}
+        {/* Title & Quick Actions Row */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pt-space-2xs">
           <div className="space-y-space-2xs">
             <div className="flex items-baseline gap-space-sm flex-wrap">
-              <h1 className="font-display-quote text-display-hero text-on-surface italic tracking-normal">
-                Database Management Systems
+              <h1 className="font-display-hero text-display-hero text-on-surface tracking-tight font-bold">
+                {subName}
               </h1>
-              <span className="font-label-mono-wide text-body-sm text-secondary font-medium">
-                4.0 CREDITS
+              <span className="font-label-mono-wide text-body-sm text-secondary font-bold">
+                {subCredits} CREDITS
               </span>
             </div>
             <p className="font-body-md text-on-surface-variant flex flex-wrap items-center gap-x-space-md gap-y-1">
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-primary">school</span>
-                Core Theory &amp; Practical Lab
+                {subType} Academic Module
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-on-surface-variant">person</span>
-                Dr. K. Sharma
+                {subInstructor}
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <span className="material-symbols-outlined text-[16px] text-on-surface-variant">meeting_room</span>
-                Block C, Hall B-204
+                {subRoom}
               </span>
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-space-xs">
-            <Link
-              href="/resources"
-              className="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-all font-button-text text-button-text"
-            >
-              <span className="material-symbols-outlined text-[18px] text-on-surface-variant">slideshow</span>
-              <span>Lecture Slides</span>
-            </Link>
+          {/* AI Companion Prompt Button */}
+          <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => setShowSqlDrawer(true)}
-              className="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-primary hover:bg-primary-fixed text-on-primary font-button-text text-button-text transition-all shadow-sm font-semibold"
+              type="button"
+              onClick={() => setIsAiAssistOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-deep-coral text-white hover:bg-deep-coral/90 transition-all font-button-text text-button-text font-semibold shadow-xs cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[18px]">terminal</span>
-              <span>Launch SQL Scratchpad</span>
+              <span className="material-symbols-outlined text-[18px]">smart_toy</span>
+              <span>Ask Nivora AI about {subCode}</span>
             </button>
+            <Link
+              href={`/subjects?sem=${subSemester}`}
+              className="flex items-center gap-1 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface transition-colors font-button-text text-button-text text-xs"
+            >
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span>Back to Semester {subSemester}</span>
+            </Link>
           </div>
         </div>
 
-        {/* Quick Metrics Ribbon */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-space-xs pt-space-xs font-label-tag text-label-tag">
-          <div className="flex items-center gap-space-xs p-space-xs px-space-sm rounded-lg bg-surface-container">
-            <span className="material-symbols-outlined text-[16px] text-primary">check_circle</span>
-            <span className="text-on-surface-variant uppercase tracking-wider">Attendance:</span>
-            <span className="text-on-surface font-semibold font-label-mono-wide">84.6%</span>
-            <span className="text-secondary">(Safe • 6 miss left)</span>
-          </div>
-          <div className="flex items-center gap-space-xs p-space-xs px-space-sm rounded-lg bg-surface-container">
-            <span className="material-symbols-outlined text-[16px] text-tertiary">grade</span>
-            <span className="text-on-surface-variant uppercase tracking-wider">Projected Grade:</span>
-            <span className="text-tertiary font-semibold font-label-mono-wide">Grade A (88%)</span>
-          </div>
-          <div className="flex items-center gap-space-xs p-space-xs px-space-sm rounded-lg bg-surface-container">
-            <span className="material-symbols-outlined text-[16px] text-secondary">pending_actions</span>
-            <span className="text-on-surface-variant uppercase tracking-wider">Pending Work:</span>
-            <span className="text-on-surface font-semibold font-label-mono-wide">2 Deliverables</span>
-          </div>
-          <div className="flex items-center gap-space-xs p-space-xs px-space-sm rounded-lg bg-surface-container">
-            <span className="material-symbols-outlined text-[16px] text-primary">timer</span>
-            <span className="text-on-surface-variant uppercase tracking-wider">Next Session:</span>
-            <span className="text-primary font-semibold font-label-mono-wide">Tomorrow 10:00 AM</span>
-          </div>
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-1 overflow-x-auto pt-space-xs border-t border-outline-variant/20 scrollbar-none">
+          {[
+            { id: 'overview', label: 'Overview & Syllabus', icon: 'menu_book' },
+            { id: 'topics', label: `Topics (${subTopics.length})`, icon: 'checklist' },
+            { id: 'notes', label: 'Study Notes', icon: 'edit_note' },
+            { id: 'resources', label: 'Resources & Reference', icon: 'folder_open' },
+            { id: 'tasks', label: 'Planner & Tasks', icon: 'calendar_today' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-button-text text-button-text transition-all shrink-0 cursor-pointer ${
+                activeTab === tab.id
+                  ? 'bg-primary text-on-primary font-bold shadow-xs'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+              }`}
+            >
+              <span className="material-symbols-outlined text-[18px]">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Sub-Navigation Tabs */}
-      <div className="flex items-center gap-space-2xs overflow-x-auto pb-1 text-on-surface-variant font-button-text text-button-text">
-        {[
-          { id: 'overview', label: 'Overview', icon: 'overview' },
-          { id: 'topics', label: 'Topics & Units (5)', icon: 'menu_book' },
-          { id: 'notes', label: 'Notes & Cheatsheets (18)', icon: 'sticky_note_2' },
-          { id: 'resources', label: 'Vault Resources', icon: 'folder_special' },
-          { id: 'quizzes', label: 'Quizzes & Practice', icon: 'psychology' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as typeof activeTab)}
-            className={`px-space-md py-2 rounded-lg transition-colors flex items-center gap-1.5 whitespace-nowrap ${
-              activeTab === tab.id
-                ? 'bg-secondary-container text-on-secondary-container font-semibold shadow-sm'
-                : 'hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface'
-            }`}
-          >
-            <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
-            <span>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      {/* ── Tab Content Areas ── */}
 
-      {/* TAB CONTENT */}
-
-      {/* OVERVIEW TAB */}
+      {/* TAB 1: OVERVIEW */}
       {activeTab === 'overview' && (
-        <div className="space-y-space-lg">
-          {/* Immediate Deliverable Alert */}
-          <div className="rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md shadow-sm">
-            <div className="flex items-start gap-space-sm">
-              <span className="material-symbols-outlined text-primary text-[24px] mt-0.5">assignment</span>
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-headline-sm text-body-lg text-on-surface font-semibold">
-                    CS-301 DBMS Assignment 03: Normalization &amp; B+ Tree Indexing
-                  </h3>
-                  <span className="px-2 py-0.2 rounded-full bg-tertiary-container text-on-tertiary-container font-label-tag text-[9px] uppercase font-semibold">
-                    Due in 35h
-                  </span>
-                </div>
-                <p className="font-body-sm text-on-surface-variant">
-                  Formal decomposition of relations into 3NF and BCNF with minimal functional dependency cover.
-                </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-space-lg">
+          <div className="lg:col-span-2 space-y-space-md">
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-3 shadow-xs">
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">description</span>
+                <span>Course Synopsis &amp; Objectives</span>
+              </h3>
+              <p className="font-body-md text-on-surface leading-relaxed">{subDescription}</p>
+            </div>
+
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-3 shadow-xs">
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-[20px]">format_list_bulleted</span>
+                <span>Syllabus Key Modules</span>
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+                {subTopics.map((topic, i) => (
+                  <div
+                    key={i}
+                    className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 flex items-start gap-2.5 text-xs text-on-surface"
+                  >
+                    <span className="font-mono text-primary font-bold shrink-0">Unit 0{i + 1}</span>
+                    <span className="font-medium leading-snug">{topic}</span>
+                  </div>
+                ))}
               </div>
             </div>
-            <Link
-              href="/assignments"
-              className="px-space-md py-2 rounded-lg bg-primary text-on-primary font-button-text text-button-text font-semibold hover:bg-primary-fixed transition-colors shadow-sm shrink-0"
+          </div>
+
+          {/* Right Column: Parameters & Specifications */}
+          <div className="space-y-space-md">
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-3 shadow-xs">
+              <h3 className="font-headline-sm text-body-md text-on-surface font-bold uppercase tracking-wider font-mono text-xs">
+                Academic Specifications
+              </h3>
+              <div className="space-y-2 text-xs divide-y divide-outline-variant/20">
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Course Code</span>
+                  <span className="font-mono font-bold text-on-surface">{subCode}</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Credit Allocation</span>
+                  <span className="font-mono font-bold text-on-surface">{subCredits} Credits</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Module Classification</span>
+                  <span className="font-bold text-primary">{subType}</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Curriculum Term</span>
+                  <span className="text-on-surface font-medium">Semester {subSemester}</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Assigned Faculty</span>
+                  <span className="text-on-surface font-medium">{subInstructor}</span>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-on-surface-variant">Lecture Location</span>
+                  <span className="text-on-surface font-medium">{subRoom}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-2 shadow-xs text-xs text-on-surface-variant">
+              <span className="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
+              <p className="font-medium text-on-surface">Institutional Adaptation Notice</p>
+              <p>
+                Syllabus topics follow the standardized B.Tech CSE model curriculum. Topic sequencing may be tailored to your university examination guidelines.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 2: TOPICS */}
+      {activeTab === 'topics' && (
+        <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-md shadow-xs">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold">
+                Syllabus Units &amp; Coverage
+              </h3>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                Check off topics as you review them to track your personal revision milestone.
+              </p>
+            </div>
+            <span className="px-3 py-1 rounded-full bg-surface-container text-xs font-mono text-on-surface">
+              {completedCount} of {subTopics.length} reviewed
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {subTopics.map((topic, i) => {
+              const isChecked = !!completedTopics[i];
+              return (
+                <div
+                  key={i}
+                  onClick={() => toggleTopic(i)}
+                  className={`p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                    isChecked
+                      ? 'bg-surface-container/60 border-primary/40 text-on-surface-variant'
+                      : 'bg-surface-container border-outline-variant/30 hover:border-outline-variant text-on-surface'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span
+                      className={`material-symbols-outlined text-[20px] shrink-0 ${
+                        isChecked ? 'text-primary' : 'text-outline-variant'
+                      }`}
+                    >
+                      {isChecked ? 'check_circle' : 'radio_button_unchecked'}
+                    </span>
+                    <div className="min-w-0">
+                      <div className="font-mono text-[10px] text-primary font-bold uppercase tracking-wider">
+                        Unit 0{i + 1}
+                      </div>
+                      <div
+                        className={`text-sm font-semibold truncate ${
+                          isChecked ? 'line-through opacity-70' : ''
+                        }`}
+                      >
+                        {topic}
+                      </div>
+                    </div>
+                  </div>
+
+                  <span className="text-[11px] text-on-surface-variant font-medium shrink-0">
+                    {isChecked ? 'Reviewed' : 'Pending Review'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: NOTES */}
+      {activeTab === 'notes' && (
+        <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-md shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold">
+                Student Notebook: {subCode}
+              </h3>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                Capture quick derivations, lecture takeaways, and exam hints for this subject.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => alert('Notes saved to your student workspace.')}
+              className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-button-text text-button-text text-xs font-semibold cursor-pointer"
             >
-              Open Submission Workspace
+              Save Notes
+            </button>
+          </div>
+
+          <textarea
+            value={studentNotes}
+            onChange={(e) => setStudentNotes(e.target.value)}
+            placeholder={`Jot down personal study notes, formula derivations, or questions for ${subName}...`}
+            rows={10}
+            className="w-full p-4 rounded-xl bg-surface border border-outline-variant/40 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none text-xs text-on-surface leading-relaxed placeholder:text-on-surface-variant/50 resize-y"
+          />
+        </div>
+      )}
+
+      {/* TAB 4: RESOURCES */}
+      {activeTab === 'resources' && (
+        <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-md shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold">
+                Study Materials &amp; Syllabi
+              </h3>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                Curated lecture decks, reference books, and past question archives.
+              </p>
+            </div>
+            <Link
+              href="/resources"
+              className="text-xs text-primary font-semibold hover:underline flex items-center gap-1"
+            >
+              <span>Explore Central Repository</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </Link>
           </div>
 
-          {/* Syllabus Breakdown by Units */}
-          <div className="space-y-space-md">
-            <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-              Syllabus Breakdown by Units
-            </h2>
-
-            <div className="space-y-space-sm">
-              {[
-                { unit: 1, title: 'Relational Model & Relational Algebra', progress: 100, status: 'Completed', isWeak: false },
-                { unit: 2, title: 'SQL Engine, Subqueries & Window Functions', progress: 94, status: 'Completed', isWeak: false },
-                { unit: 3, title: 'Bernstein 3NF Synthesis & BCNF Decomposition', progress: 68, status: 'Active Focus', isWeak: true },
-                { unit: 4, title: 'Transaction & Concurrency Control (2PL, MVCC)', progress: 30, status: 'Upcoming', isWeak: false },
-                { unit: 5, title: 'Storage Engines & B+ Tree Indexing', progress: 15, status: 'Upcoming', isWeak: false },
-              ].map((u) => (
-                <div
-                  key={u.unit}
-                  className="rounded-xl bg-surface-container-low border border-outline-variant/30 p-space-md space-y-2 hover:border-outline-variant/60 transition-colors"
-                >
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-space-sm">
-                      <span className="font-label-mono-wide text-xs text-primary font-semibold">
-                        UNIT 0{u.unit}
-                      </span>
-                      <h4 className="font-headline-sm text-body-md text-on-surface font-semibold">
-                        {u.title}
-                      </h4>
-                      {u.isWeak && (
-                        <span className="px-2 py-0.5 rounded-full bg-error-container/40 text-error font-label-tag text-[9px] uppercase font-semibold">
-                          Deficit Identified
-                        </span>
-                      )}
-                    </div>
-                    <span className="font-label-mono-wide text-xs text-on-surface font-semibold">
-                      {u.progress}% Mastered
-                    </span>
-                  </div>
-
-                  <div className="w-full h-1.5 rounded-full bg-surface-container overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        u.isWeak ? 'bg-tertiary' : 'bg-primary'
-                      }`}
-                      style={{ width: `${u.progress}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* TOPICS & UNITS TAB */}
-      {activeTab === 'topics' && (
-        <div className="space-y-space-md">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-            Detailed Unit Modules
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-            <div className="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
-              <span className="font-label-mono-wide text-xs text-primary">UNIT 3 • MODULE 3.1</span>
-              <h4 className="font-headline-sm text-on-surface font-semibold">
-                Functional Dependencies &amp; Attribute Closure
-              </h4>
-              <p className="text-body-sm text-on-surface-variant">
-                Algorithms for finding $X^+$ attribute closure, extraneous attributes, and computing minimal canonical covers.
-              </p>
-              <button
-                onClick={() => setShowSqlDrawer(true)}
-                className="text-primary font-button-text text-body-sm hover:underline"
-              >
-                Practice in SQL Scratchpad →
-              </button>
-            </div>
-
-            <div className="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
-              <span className="font-label-mono-wide text-xs text-primary">UNIT 3 • MODULE 3.2</span>
-              <h4 className="font-headline-sm text-on-surface font-semibold">
-                Bernstein 3NF Synthesis
-              </h4>
-              <p className="text-body-sm text-on-surface-variant">
-                Synthesizing relations from canonical covers guaranteeing both dependency preservation and lossless join property.
-              </p>
-              <Link href="/nivora-ai?q=/explain-concept+Bernstein+3NF" className="text-primary font-button-text text-body-sm hover:underline">
-                Ask Copilot to Derivate →
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* NOTES TAB */}
-      {activeTab === 'notes' && (
-        <div className="space-y-space-md">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-            Curated Notes &amp; Cheatsheets
-          </h2>
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {[
-              { title: "Prof. Sharma's DBMS Master Pack (Units 1–4)", type: 'PDF Note', size: '18.4 MB', downloads: 312 },
-              { title: 'Relational Normalization Decision Matrix Cheatsheet', type: 'Cheatsheet', size: '2.1 MB', downloads: 540 },
-              { title: 'B+ Tree Splitting & Merge Algorithm Quick Reference', type: 'Formula Sheet', size: '1.4 MB', downloads: 198 },
-            ].map((n, i) => (
-              <div key={i} className="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between">
-                <div className="flex items-center gap-space-sm">
-                  <span className="material-symbols-outlined text-primary text-[22px]">description</span>
-                  <div>
-                    <h4 className="font-headline-sm text-body-md text-on-surface font-semibold">{n.title}</h4>
-                    <span className="font-label-mono-wide text-[10px] text-on-surface-variant">{n.type} • {n.size} • {n.downloads} downloads</span>
+              {
+                title: `${subCode} Model Syllabus & Course Outline`,
+                type: 'PDF Document',
+                size: '2.4 MB',
+                icon: 'picture_as_pdf',
+              },
+              {
+                title: `${subCode} Core Lecture Slides (Units 1–4)`,
+                type: 'Presentation Deck',
+                size: '14.8 MB',
+                icon: 'slideshow',
+              },
+              {
+                title: `${subCode} Previous 5-Year Question Papers (PYQ)`,
+                type: 'Exam Archive',
+                size: '6.1 MB',
+                icon: 'history_edu',
+              },
+              {
+                title: `${subCode} Reference Formula & Derivation Sheet`,
+                type: 'Cheat Sheet',
+                size: '1.2 MB',
+                icon: 'menu_book',
+              },
+            ].map((res, i) => (
+              <div
+                key={i}
+                className="p-3.5 rounded-xl bg-surface-container border border-outline-variant/30 flex items-center justify-between gap-3 hover:border-outline-variant transition-all"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="material-symbols-outlined text-primary text-[24px] shrink-0">
+                    {res.icon}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold text-on-surface truncate">{res.title}</div>
+                    <div className="text-[10px] text-on-surface-variant mt-0.5 font-mono">
+                      {res.type} · {res.size}
+                    </div>
                   </div>
                 </div>
-                <button className="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-tag text-xs">
+
+                <button
+                  type="button"
+                  onClick={() => alert(`Downloading ${res.title}...`)}
+                  className="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-xs text-on-surface font-semibold shrink-0 cursor-pointer"
+                >
                   Download
                 </button>
               </div>
@@ -310,165 +397,43 @@ export default function SubjectDetailPage({ params }: { params: { id: string } }
         </div>
       )}
 
-      {/* RESOURCES TAB */}
-      {activeTab === 'resources' && (
-        <div className="space-y-space-md">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-            Past Papers &amp; Exam Rubrics
-          </h2>
-          <div className="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-2">
-            <h4 className="font-headline-sm text-on-surface font-semibold">
-              DBMS 2020–2024 Mid-Term Papers with Marking Scheme
-            </h4>
-            <p className="text-body-sm text-on-surface-variant">
-              Full collection of solved exam papers with professor grading rubric notes.
-            </p>
-            <Link href="/resources" className="inline-block text-primary font-button-text text-body-sm hover:underline">
-              Open in Resource Vault →
+      {/* TAB 5: TASKS */}
+      {activeTab === 'tasks' && (
+        <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-md shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-headline-sm text-body-lg text-on-surface font-bold">
+                Subject Study Planner
+              </h3>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                Block revision hours and link assignments directly to your personal academic calendar.
+              </p>
+            </div>
+            <Link
+              href="/planner"
+              className="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-button-text text-button-text text-xs font-semibold"
+            >
+              Open Full Planner
             </Link>
           </div>
-        </div>
-      )}
 
-      {/* QUIZZES TAB */}
-      {activeTab === 'quizzes' && (
-        <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-md shadow-md">
-          <div className="space-y-1">
-            <span className="font-label-tag text-label-tag text-primary uppercase tracking-widest">
-              Interactive Retrieval Quiz
+          <div className="p-6 rounded-xl bg-surface-container/60 border border-outline-variant/20 text-center space-y-2">
+            <span className="material-symbols-outlined text-[28px] text-secondary">
+              calendar_month
             </span>
-            <h3 className="font-headline-md text-on-surface font-semibold">
-              Module 03: Normalization &amp; Functional Dependencies
-            </h3>
-            <p className="text-body-sm text-on-surface-variant">
-              Test your understanding of prime attributes and 3NF conditions.
+            <p className="text-body-sm font-medium text-on-surface">
+              Schedule focused study blocks for {subCode}
             </p>
-          </div>
-
-          <div className="p-space-md rounded-xl bg-surface-container border border-outline-variant/20 space-y-space-sm">
-            <p className="font-body-md text-on-surface font-medium">
-              Consider relation $R(A, B, C, D)$ with FDs: $A \\rightarrow B$, $B \\rightarrow C$, and $C \\rightarrow D$. What is the highest normal form of $R$?
+            <p className="text-xs text-on-surface-variant max-w-md mx-auto">
+              Plan your weekly revision sessions for {subName} to stay ahead of upcoming internal evaluations.
             </p>
-
-            <div className="space-y-2">
-              {[
-                { key: 'A', label: 'First Normal Form (1NF)' },
-                { key: 'B', label: 'Second Normal Form (2NF)' },
-                { key: 'C', label: 'Third Normal Form (3NF) — because candidate key is A, but transitive dependencies exist' },
-                { key: 'D', label: 'Boyce-Codd Normal Form (BCNF)' },
-              ].map((opt) => (
-                <div
-                  key={opt.key}
-                  onClick={() => setQuizAnswer(opt.key)}
-                  className={`p-space-sm rounded-lg border cursor-pointer transition-colors flex items-center gap-3 ${
-                    quizAnswer === opt.key
-                      ? 'bg-secondary-container/60 border-primary text-on-surface'
-                      : 'bg-surface-container-low border-outline-variant/30 text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  <span className="font-label-mono-wide text-xs font-bold text-primary">{opt.key}</span>
-                  <span className="font-body-sm text-sm">{opt.label}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="pt-2 flex items-center justify-between">
-              <button
-                onClick={submitQuiz}
-                className="px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-button-text text-button-text font-semibold hover:bg-primary-fixed transition-colors"
-              >
-                Submit Answer
-              </button>
-
-              {quizScore !== null && (
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[18px]">check_circle</span>
-                  <span className="font-headline-sm text-sm text-primary font-semibold">
-                    Score: {quizScore}% — Mastery updated in your profile!
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* SQL Scratchpad Drawer Modal */}
-      {showSqlDrawer && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          onClick={() => setShowSqlDrawer(false)}
-        >
-          <div
-            className="w-full max-w-3xl rounded-2xl bg-surface-container-low border border-outline-variant/40 shadow-2xl p-space-lg space-y-space-md"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-[22px]">terminal</span>
-                <h3 className="font-headline-sm text-on-surface font-semibold">
-                  SQL Query Scratchpad (In-Memory Engine)
-                </h3>
-              </div>
-              <button
-                onClick={() => setShowSqlDrawer(false)}
-                className="text-on-surface-variant hover:text-on-surface"
-              >
-                <span className="material-symbols-outlined text-[20px]">close</span>
-              </button>
-            </div>
-
-            <div className="space-y-1">
-              <label className="font-label-tag text-xs uppercase text-on-surface-variant block">
-                SQL Statement
-              </label>
-              <textarea
-                rows={4}
-                value={sqlQuery}
-                onChange={(e) => setSqlQuery(e.target.value)}
-                className="w-full font-mono text-xs p-3 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface focus:border-primary focus:outline-none"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <span className="font-label-mono-wide text-[10px] text-on-surface-variant">
-                Query execution cost: 0.04ms • Buffer Hit 100%
-              </span>
-              <button
-                onClick={executeSql}
-                className="px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-button-text text-button-text font-semibold hover:bg-primary-fixed transition-colors flex items-center gap-1 shadow-sm"
-              >
-                <span className="material-symbols-outlined text-[16px]">play_arrow</span>
-                <span>Execute Query</span>
-              </button>
-            </div>
-
-            {/* Results Table */}
-            <div className="space-y-1 pt-2">
-              <span className="font-label-tag text-xs uppercase text-on-surface-variant block">
-                Result Set ({sqlResults.length} rows returned)
-              </span>
-              <div className="overflow-x-auto rounded-lg border border-outline-variant/20">
-                <table className="w-full text-left font-body-sm text-xs">
-                  <thead className="bg-surface-container text-on-surface-variant font-label-mono-wide uppercase">
-                    <tr>
-                      <th className="p-2.5">ID</th>
-                      <th className="p-2.5">Relation Name</th>
-                      <th className="p-2.5">Assignments Due</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-outline-variant/20">
-                    {sqlResults.map((row) => (
-                      <tr key={row.id} className="hover:bg-surface-container/50">
-                        <td className="p-2.5 font-mono text-primary">{row.id}</td>
-                        <td className="p-2.5 text-on-surface">{row.name}</td>
-                        <td className="p-2.5 text-on-surface-variant">{row.assignments_due}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <Link
+              href="/planner"
+              className="inline-flex items-center gap-1.5 text-xs text-primary font-bold hover:underline pt-1"
+            >
+              <span>Schedule Study Block in Planner</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+            </Link>
           </div>
         </div>
       )}

@@ -39,20 +39,20 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
   const { criteria, score, label } = evaluatePassword(password);
 
   const getBarColor = (index: number) => {
-    if (index >= score) return 'bg-[#1e2f37]';
-    if (score <= 1) return 'bg-[#ff8a80]';
-    if (score === 2) return 'bg-[#ffd54f]';
-    if (score === 3) return 'bg-[#81c784]';
-    return 'bg-[#8fc5a7]';
+    if (index >= score) return 'bg-outline-variant/25';
+    if (score <= 1) return 'bg-coral/80';
+    if (score === 2) return 'bg-muted-sand';
+    if (score === 3) return 'bg-coral';
+    return 'bg-deep-coral';
   };
 
   return (
     <div className="space-y-3.5">
       {/* Strength Bar & Label */}
       <div className="space-y-1.5">
-        <div className="flex items-center justify-between text-xs text-[#80919b]">
+        <div className="flex items-center justify-between text-xs text-on-surface-variant">
           <span>Password strength:</span>
-          <span className={`font-medium ${score === 4 ? 'text-[#8fc5a7]' : score >= 2 ? 'text-[#e8eff2]' : 'text-[#80919b]'}`}>
+          <span className={`font-medium ${score === 4 ? 'text-deep-coral' : score >= 2 ? 'text-on-surface' : 'text-on-surface-variant'}`}>
             {label}
           </span>
         </div>
@@ -67,19 +67,19 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
       </div>
 
       {/* 2x2 Requirement Checklist */}
-      <div className="rounded-xl bg-[#131f25] border border-[#1e3039] p-3.5 space-y-2">
-        <span className="block text-[11px] font-sans font-medium text-[#7a8c96] uppercase tracking-wider">
+      <div className="rounded-xl bg-surface-container border border-outline-variant/40 p-3.5 space-y-2">
+        <span className="block text-[11px] font-sans font-medium text-on-surface-variant uppercase tracking-wider">
           Password requirements:
         </span>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
           {/* Min 8 chars */}
           <div className="flex items-center gap-2">
             <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
-              criteria.minChars ? 'bg-[#8fc5a7]/20 text-[#8fc5a7] border border-[#8fc5a7]/40' : 'border border-[#344752] text-transparent'
+              criteria.minChars ? 'bg-deep-coral/15 text-deep-coral border border-deep-coral/40' : 'border border-outline-variant/60 text-transparent'
             }`}>
               ✓
             </span>
-            <span className={criteria.minChars ? 'text-[#dbe4e9]' : 'text-[#71838d]'}>
+            <span className={criteria.minChars ? 'text-on-surface' : 'text-on-surface-variant'}>
               Min. 8 characters
             </span>
           </div>
@@ -87,11 +87,11 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
           {/* Upper & lower case */}
           <div className="flex items-center gap-2">
             <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
-              criteria.caseMix ? 'bg-[#8fc5a7]/20 text-[#8fc5a7] border border-[#8fc5a7]/40' : 'border border-[#344752] text-transparent'
+              criteria.caseMix ? 'bg-deep-coral/15 text-deep-coral border border-deep-coral/40' : 'border border-outline-variant/60 text-transparent'
             }`}>
               ✓
             </span>
-            <span className={criteria.caseMix ? 'text-[#dbe4e9]' : 'text-[#71838d]'}>
+            <span className={criteria.caseMix ? 'text-on-surface' : 'text-on-surface-variant'}>
               Upper &amp; lower case
             </span>
           </div>
@@ -99,11 +99,11 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
           {/* At least 1 number */}
           <div className="flex items-center gap-2">
             <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
-              criteria.hasNumber ? 'bg-[#8fc5a7]/20 text-[#8fc5a7] border border-[#8fc5a7]/40' : 'border border-[#344752] text-transparent'
+              criteria.hasNumber ? 'bg-deep-coral/15 text-deep-coral border border-deep-coral/40' : 'border border-outline-variant/60 text-transparent'
             }`}>
               ✓
             </span>
-            <span className={criteria.hasNumber ? 'text-[#dbe4e9]' : 'text-[#71838d]'}>
+            <span className={criteria.hasNumber ? 'text-on-surface' : 'text-on-surface-variant'}>
               At least 1 number
             </span>
           </div>
@@ -111,11 +111,11 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
           {/* 1 special symbol */}
           <div className="flex items-center gap-2">
             <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${
-              criteria.hasSpecial ? 'bg-[#8fc5a7]/20 text-[#8fc5a7] border border-[#8fc5a7]/40' : 'border border-[#344752] text-transparent'
+              criteria.hasSpecial ? 'bg-deep-coral/15 text-deep-coral border border-deep-coral/40' : 'border border-outline-variant/60 text-transparent'
             }`}>
               ✓
             </span>
-            <span className={criteria.hasSpecial ? 'text-[#dbe4e9]' : 'text-[#71838d]'}>
+            <span className={criteria.hasSpecial ? 'text-on-surface' : 'text-on-surface-variant'}>
               1 special symbol
             </span>
           </div>
@@ -124,3 +124,4 @@ export default function PasswordStrengthMeter({ password }: PasswordStrengthMete
     </div>
   );
 }
+

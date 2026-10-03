@@ -108,17 +108,17 @@ function ResetPasswordContent() {
       {isSuccess ? (
         /* Success Experience */
         <div className="text-center py-4 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-          <div className="w-14 h-14 rounded-2xl bg-[#8fc5a7]/15 border border-[#8fc5a7]/40 text-[#8fc5a7] flex items-center justify-center mx-auto shadow-lg">
+          <div className="w-14 h-14 rounded-2xl bg-coral/15 border border-coral/40 text-coral flex items-center justify-center mx-auto shadow-lg">
             <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
             </svg>
           </div>
 
           <div className="space-y-1.5">
-            <h2 className="text-2xl font-bold font-sans tracking-tight text-[#e8eff2]">
+            <h2 className="text-2xl font-bold font-sans tracking-tight text-on-surface">
               Password updated.
             </h2>
-            <p className="text-sm text-[#7f909a] leading-relaxed max-w-xs mx-auto">
+            <p className="text-sm text-on-surface-variant leading-relaxed max-w-xs mx-auto">
               Your password has been successfully changed. All prior sessions have been revoked.
             </p>
           </div>
@@ -127,7 +127,7 @@ function ResetPasswordContent() {
             <button
               type="button"
               onClick={() => router.push('/login?reset=success')}
-              className="w-full py-3 rounded-xl bg-[#8fc5a7] hover:bg-[#a3d9bc] text-[#0a1610] font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 rounded-xl bg-deep-coral hover:bg-coral text-white font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Back to Sign in</span>
               <span>→</span>
@@ -141,7 +141,7 @@ function ResetPasswordContent() {
           <div className="flex items-center justify-between">
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 text-xs text-[#80919b] hover:text-[#dbe4e9] transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -149,26 +149,26 @@ function ResetPasswordContent() {
               <span>Back to sign in</span>
             </Link>
 
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#142026] border border-[#22353f] text-[11px] font-mono text-[#8fc5a7]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#8fc5a7]" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container border border-outline-variant/60 text-[11px] font-mono text-deep-coral">
+              <span className="w-1.5 h-1.5 rounded-full bg-deep-coral" />
               <span>{displayEmailChip}</span>
             </div>
           </div>
 
           {/* Header */}
           <div className="space-y-1.5">
-            <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-[#e8eff2]">
+            <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-on-surface">
               Set new password
             </h2>
-            <p className="text-sm text-[#7f909a] leading-relaxed">
+            <p className="text-sm text-on-surface-variant leading-relaxed">
               Create a resilient password that you haven&apos;t used before for this NIVORA account.
             </p>
           </div>
 
           {/* Error Banner */}
           {error && (
-            <div className="p-3.5 rounded-xl bg-[#ffb4ab]/10 border border-[#ffb4ab]/25 text-xs text-[#ffb4ab] flex items-center gap-2.5 animate-in fade-in">
-              <svg className="w-4 h-4 shrink-0 text-[#ffb4ab]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="p-3.5 rounded-xl bg-error/15 border border-error/30 text-xs text-error flex items-center gap-2.5 animate-in fade-in">
+              <svg className="w-4 h-4 shrink-0 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
               <span>{error}</span>
@@ -176,27 +176,31 @@ function ResetPasswordContent() {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
             {/* New Password */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-mono tracking-wider uppercase text-[#c0c9c1]">
+              <label className="block text-xs font-mono tracking-wider uppercase text-on-surface-variant">
                 NEW PASSWORD
               </label>
               <div className="relative">
                 <input
                   type={showNewPassword ? 'text' : 'password'}
                   required
+                  name="new_password"
                   autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="none"
+                  spellCheck={false}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="Create your new password"
                   disabled={isLoading}
-                  className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-[#142026] border border-[#22353f] hover:border-[#2f4957] text-sm text-[#e8eff2] placeholder-[#576872] focus:border-[#8fc5a7] focus:ring-1 focus:ring-[#8fc5a7] focus:outline-none transition-all disabled:opacity-50"
+                  className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-surface border border-outline-variant/60 hover:border-outline-variant text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-coral focus:ring-1 focus:ring-coral focus:outline-none transition-all disabled:opacity-50"
                 />
                 <button
                   type="button"
                   onClick={() => setShowNewPassword(!showNewPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#687a84] hover:text-[#c0c9c1] transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors p-1"
                   aria-label={showNewPassword ? 'Hide password' : 'Show password'}
                 >
                   {showNewPassword ? (
@@ -215,24 +219,28 @@ function ResetPasswordContent() {
 
             {/* Confirm New Password */}
             <div className="space-y-1.5">
-              <label className="block text-xs font-mono tracking-wider uppercase text-[#c0c9c1]">
+              <label className="block text-xs font-mono tracking-wider uppercase text-on-surface-variant">
                 CONFIRM NEW PASSWORD
               </label>
               <div className="relative">
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
+                  name="confirm_password"
                   autoComplete="new-password"
+                  autoCorrect="off"
+                  autoCapitalize="none"
+                  spellCheck={false}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Re-enter your new password"
                   disabled={isLoading}
-                  className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-[#142026] border border-[#22353f] hover:border-[#2f4957] text-sm text-[#e8eff2] placeholder-[#576872] focus:border-[#8fc5a7] focus:ring-1 focus:ring-[#8fc5a7] focus:outline-none transition-all disabled:opacity-50"
+                  className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-surface border border-outline-variant/60 hover:border-outline-variant text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-coral focus:ring-1 focus:ring-coral focus:outline-none transition-all disabled:opacity-50"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#687a84] hover:text-[#c0c9c1] transition-colors p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors p-1"
                   aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                 >
                   {showConfirmPassword ? (
@@ -254,18 +262,18 @@ function ResetPasswordContent() {
 
             {/* Sign out of all devices checkbox */}
             <div className="pt-1">
-              <label className="flex items-start gap-2.5 cursor-pointer select-none text-xs text-[#9aa8b0] hover:text-[#dbe4e9] transition-colors">
+              <label className="flex items-start gap-2.5 cursor-pointer select-none text-xs text-on-surface-variant hover:text-on-surface transition-colors">
                 <input
                   type="checkbox"
                   checked={signOutAllSessions}
                   onChange={(e) => setSignOutAllSessions(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 rounded bg-[#142026] border-[#253944] text-[#8fc5a7] focus:ring-0 focus:ring-offset-0 cursor-pointer accent-[#8fc5a7]"
+                  className="w-4 h-4 mt-0.5 rounded bg-surface border-outline-variant text-deep-coral focus:ring-0 focus:ring-offset-0 cursor-pointer accent-deep-coral"
                 />
                 <div className="space-y-0.5">
-                  <span className="font-medium text-[#dbe4e9] block">
+                  <span className="font-medium text-on-surface block">
                     Sign out of all devices &amp; active sessions
                   </span>
-                  <span className="text-[11px] text-[#6e7f89] block leading-tight">
+                  <span className="text-[11px] text-on-surface-variant/70 block leading-tight">
                     Recommended if your old password was compromised or forgotten.
                   </span>
                 </div>
@@ -276,11 +284,11 @@ function ResetPasswordContent() {
             <button
               type="submit"
               disabled={isLoading || !newPassword || !confirmPassword}
-              className="w-full py-3 rounded-xl bg-[#8fc5a7] hover:bg-[#a3d9bc] text-[#0a1610] font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              className="w-full py-3 rounded-xl bg-deep-coral hover:bg-coral text-white font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {isLoading ? (
                 <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#0a1610]" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
@@ -296,11 +304,11 @@ function ResetPasswordContent() {
           </form>
 
           {/* Need help footer link */}
-          <div className="text-center text-xs text-[#7f909a] pt-1">
+          <div className="text-center text-xs text-on-surface-variant pt-1">
             Need help?{' '}
             <Link
               href="/help"
-              className="font-medium text-[#8fc5a7] hover:underline underline-offset-2 transition-colors"
+              className="font-medium text-deep-coral hover:underline underline-offset-2 transition-colors"
             >
               Visit NIVORA Support Desk
             </Link>
@@ -320,7 +328,7 @@ export default function ResetPasswordPage() {
       description="Your notes, semester milestones, and AI study models are secured with zero-knowledge vault credentials. Choose a new password to seal your workspace."
       diagramType="reset"
     >
-      <Suspense fallback={<div className="text-xs text-[#8fc5a7] py-8 text-center">Loading security credentials...</div>}>
+      <Suspense fallback={<div className="text-xs text-deep-coral py-8 text-center">Loading security credentials...</div>}>
         <ResetPasswordContent />
       </Suspense>
     </AuthLayout>

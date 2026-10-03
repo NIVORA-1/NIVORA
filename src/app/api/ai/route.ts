@@ -1,11 +1,124 @@
 import { NextResponse } from 'next/server';
+import {
+  generatePersonalizedStudyPlan,
+  explainAcademicConcept,
+  solvePreviousYearQuestion,
+  generateAdaptiveQuiz,
+  calculateAttendanceTelemetry,
+  debugAndAnalyzeCode,
+  generateIeeeCitation,
+} from '@/lib/academicEngine';
 
+export const dynamic = 'force-dynamic';
+
+/**
+ * /api/ai — Nivora AI Workspace backend (academic tools)
+ *
+ * Supports both structured tool execution (tool: 'study-plan' | 'explain-concept' | ...)
+ * and legacy slash command strings (`/study-plan ...`).
+ *
+ * Fully integrated with academic synthesis engine, Crossref DOI resolver, and optional LLMs.
+ */
 export async function POST(request: Request) {
   try {
-    const { prompt } = await request.json();
+    const body = await request.json();
 
+    // Check for explicit structured tool call
+    const tool = body.tool;
+
+    if (tool) {
+      switch (tool) {
+        case 'study-plan': {
+          const result = await generatePersonalizedStudyPlan({
+            subject: body.subject,
+            topics: body.topics,
+            examDate: body.examDate,
+            currentLevel: body.currentLevel,
+            dailyHours: body.dailyHours,
+            weakTopics: body.weakTopics,
+            stream: body.stream,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'explain-concept': {
+          const result = await explainAcademicConcept({
+            concept: body.concept,
+            difficulty: body.difficulty,
+            subject: body.subject,
+            stream: body.stream,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'solve-pyq': {
+          const result = await solvePreviousYearQuestion({
+            question: body.question,
+            examType: body.examType,
+            subject: body.subject,
+            stream: body.stream,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'quiz-me': {
+          const result = await generateAdaptiveQuiz({
+            subject: body.subject,
+            topic: body.topic,
+            difficulty: body.difficulty,
+            numQuestions: body.numQuestions,
+            stream: body.stream,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'simulate-attendance': {
+          const result = calculateAttendanceTelemetry({
+            totalClasses: body.totalClasses,
+            classesAttended: body.classesAttended,
+            requiredPct: body.requiredPct,
+            plannedFutureClasses: body.plannedFutureClasses,
+            plannedFutureAbsences: body.plannedFutureAbsences,
+            subjectName: body.subjectName,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'debug-code': {
+          const result = await debugAndAnalyzeCode({
+            language: body.language,
+            code: body.code,
+            errorDescription: body.errorDescription,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        case 'cite-ieee': {
+          const result = await generateIeeeCitation({
+            mode: body.mode || 'manual',
+            doi: body.doi,
+            url: body.url,
+            title: body.title,
+            authors: body.authors,
+            publicationType: body.publicationType,
+            venue: body.venue,
+            year: body.year,
+            volume: body.volume,
+            issue: body.issue,
+            pages: body.pages,
+          });
+          return NextResponse.json({ success: true, tool, data: result });
+        }
+
+        default:
+          return NextResponse.json({ error: `Unknown tool: ${tool}` }, { status: 400 });
+      }
+    }
+
+    // Legacy prompt handling
+    const prompt = body.prompt ?? body.query;
     if (!prompt) {
-      return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Prompt or tool parameter is required' }, { status: 400 });
     }
 
     const trimmed = prompt.trim();
@@ -18,90 +131,84 @@ export async function POST(request: Request) {
       query = parts.slice(1).join(' ');
     }
 
-    // Synthesis engine based on command
-    let response = '';
-
-    if (command === 'explain-concept' || query.toLowerCase().includes('3nf') || query.toLowerCase().includes('normalization')) {
-      response = `### Bernstein 3NF Synthesis & Functional Dependency Analysis
-
-**1. Candidate Key Determination**:
-To determine whether a relational schema $R(A, B, C, D)$ is in 3NF, we evaluate the minimal cover $F_{min}$ of functional dependencies:
-- A relation $R$ is in **3NF** if for every non-trivial dependency $X \\rightarrow Y$, either:
-  1. $X$ is a **Superkey**, OR
-  2. Every attribute in $Y \\setminus X$ is a **Prime Attribute** (part of some candidate key).
-
-**2. Bernstein Synthesis Algorithm**:
-1. Compute the **Canonical Cover (Minimal Cover)** $F_c$ of $F$.
-2. For each dependency $X \\rightarrow A$ in $F_c$, form a relation schema $R_i = X \\cup \\{A\\}$.
-3. If no generated schema contains a candidate key of the original relation $R$, create an additional relation schema consisting solely of an arbitrary candidate key $K$.
-4. Eliminate redundant schemas (any $R_j \\subseteq R_k$).
-
-**Verification Result**: Lossless-join guaranteed and dependency preservation guaranteed.`;
-    } else if (command === 'solve-pyq' || query.toLowerCase().includes('pyq') || query.toLowerCase().includes('b+ tree')) {
-      response = `### Solved University Examination Problem (CS-301 / GATE 2024)
-
-**Problem Formulation**:
-A B+ Tree index with block size $B = 4096$ bytes, search key size $K = 12$ bytes, and block pointer size $P = 8$ bytes. Calculate maximum fan-out and leaf node record capacity.
-
-**Step-by-Step Derivation**:
-1. **Internal Node Order ($p$)**:
-   $p \\cdot P + (p - 1) \\cdot K \\le B$
-   $8p + 12(p - 1) \\le 4096$
-   $20p - 12 \\le 4096 \\implies 20p \\le 4108 \\implies p \\le 205.4$
-   **Maximum Fan-out (Order $p$) = 205 pointers**.
-
-2. **Leaf Node Capacity**:
-   Assuming record pointer $R = 8$ bytes:
-   $m \\cdot (K + R) + P_{next} \\le B$
-   $m \\cdot (12 + 8) + 8 \\le 4096$
-   $20m \\le 4088 \\implies m \\le 204.4$
-   **Maximum Records per Leaf Page = 204 keys**.`;
-    } else if (command === 'debug-code' || query.toLowerCase().includes('raft') || query.toLowerCase().includes('partition')) {
-      response = `### Raft Consensus Log Invariant Verification
-
-**Identified Issue**:
-Under asymmetric network partition (e.g. Node 1, 2 partitioned from Nodes 3, 4, 5):
-- The partitioned leader (Node 1) continues accepting uncommitted client writes in Term $T$.
-- However, since it cannot reach a **Quorum ($N/2 + 1 = 3$)**, these log entries remain uncommitted.
-- When Node 3 detects an election timeout, it increments Term to $T+1$ and receives votes from Nodes 4 and 5.
-
-**Corrective Invariant**:
-Ensure that upon partition reconciliation, Node 1 receives Heartbeat (AppendEntries) with Term $T+1$. It immediately steps down to Follower, adopts Term $T+1$, and overwrites conflicting uncommitted logs starting at the match index.`;
-    } else if (command === 'simulate-attendance') {
-      response = `### Attendance Impact Telemetry Simulation
-- **Subject**: CS-301 Database Management Systems
-- **Current Attendance**: 84.6% (38 of 45 sessions)
-- **Simulated Impact (+2 Misses)**: New Rate = 79.1%
-- **Safety Margin**: +4.1% above statutory 75.0% threshold
-- **Permissible Misses Left**: Strictly **2 more lectures** before debarment warning.`;
-    } else if (command === 'quiz-me' || query.toLowerCase().includes('avl') || query.toLowerCase().includes('tree')) {
-      response = `### Spaced Retrieval Quiz: Balanced Search Trees
-
-**Question 1**:
-In an AVL tree, after inserting a node into the left subtree of the right child of node $A$ (RL condition), which sequence of rotations restores the balance invariant?
-- A) Single Right Rotation
-- B) Single Left Rotation
-- C) Right rotation on right child, followed by Left rotation on $A$
-- D) Left rotation on left child, followed by Right rotation on $A$
-
-*NIVORA Answer Key*: **C** (Double Rotation: RL requires Right on child, then Left on parent).`;
-    } else {
-      response = `### NIVORA Academic Copilot Synthesis
-Analyzing query against student graph (**B.Tech CSE Year 3, Sem 5**):
-
-Your query: **"${trimmed}"**
-
-**Immediate Academic Insights**:
-1. **Curriculum Alignment**: Connected to CS-301 (DBMS) and CS-302 (DSA).
-2. **Deliverable Context**: DBMS Assignment 03 is due tomorrow at 11:59 PM.
-3. **Telemetry Advisory**: You have a 45-minute scheduled study block on this in your Planner.
-
-*Try slash commands like \`/explain-concept [topic]\`, \`/solve-pyq [question]\`, or \`/simulate-attendance\` for instant formal derivations.*`;
+    // Dispatch legacy slash commands to academic engine
+    if (command === 'explain-concept' || query.toLowerCase().includes('explain')) {
+      const res = await explainAcademicConcept({ concept: query, stream: body.stream });
+      return NextResponse.json({
+        response: `### ${res.concept} (${res.difficulty} — ${res.domain})\n\n**Intuitive Explanation:**\n${res.simpleExplanation}\n\n**Technical Breakdown:**\n${res.detailedExplanation}\n\n**Step-by-Step Operations:**\n${res.stepByStepBreakdown.join('\n')}\n\n**Formulas & Invariants:**\n${res.formulas.join('\n')}\n\n**Exam High-Yield Summary:**\n${res.examSummary}`,
+        data: res,
+      });
     }
 
-    return NextResponse.json({ response });
+    if (command === 'solve-pyq' || query.toLowerCase().includes('pyq') || query.toLowerCase().includes('b+ tree')) {
+      const res = await solvePreviousYearQuestion({ question: query, stream: body.stream });
+      return NextResponse.json({
+        response: `### Solved Examination Question (${res.subject})\n\n**Problem Analysis:**\n${res.questionAnalysis}\n\n**Step-by-Step Derivation:**\n${res.stepByStepSolution.join('\n\n')}\n\n**Final Result:**\n${res.finalAnswer}\n\n**Conceptual Explanation:**\n${res.explanation}\n\n**Exam Tips:**\n${res.examTips.map(t => `- ${t}`).join('\n')}`,
+        data: res,
+      });
+    }
+
+    if (command === 'study-plan' || query.toLowerCase().includes('study plan') || query.toLowerCase().includes('revision')) {
+      const res = await generatePersonalizedStudyPlan({ subject: query, stream: body.stream });
+      const scheduleLines = res.schedule
+        .map(
+          (s) =>
+            `| Day ${s.day} (${s.date}) | ${s.focusTopic} | ${s.durationHours} hrs | ${s.tasks[0]} |`
+        )
+        .join('\n');
+      return NextResponse.json({
+        response: `### Personalized Revision Study Plan — ${res.subject}\n\n**Target:** ${res.daysLeft} Days to Exam | **Daily Commitment:** ${res.dailyHours} hrs\n\n| Day | Focus Topic | Duration | Key Task |\n|-----|-------------|----------|----------|\n${scheduleLines}\n\n**Weak Topic Strategy:**\n${res.weakTopicStrategy}\n\n**Advisory:**\n${res.tips.map(t => `- ${t}`).join('\n')}`,
+        data: res,
+      });
+    }
+
+    if (command === 'simulate-attendance') {
+      const res = calculateAttendanceTelemetry({
+        totalClasses: 45,
+        classesAttended: 38,
+        requiredPct: 75,
+        plannedFutureClasses: 10,
+        plannedFutureAbsences: 2,
+        subjectName: query || 'Database Management Systems',
+      });
+      return NextResponse.json({
+        response: `### Attendance Telemetry Simulation\n- **Subject**: ${res.subjectName}\n- **Current Compliance**: ${res.currentPct}% (${res.classesAttended}/${res.totalClasses} sessions)\n- **Statutory Threshold**: ${res.requiredPct}%\n- **Buffer**: ${res.maxMissesAllowed} safe absences remaining\n- **Projected Impact**: ${res.projectedPct}% after simulation\n\n**Advice:** ${res.advice}`,
+        data: res,
+      });
+    }
+
+    if (command === 'debug-code') {
+      const res = await debugAndAnalyzeCode({ language: 'c', code: query });
+      return NextResponse.json({
+        response: `### Code Analysis & Verification\n\n**Status:** ${res.hasErrors ? 'Bugs Detected' : 'Verified'}\n\n**Issues Found:**\n${res.detectedIssues.map(i => `- ${i}`).join('\n')}\n\n**Corrected Code:**\n\`\`\`${res.language}\n${res.correctedCode}\n\`\`\`\n\n**Complexity:** Time: ${res.timeComplexity.after} | Space: ${res.spaceComplexity.after}`,
+        data: res,
+      });
+    }
+
+    if (command === 'cite-ieee') {
+      const res = await generateIeeeCitation({ mode: 'manual', title: query });
+      return NextResponse.json({
+        response: `### IEEE Citation Generated\n\n**IEEE Standard:**\n${res.ieeeFormat}\n\n**BibTeX Entry:**\n\`\`\`bibtex\n${res.bibtex}\n\`\`\`\n\n**Validation:** ${res.validationNotes}`,
+        data: res,
+      });
+    }
+
+    if (command === 'quiz-me') {
+      const res = await generateAdaptiveQuiz({ subject: 'Computer Science', topic: query });
+      return NextResponse.json({
+        response: `### Generated Adaptive Quiz: ${res.topic}\n\n${res.questions.map((q, idx) => `**Q${idx + 1} (${q.difficulty.toUpperCase()}):** ${q.question}\n${q.options.map((opt, oIdx) => `  ${String.fromCharCode(65 + oIdx)}) ${opt}`).join('\n')}\n*Correct Answer: ${String.fromCharCode(65 + q.correctIndex)} — ${q.explanation}*\n`).join('\n')}`,
+        data: res,
+      });
+    }
+
+    // Default academic response
+    const defaultExpl = await explainAcademicConcept({ concept: query, stream: body.stream });
+    return NextResponse.json({
+      response: `### ${defaultExpl.concept}\n\n${defaultExpl.simpleExplanation}\n\n${defaultExpl.detailedExplanation}`,
+      data: defaultExpl,
+    });
   } catch (error) {
-    console.error('AI API error:', error);
-    return NextResponse.json({ error: 'AI processing failed' }, { status: 500 });
+    console.error('/api/ai route error:', error);
+    return NextResponse.json({ error: 'Academic workspace synthesis failed.' }, { status: 500 });
   }
 }

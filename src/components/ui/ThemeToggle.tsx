@@ -22,7 +22,7 @@ export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
       {isDark ? (
         // Sun icon indicating Light Mode is available
         <svg
-          className="w-4 h-4 text-[#8FC5A7]"
+          className="w-4 h-4 text-coral"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -44,7 +44,7 @@ export default function ThemeToggle({ className = '' }: ThemeToggleProps) {
       ) : (
         // Moon icon indicating Dark Mode is available
         <svg
-          className="w-4 h-4 text-[#3F755A]"
+          className="w-4 h-4 text-deep-coral"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"

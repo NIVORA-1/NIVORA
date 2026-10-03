@@ -160,13 +160,13 @@ export default function ModulesSection() {
     <section id="modules" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       {/* Header Label */}
       <div data-module-heading className="text-center space-y-3 mb-14">
-        <div className="font-mono text-[10px] tracking-[0.25em] text-[#747F7B] uppercase font-bold">
+        <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           FOUNDATIONAL CURRICULUM
         </div>
-        <h2 className="text-3xl sm:text-5xl font-display font-bold tracking-[-0.025em] text-[#F1F0E8] leading-[1.15]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
           Learn. Plan. Focus. Grow. Connect.
         </h2>
-        <p className="mt-4 font-mono text-[11px] sm:text-xs tracking-[0.18em] leading-relaxed text-[#747F7B] max-w-2xl mx-auto uppercase font-normal">
+        <p className="mt-4 font-sans text-xs sm:text-sm tracking-wider leading-relaxed text-on-surface-variant max-w-2xl mx-auto uppercase font-medium">
           THE 7 INTEGRATED MODULES POWERING YOUR COMPLETE ACADEMIC TRAJECTORY.
         </p>
       </div>
@@ -181,30 +181,30 @@ export default function ModulesSection() {
           >
             <Link
               href={mod.link}
-              className="h-full rounded-xl bg-[#172329] border border-[#29383D] p-5 flex flex-col justify-between"
+              className="h-full rounded-xl bg-surface-container border border-border p-5 flex flex-col justify-between hover:bg-surface-container-high hover:border-border-accent transition-all shadow-sm group"
             >
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-mono text-[10px] text-[#8FC5A7] font-bold tracking-wider">
+                  <span className="font-sans text-[11px] text-primary font-bold tracking-wider uppercase">
                     {mod.title}
                   </span>
-                  <span className="material-symbols-outlined text-[18px] text-[#747F7B]">
+                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">
                     {mod.icon}
                   </span>
                 </div>
 
-                <h3 className="font-mono text-sm font-bold text-[#F1F0E8] mb-2">
+                <h3 className="font-sans text-sm sm:text-base font-bold text-on-surface mb-2 tracking-tight">
                   {mod.name}
                 </h3>
 
-                <p className="text-xs text-[#A6ADA9] font-sans leading-relaxed font-normal">
+                <p className="text-xs text-on-surface-variant font-sans leading-relaxed font-normal">
                   {mod.desc}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#29383D]/60 flex items-center justify-between font-mono text-[10px] text-[#747F7B] font-semibold tracking-wider">
+              <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between font-sans text-[11px] text-on-surface-variant font-bold tracking-wider uppercase">
                 <span>LAUNCH MODULE</span>
-                <span className="material-symbols-outlined text-[14px] text-[#8FC5A7]">
+                <span className="material-symbols-outlined text-[14px] text-primary group-hover:translate-x-0.5 transition-transform">
                   arrow_forward
                 </span>
               </div>

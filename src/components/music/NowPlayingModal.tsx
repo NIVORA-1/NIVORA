@@ -70,11 +70,11 @@ export default function NowPlayingModal() {
         const value = isPlaying ? Math.max(12, dataArray[i]) : 8;
         const barHeight = (value / 255) * height * 0.85;
 
-        // Mint gradient
+        // Coral gradient
         const gradient = ctx.createLinearGradient(0, height, 0, height - barHeight);
-        gradient.addColorStop(0, 'rgba(143, 197, 167, 0.2)');
-        gradient.addColorStop(0.5, 'rgba(143, 197, 167, 0.8)');
-        gradient.addColorStop(1, 'rgba(170, 225, 194, 1.0)');
+        gradient.addColorStop(0, 'rgba(232, 90, 79, 0.2)');
+        gradient.addColorStop(0.5, 'rgba(233, 128, 116, 0.8)');
+        gradient.addColorStop(1, 'rgba(232, 90, 79, 1.0)');
 
         ctx.fillStyle = gradient;
         ctx.beginPath();
@@ -110,7 +110,7 @@ export default function NowPlayingModal() {
   if (!isNowPlayingOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0F171B]/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-8 animate-in fade-in duration-200 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-8 animate-in fade-in duration-200 overflow-y-auto">
       {/* Top Header Bar */}
       <div className="w-full max-w-5xl mx-auto flex items-center justify-between py-2 border-b border-outline-variant/20">
         <div className="flex items-center gap-2">

@@ -14,12 +14,14 @@ interface StorageUploadResult {
   storageProvider: 'supabase' | 'local';
 }
 
+import { getSupabaseUrl, getSupabaseAnonKey } from '@/lib/supabase/client';
+
 /**
  * Checks if Supabase Storage environment credentials are fully provided
  */
 function isSupabaseStorageAvailable(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const url = getSupabaseUrl();
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || getSupabaseAnonKey();
   return Boolean(url && key);
 }
 
@@ -61,8 +63,8 @@ export async function storeAudioFile(options: {
   // 1. Check if Supabase Storage is configured
   if (isSupabaseStorageAvailable()) {
     try {
-      const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL!).replace(/\/$/, '');
-      const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!;
+      const supabaseUrl = getSupabaseUrl().replace(/\/$/, '');
+      const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || getSupabaseAnonKey())!;
 
       const filePath = `music/${userId}/${targetFileName}`;
       const uploadUrl = `${supabaseUrl}/storage/v1/object/music/${filePath}`;
@@ -148,8 +150,8 @@ export async function deleteAudioFile(audioUrl: string, artworkUrl?: string | nu
     // 1. Supabase Storage cleanup if applicable
     if (isSupabaseStorageAvailable()) {
       try {
-        const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL!).replace(/\/$/, '');
-        const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)!;
+        const supabaseUrl = getSupabaseUrl().replace(/\/$/, '');
+        const supabaseKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || getSupabaseAnonKey())!;
 
         const filesToDelete: string[] = [];
         if (audioUrl.includes('/storage/v1/object/public/music/')) {

@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
         <div>
           <Link
             href="/login"
-            className="inline-flex items-center gap-1.5 text-xs text-[#80919b] hover:text-[#dbe4e9] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs text-on-surface-variant hover:text-on-surface transition-colors"
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -72,18 +72,18 @@ export default function ForgotPasswordPage() {
 
         {/* Header */}
         <div className="space-y-1.5">
-          <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-[#e8eff2]">
+          <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-on-surface">
             Reset your password.
           </h2>
-          <p className="text-sm text-[#7f909a] leading-relaxed">
+          <p className="text-sm text-on-surface-variant leading-relaxed">
             Enter your registered email address and we&apos;ll send you a secure verification link to reset your credentials.
           </p>
         </div>
 
         {/* Error Banner */}
         {error && (
-          <div className="p-3.5 rounded-xl bg-[#ffb4ab]/10 border border-[#ffb4ab]/25 text-xs text-[#ffb4ab] flex items-center gap-2.5 animate-in fade-in">
-            <svg className="w-4 h-4 shrink-0 text-[#ffb4ab]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="p-3.5 rounded-xl bg-error/15 border border-error/30 text-xs text-error flex items-center gap-2.5 animate-in fade-in">
+            <svg className="w-4 h-4 shrink-0 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>{error}</span>
@@ -91,22 +91,26 @@ export default function ForgotPasswordPage() {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-[#c0c9c1]">
+            <label className="block text-xs font-medium text-on-surface-variant">
               Email address
             </label>
             <input
               type="email"
+              name="email"
               required
-              autoComplete="email"
+              autoComplete="new-email"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com or your .edu address"
               disabled={isLoading}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#142026] border border-[#22353f] hover:border-[#2f4957] text-sm text-[#e8eff2] placeholder-[#576872] focus:border-[#8fc5a7] focus:ring-1 focus:ring-[#8fc5a7] focus:outline-none transition-all disabled:opacity-50"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-surface border border-outline-variant/60 hover:border-outline-variant text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-coral focus:ring-1 focus:ring-coral focus:outline-none transition-all disabled:opacity-50"
             />
-            <p className="text-[11px] text-[#6d7e88] pt-0.5">
+            <p className="text-[11px] text-on-surface-variant/70 pt-0.5">
               Tip: Use your university email if your institution provided your NIVORA license.
             </p>
           </div>
@@ -115,11 +119,11 @@ export default function ForgotPasswordPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 rounded-xl bg-[#8fc5a7] hover:bg-[#a3d9bc] text-[#0a1610] font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full py-3 rounded-xl bg-deep-coral hover:bg-coral text-white font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {isLoading ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#0a1610]" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -132,20 +136,20 @@ export default function ForgotPasswordPage() {
         </form>
 
         {/* Help Center Callout Box */}
-        <div className="rounded-xl bg-[#131f25] border border-[#1e3039] p-3.5 text-xs text-[#7f909a] leading-relaxed">
+        <div className="rounded-xl bg-surface-container border border-outline-variant/40 p-3.5 text-xs text-on-surface-variant leading-relaxed">
           Having trouble accessing your institutional inbox? Contact your campus IT administrator or visit the{' '}
-          <Link href="/help" className="text-[#8fc5a7] hover:underline underline-offset-2 font-medium">
+          <Link href="/help" className="text-deep-coral hover:underline underline-offset-2 font-medium">
             NIVORA Help Center
           </Link>
           .
         </div>
 
         {/* Back to sign in link */}
-        <div className="text-center text-xs text-[#7f909a] pt-1">
+        <div className="text-center text-xs text-on-surface-variant pt-1">
           Remember your password?{' '}
           <Link
             href="/login"
-            className="font-medium text-[#8fc5a7] hover:underline underline-offset-2 transition-colors"
+            className="font-medium text-deep-coral hover:underline underline-offset-2 transition-colors"
           >
             Back to sign in
           </Link>

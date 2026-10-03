@@ -9,7 +9,14 @@ import NivoraLogo from '@/components/ui/NivoraLogo';
 
 export default function TopNavbar() {
   const pathname = usePathname();
-  const { setIsSidebarOpen, setIsCommandPaletteOpen, setIsQuickAddOpen, currentStream, user, logout } = useApp();
+  const {
+    setIsSidebarOpen,
+    setIsCommandPaletteOpen,
+    setIsQuickAddOpen,
+    currentStream,
+    user,
+    logout,
+  } = useApp();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
@@ -61,6 +68,9 @@ export default function TopNavbar() {
     if (pathname.startsWith('/reboot')) {
       return { core: 'TELEMETRY', page: 'Cognitive Protocol' };
     }
+    if (pathname.startsWith('/health')) {
+      return { core: 'WELLNESS & VITALITY', page: 'Health Manager' };
+    }
     if (pathname.startsWith('/music') || pathname.startsWith('/connect')) {
       return { core: 'LIFE CORE', page: 'Acoustics & Peer Spaces' };
     }
@@ -79,7 +89,7 @@ export default function TopNavbar() {
   const breadcrumb = getBreadcrumb();
 
   return (
-    <header className="fixed top-0 left-0 lg:left-[260px] right-0 h-16 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-4 sm:px-space-xl flex items-center justify-between">
+    <header className="fixed top-0 left-0 lg:left-[260px] right-0 h-16 pt-[env(safe-area-inset-top,0px)] bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/20 z-40 px-4 sm:px-space-xl flex items-center justify-between">
       {/* Left: Mobile hamburger & Breadcrumbs */}
       <div className="flex items-center gap-space-sm">
         <button
@@ -109,18 +119,20 @@ export default function TopNavbar() {
       {/* Right: Search, Quick Add, Notifications, AI Assist, Profile */}
       <div className="flex items-center gap-space-xs sm:gap-space-md">
         {/* Search trigger */}
-        <div
+        <button
+          type="button"
           onClick={() => setIsCommandPaletteOpen(true)}
-          className="flex items-center gap-space-xs px-2.5 sm:px-space-sm py-1 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant cursor-pointer hover:border-outline-variant hover:text-on-surface transition-colors"
+          className="flex items-center gap-space-xs px-2.5 sm:px-space-sm py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant cursor-pointer hover:border-outline-variant hover:text-on-surface transition-colors"
+          aria-label="Search"
         >
           <span className="material-symbols-outlined text-[18px]">search</span>
-          <span className="hidden sm:inline font-body-sm text-body-sm pr-space-md font-medium">
+          <span className="hidden sm:inline font-body-sm text-body-sm pr-space-md font-medium text-on-surface-variant/70">
             Search...
           </span>
           <kbd className="px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/40 font-medium">
             ⌘K
           </kbd>
-        </div>
+        </button>
 
         {/* Quick Add Universal Trigger */}
         <button
@@ -203,14 +215,7 @@ export default function TopNavbar() {
           )}
         </div>
 
-        {/* AI Assist CTA button */}
-        <Link
-          href="/nivora-ai"
-          className="flex items-center gap-space-2xs px-2.5 sm:px-space-sm py-1.5 rounded-lg bg-secondary-container text-on-secondary-container hover:bg-secondary-container/80 transition-colors font-button-text text-button-text"
-        >
-          <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-          <span className="hidden sm:inline">AI Assist</span>
-        </Link>
+
 
         {/* Theme Toggle */}
         <ThemeToggle />

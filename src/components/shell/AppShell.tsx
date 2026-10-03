@@ -14,6 +14,7 @@ export function isPublicRoute(pathname: string): boolean {
   if (
     pathname.startsWith('/login') ||
     pathname.startsWith('/signup') ||
+    pathname.startsWith('/verify-email') ||
     pathname.startsWith('/forgot-password') ||
     pathname.startsWith('/verify-code') ||
     pathname.startsWith('/reset-password') ||

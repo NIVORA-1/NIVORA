@@ -24,6 +24,7 @@ export default function PlannerPage() {
   const [aiPlannedSuccess, setAiPlannedSuccess] = useState(false);
 
   const [slots, setSlots] = useState<ScheduleSlot[]>([]);
+  const [upcomingExam, setUpcomingExam] = useState<any | null>(null);
 
   useEffect(() => {
     fetch('/api/planner')
@@ -44,6 +45,17 @@ export default function PlannerPage() {
           );
         } else {
           setSlots([]);
+        }
+      })
+      .catch(() => {});
+
+    fetch('/api/exams')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.exams && data.exams.length > 0) {
+          setUpcomingExam(data.exams[0]);
+        } else {
+          setUpcomingExam(null);
         }
       })
       .catch(() => {});
@@ -370,24 +382,48 @@ export default function PlannerPage() {
             </p>
           </div>
 
-          {/* Card: Exam Countdown Invariant */}
-          <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-sm shadow-md">
-            <span className="font-label-mono-wide text-xs uppercase text-tertiary font-semibold">
-              IMPENDING EVALUATION
-            </span>
-            <div className="space-y-1">
-              <h3 className="font-headline-sm text-on-surface font-semibold">
-                CS-301: DBMS Mid-Term Theory
-              </h3>
-              <p className="font-body-sm text-on-surface-variant">
-                Thursday, September 18 • 18 Days Left
-              </p>
+          {/* Card: Real Upcoming Exam or Empty Prompt */}
+          {upcomingExam ? (
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-sm shadow-md">
+              <span className="font-label-mono-wide text-xs uppercase text-tertiary font-semibold">
+                IMPENDING EVALUATION
+              </span>
+              <div className="space-y-1">
+                <h3 className="font-headline-sm text-on-surface font-semibold">
+                  {upcomingExam.title}
+                </h3>
+                <p className="font-body-sm text-on-surface-variant">
+                  {new Date(upcomingExam.date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                  })}{' '}
+                  {upcomingExam.startTime ? `• ${upcomingExam.startTime}` : ''}
+                </p>
+              </div>
+              <div className="flex items-center justify-between text-xs pt-1">
+                <span className="text-primary font-semibold">{upcomingExam.examType || 'Examination'}</span>
+                {upcomingExam.room && (
+                  <span className="text-on-surface-variant font-label-mono-wide">
+                    Room: {upcomingExam.room}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="flex items-center justify-between text-xs pt-1">
-              <span className="text-primary font-semibold">78% Syllabus Cleared</span>
-              <span className="text-on-surface-variant font-label-mono-wide">Seat: C-42</span>
+          ) : (
+            <div className="p-space-lg rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-space-xs shadow-md">
+              <span className="font-label-mono-wide text-xs uppercase text-on-surface-variant/70 font-semibold">
+                EVALUATION
+              </span>
+              <p className="font-body-sm text-on-surface-variant">No exams scheduled yet.</p>
+              <a
+                href="/exams"
+                className="inline-flex items-center gap-1 text-primary text-xs font-semibold hover:underline pt-1"
+              >
+                Schedule in Exam Center &rarr;
+              </a>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -95,25 +95,43 @@ export async function getCurrentUser() {
     const cookieStore = cookies();
     const token = cookieStore.get(AUTH_COOKIE)?.value;
 
-    if (!token) {
-      return null;
+    if (token) {
+      const payload = verifySessionToken(token);
+      if (payload && payload.userId) {
+        const user = await prisma.user.findUnique({
+          where: { id: payload.userId },
+          include: { profile: true },
+        });
+
+        if (user) {
+          return user;
+        }
+      }
     }
 
-    const payload = verifySessionToken(token);
-    if (!payload || !payload.userId) {
-      return null;
+    // Fallback: Check if authenticated through Supabase session cookie directly
+    try {
+      const { createSupabaseServerClient } = await import('@/lib/supabase/server');
+      const supabase = createSupabaseServerClient();
+      const {
+        data: { user: sbUser },
+      } = await supabase.auth.getUser();
+
+      if (sbUser?.email) {
+        const user = await prisma.user.findUnique({
+          where: { email: sbUser.email },
+          include: { profile: true },
+        });
+
+        if (user) {
+          return user;
+        }
+      }
+    } catch {
+      // Supabase session fallback non-fatal
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: payload.userId },
-      include: { profile: true },
-    });
-
-    if (!user) {
-      return null;
-    }
-
-    return user;
+    return null;
   } catch (error) {
     console.error('getCurrentUser authentication error:', error);
     return null;

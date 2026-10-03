@@ -47,40 +47,56 @@ export default function TourPage() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-[#0F171B] text-[#F1F0E8]">
+    <div className="min-h-screen w-full bg-background text-on-surface transition-colors duration-250">
       {/* Public Navigation Bar */}
       <PublicHeader activeSection={activeSection} onNavigate={handleNavigate} />
 
-      <main className="relative w-full overflow-hidden">
+      <main className="w-full">
         {/* Frame 01: Hero Section */}
-        <HeroSection
-          onExplore={() => handleNavigate('fragmentation')}
-          onReadArchitecture={() => handleNavigate('architecture')}
-        />
+        <section id="hero" className="w-full">
+          <HeroSection
+            onExplore={() => handleNavigate('fragmentation')}
+            onReadArchitecture={() => handleNavigate('architecture')}
+          />
+        </section>
 
         {/* Frame 02: Fragmentation */}
-        <FragmentationSection />
+        <section id="fragmentation" className="w-full py-12 sm:py-20">
+          <FragmentationSection />
+        </section>
 
         {/* Frame 03: The Single Interface */}
-        <SingleInterfaceSection />
+        <section id="architecture" className="w-full py-12 sm:py-20">
+          <SingleInterfaceSection />
+        </section>
 
         {/* Frame 04: One Interface. Your Context */}
-        <AdaptationSection />
+        <section id="adaptation" className="w-full py-12 sm:py-20">
+          <AdaptationSection />
+        </section>
 
         {/* Frame 05: Design Philosophy */}
-        <PhilosophySection />
+        <section id="philosophy" className="w-full py-12 sm:py-20">
+          <PhilosophySection />
+        </section>
 
         {/* Frame 06: Minimalist by Design */}
-        <MinimalistSection />
+        <section id="minimalist" className="w-full py-12 sm:py-20">
+          <MinimalistSection />
+        </section>
 
         {/* Frame 07: Foundational Curriculum */}
-        <ModulesSection />
+        <section id="modules" className="w-full py-12 sm:py-20">
+          <ModulesSection />
+        </section>
 
         {/* Frame 08: The Invitation */}
-        <InvitationSection
-          onScrollToTop={() => handleNavigate('hero')}
-          onExploreArchitecture={() => handleNavigate('architecture')}
-        />
+        <section id="connect" className="w-full py-12 sm:py-20">
+          <InvitationSection
+            onScrollToTop={() => handleNavigate('hero')}
+            onExploreArchitecture={() => handleNavigate('architecture')}
+          />
+        </section>
       </main>
 
       {/* Tour Footer */}

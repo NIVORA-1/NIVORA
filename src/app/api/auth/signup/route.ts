@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import prisma from '@/lib/prisma';
-import { signSessionToken, AUTH_COOKIE } from '@/lib/auth';
-import { getStreamConfig } from '@/lib/personalization';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { isSupabaseConfigured, getSupabaseConfigStatus } from '@/lib/supabase/client';
+import { getBaseUrl } from '@/lib/oauth';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, password, stream = 'CSE', year = 1 } = body;
+    const { name, email, password } = body;
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -19,86 +18,58 @@ export async function POST(request: Request) {
     const cleanEmail = email.toLowerCase().trim();
     const cleanName = name.trim();
 
-    // Check if user already exists
-    const existing = await prisma.user.findUnique({
-      where: { email: cleanEmail },
+    const config = getSupabaseConfigStatus();
+    if (!config.isConfigured) {
+      return NextResponse.json(
+        {
+          error:
+            config.errorMessage ||
+            'Supabase authentication is pending configuration: NEXT_PUBLIC_SUPABASE_ANON_KEY is required in your .env file.',
+        },
+        { status: 500 }
+      );
+    }
+
+    const supabase = createSupabaseServerClient();
+    const baseUrl = getBaseUrl(request);
+
+    // Delegate signup to Supabase Auth which sends the real verification email
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: cleanEmail,
+      password,
+      options: {
+        data: {
+          full_name: cleanName,
+        },
+        emailRedirectTo: `${baseUrl}/auth/callback`,
+      },
     });
 
-    if (existing) {
+    if (signUpError) {
+      return NextResponse.json({ error: signUpError.message }, { status: 400 });
+    }
+
+    // Check for user existence under Supabase email enumeration defense
+    if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
       return NextResponse.json(
-        { error: 'An account with this email already exists' },
+        { error: 'This email address is already registered. Please sign in or reset your password.' },
         { status: 409 }
       );
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const streamConfig = getStreamConfig(stream);
-    const yearNum = Math.max(1, Math.min(5, parseInt(String(year)) || 1));
-    const semester = Math.min(10, Math.max(1, yearNum * 2 - 1));
-
-    const user = await prisma.user.create({
-      data: {
+    // Protection rule: Do NOT establish a session or set a session cookie.
+    // The user MUST confirm their email via the verification link before receiving access.
+    return NextResponse.json(
+      {
+        success: true,
+        message: 'Verification email sent. Please check your inbox and verify your email.',
+        needsVerification: true,
         email: cleanEmail,
-        passwordHash,
-        name: cleanName,
-        avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}&backgroundColor=172329&textColor=8fc5a7`,
-        profile: {
-          create: {
-            college: 'University Campus',
-            degree: streamConfig.degree,
-            stream: streamConfig.name,
-            streamCode: streamConfig.code,
-            specialization: streamConfig.specializations[0] || 'General Studies',
-            year: yearNum,
-            semester: semester,
-            cgpa: 0.0,
-            streakDays: 0,
-            modulesVerified: 0,
-            totalModules: 0,
-            hoursPacedWeek: 0.0,
-            focusScore: 0,
-            reelsToday: 0,
-            reelThreshold: 30,
-            doomscrollMins: 0,
-            doomscrollCap: 30,
-            careerGoal: streamConfig.careerRoadmap.role,
-            bio: '',
-            onboardingCompleted: false,
-            onboardingStep: 0,
-            academicGoals: [],
-            interests: [],
-          },
-        },
       },
-      include: { profile: true },
-    });
-
-    const token = signSessionToken({
-      userId: user.id,
-      email: user.email,
-      name: user.name,
-    });
-
-    const safeUser = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      profile: user.profile,
-    };
-
-    const response = NextResponse.json({ success: true, user: safeUser }, { status: 201 });
-    response.cookies.set(AUTH_COOKIE, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/',
-    });
-
-    return response;
-  } catch (error) {
+      { status: 200 }
+    );
+  } catch (error: any) {
     console.error('Signup API error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Internal Server Error' }, { status: 500 });
   }
 }

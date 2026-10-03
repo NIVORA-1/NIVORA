@@ -72,6 +72,11 @@ interface AppContextType {
   setIsCommandPaletteOpen: (v: boolean) => void;
   isQuickAddOpen: boolean;
   setIsQuickAddOpen: (v: boolean) => void;
+  isAiAssistOpen: boolean;
+  setIsAiAssistOpen: (v: boolean) => void;
+  aiAssistContext: { subject?: string; topic?: string } | null;
+  setAiAssistContext: (ctx: { subject?: string; topic?: string } | null) => void;
+  openAiWithContext: (ctx: { subject?: string; topic?: string }) => void;
   
   // Stream Personalization
   currentStream: string;
@@ -109,6 +114,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const [isAiAssistOpen, setIsAiAssistOpen] = useState(false);
+  const [aiAssistContext, setAiAssistContext] = useState<{ subject?: string; topic?: string } | null>(null);
+
+  const openAiWithContext = useCallback((ctx: { subject?: string; topic?: string }) => {
+    setAiAssistContext(ctx);
+    setIsAiAssistOpen(true);
+  }, []);
+
   const [currentStream, setCurrentStream] = useState('CSE');
 
   // Audio Engine
@@ -160,6 +173,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [refreshUser]);
 
   const logout = async () => {
+    try {
+      const { createSupabaseBrowserClient, isSupabaseConfigured } = await import('@/lib/supabase/client');
+      if (isSupabaseConfigured()) {
+        const supabase = createSupabaseBrowserClient();
+        await supabase.auth.signOut().catch(() => {});
+      }
+    } catch {}
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch {}
@@ -314,6 +334,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setIsCommandPaletteOpen,
         isQuickAddOpen,
         setIsQuickAddOpen,
+        isAiAssistOpen,
+        setIsAiAssistOpen,
+        aiAssistContext,
+        setAiAssistContext,
+        openAiWithContext,
         currentStream,
         setCurrentStream,
         currentTrack,

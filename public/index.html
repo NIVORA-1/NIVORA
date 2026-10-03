@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Nivora</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #131316;
+      color: #E2E2E6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .container {
+      max-width: 360px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .logo-box {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: #1C1C21;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .logo-img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+    }
+    p {
+      font-size: 13px;
+      color: #92929D;
+      line-height: 1.5;
+    }
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 2.5px solid rgba(255, 107, 74, 0.2);
+      border-top-color: #FF6B4A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .config-card {
+      display: none;
+      width: 100%;
+      background: #1C1C21;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 10px;
+      text-align: left;
+    }
+    .config-card.visible {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #92929D;
+    }
+    input {
+      width: 100%;
+      background: #131316;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #FFFFFF;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: monospace;
+      outline: none;
+    }
+    input:focus {
+      border-color: #FF6B4A;
+    }
+    button {
+      width: 100%;
+      background: #FF6B4A;
+      color: #FFFFFF;
+      border: none;
+      padding: 11px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:active {
+      background: #E85B3A;
+    }
+    .secondary-btn {
+      background: rgba(255,255,255,0.06);
+      color: #E2E2E6;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-box">
+      <img src="assets/nivora-logo.png" alt="Nivora" class="logo-img" onerror="this.src='nivora-logo-transparent.png'">
+    </div>
+    <div>
+      <h1>NIVORA</h1>
+      <p id="status-text">Connecting to Nivora Student OS...</p>
+    </div>
+
+    <div class="spinner" id="spinner"></div>
+
+    <div class="config-card" id="config-card">
+      <label for="server-input">Backend Server Address</label>
+      <input type="text" id="server-input" value="http://192.168.1.18:3000" placeholder="http://192.168.1.X:3000">
+      <button type="button" onclick="connectToServer()">Connect to Server</button>
+      <button type="button" class="secondary-btn" onclick="retryDefault()">Retry Auto-Connect</button>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT_SERVER = 'http://192.168.1.18:3000';
+    let savedServer = localStorage.getItem('nivora_server_url') || DEFAULT_SERVER;
+    document.getElementById('server-input').value = savedServer;
+
+    function tryConnect(url, timeoutMs = 3000) {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeoutMs);
+      return fetch(url + '/api/health', { method: 'HEAD', signal: controller.signal })
+        .then(() => {
+          clearTimeout(id);
+          return true;
+        })
+        .catch(() => {
+          clearTimeout(id);
+          // If HEAD fails, try root
+          return fetch(url, { method: 'HEAD', mode: 'no-cors' }).then(() => true).catch(() => false);
+        });
+    }
+
+    async function autoRedirect() {
+      const isReachable = await tryConnect(savedServer);
+      if (isReachable) {
+        window.location.replace(savedServer);
+      } else {
+        // Fallback check on localhost:3000 / 10.0.2.2:3000 (emulator)
+        const isEmulator = await tryConnect('http://10.0.2.2:3000', 1500);
+        if (isEmulator) {
+          localStorage.setItem('nivora_server_url', 'http://10.0.2.2:3000');
+          window.location.replace('http://10.0.2.2:3000');
+          return;
+        }
+
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('status-text').innerHTML = 'Unable to reach backend at <strong style="color:#FF6B4A">' + savedServer + '</strong>.<br>Ensure your Nivora server is running and device is on the same network.';
+        document.getElementById('config-card').classList.add('visible');
+      }
+    }
+
+    function connectToServer() {
+      const input = document.getElementById('server-input').value.trim();
+      if (!input) return;
+      let cleanUrl = input.replace(/\/+$/, '');
+      if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        cleanUrl = 'http://' + cleanUrl;
+      }
+      localStorage.setItem('nivora_server_url', cleanUrl);
+      savedServer = cleanUrl;
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('config-card').classList.remove('visible');
+      document.getElementById('status-text').textContent = 'Connecting to ' + cleanUrl + '...';
+      window.location.replace(cleanUrl);
+    }
+
+    function retryDefault() {
+      document.getElementById('spinner').style.display = 'block';
+      document.getElementById('config-card').classList.remove('visible');
+      document.getElementById('status-text').textContent = 'Retrying connection...';
+      autoRedirect();
+    }
+
+    // Launch connection attempt on load
+    window.addEventListener('DOMContentLoaded', autoRedirect);
+  </script>
+</body>
+</html>

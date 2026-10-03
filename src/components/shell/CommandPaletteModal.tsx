@@ -4,28 +4,157 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 
-interface QuickResult {
+interface SearchResultItem {
   id: string;
   title: string;
-  category: 'Navigation' | 'Slash Command' | 'Subject' | 'Topic' | 'Action';
+  subtitle?: string;
+  category: string;
   icon: string;
   action: () => void;
-  badge?: string;
 }
 
+const STATIC_SEARCH_TARGETS = [
+  { id: 'page-home', title: 'Home Dashboard', subtitle: 'Academic Command Center & Progress', category: 'Page', icon: 'dashboard', path: '/home' },
+  { id: 'page-subjects', title: 'Subjects & Curriculum', subtitle: 'Course Syllabi, Credits & Faculty', category: 'Academic', icon: 'menu_book', path: '/subjects' },
+  { id: 'page-dbms', title: 'Database Management Systems (CS-301)', subtitle: 'Relational Model, Normalization & SQL', category: 'Subject', icon: 'auto_stories', path: '/subjects/CS-301' },
+  { id: 'page-dsa', title: 'Data Structures & Algorithms (CS-302)', subtitle: 'Trees, Graphs, Dynamic Programming', category: 'Subject', icon: 'auto_stories', path: '/subjects' },
+  { id: 'page-learning', title: 'Learning & Active Tracks', subtitle: 'Interactive Modules & Mastery', category: 'Academic', icon: 'local_library', path: '/learning' },
+  { id: 'page-resources', title: 'Resource Vault', subtitle: 'Indexed Academic Notes & Textbooks', category: 'Resources', icon: 'folder', path: '/resources' },
+  { id: 'page-classes', title: 'Lecture Schedule', subtitle: 'Weekly Timetable & Venues', category: 'Schedule', icon: 'schedule', path: '/classes' },
+  { id: 'page-assignments', title: 'Assignments & Submissions', subtitle: 'Coursework Deadlines & Trackers', category: 'Academic', icon: 'assignment', path: '/assignments' },
+  { id: 'page-exams', title: 'Assessment Cadence & Exams', subtitle: 'Mid-term & End-term Examination Schedule', category: 'Academic', icon: 'quiz', path: '/exams' },
+  { id: 'page-attendance', title: 'Attendance Cadence & Compliance', subtitle: 'Subject-wise Percentage & Statutory Buffers', category: 'Academic', icon: 'how_to_reg', path: '/attendance' },
+  { id: 'page-planner', title: 'Academic Planner & Timeline', subtitle: 'Calendar, Milestones & Deadlines', category: 'Planning', icon: 'calendar_today', path: '/planner' },
+  { id: 'page-reboot', title: 'Reboot & Cognitive Telemetry', subtitle: 'Digital Wellbeing, Focus Score & Reset Sessions', category: 'Wellbeing', icon: 'self_improvement', path: '/reboot' },
+  { id: 'page-health', title: 'Health Manager & Student Wellness', subtitle: 'Workouts, Hydration, Sleep, Nutrition & Vitality', category: 'Wellness', icon: 'favorite', path: '/health' },
+  { id: 'page-health-gym', title: 'Gym & Workout Manager', subtitle: 'Custom Schedules, Active Tracker & Exercise Library', category: 'Wellness', icon: 'fitness_center', path: '/health?tab=gym' },
+  { id: 'page-health-water', title: 'Water Intake Tracker', subtitle: 'Daily Hydration Cadence & Quick Logs', category: 'Wellness', icon: 'water_drop', path: '/health?tab=water' },
+  { id: 'page-health-sleep', title: 'Sleep & Recovery Telemetry', subtitle: 'Overnight Sleep Cycles & Duration Logs', category: 'Wellness', icon: 'bedtime', path: '/health?tab=sleep' },
+  { id: 'page-health-nutrition', title: 'Nutrition & Meal Vault', subtitle: 'Daily Meals, Macronutrients & Fueling Notes', category: 'Wellness', icon: 'restaurant', path: '/health?tab=nutrition' },
+  { id: 'page-health-goals', title: 'Health & Wellness Goals', subtitle: 'Active Milestones & Completion Cadence', category: 'Wellness', icon: 'flag', path: '/health?tab=goals' },
+  { id: 'page-health-progress', title: 'Health Progress & PRs', subtitle: 'Consistency Trends, Personal Records & Metrics', category: 'Wellness', icon: 'trending_up', path: '/health?tab=progress' },
+  { id: 'page-music', title: 'Music & Focus Lounges', subtitle: 'Binaural Gamma Beats & Lo-Fi Study Companion', category: 'Audio', icon: 'headphones', path: '/music' },
+  { id: 'page-skills', title: 'Skills & Competencies', subtitle: 'Verified Engineering Proofs & Badges', category: 'Growth', icon: 'military_tech', path: '/skills' },
+  { id: 'page-projects', title: 'Projects & Artifacts', subtitle: 'Technical Portfolios & Code Repositories', category: 'Growth', icon: 'code', path: '/projects' },
+  { id: 'page-career', title: 'Career & Placement Pipeline', subtitle: 'Recruiter Dossier & Placement Readiness', category: 'Career', icon: 'work_outline', path: '/career' },
+  { id: 'page-settings', title: 'Workspace Settings', subtitle: 'Account, Stream & Display Preferences', category: 'Settings', icon: 'settings', path: '/settings' },
+];
+
 export default function CommandPaletteModal() {
-  const { isCommandPaletteOpen, setIsCommandPaletteOpen, startResetSession } = useApp();
+  const { isCommandPaletteOpen, setIsCommandPaletteOpen } = useApp();
   const [query, setQuery] = useState('');
+  const [dbResults, setDbResults] = useState<SearchResultItem[]>([]);
+  const [isSearchingDb, setIsSearchingDb] = useState(false);
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
 
+  // Focus input on open, clear query on close
   useEffect(() => {
     if (isCommandPaletteOpen) {
-      setTimeout(() => inputRef.current?.focus(), 50);
+      const timer = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(timer);
     } else {
       setQuery('');
+      setDbResults([]);
     }
   }, [isCommandPaletteOpen]);
+
+  // Handle ESC key to close
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isCommandPaletteOpen) {
+        setIsCommandPaletteOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isCommandPaletteOpen, setIsCommandPaletteOpen]);
+
+  // Query server database matching when user types
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      setDbResults([]);
+      setIsSearchingDb(false);
+      return;
+    }
+
+    let isCurrent = true;
+    const fetchTimer = setTimeout(async () => {
+      setIsSearchingDb(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`);
+        if (res.ok && isCurrent) {
+          const data = await res.json();
+          const items: SearchResultItem[] = [];
+
+          if (Array.isArray(data.subjects)) {
+            data.subjects.forEach((s: any) => {
+              items.push({
+                id: `sub-${s.id}`,
+                title: `${s.name} (${s.code})`,
+                subtitle: s.department ? `Department of ${s.department}` : undefined,
+                category: 'Subject',
+                icon: 'auto_stories',
+                action: () => navigateTo(`/subjects/${s.code || s.id}`),
+              });
+            });
+          }
+
+          if (Array.isArray(data.topics)) {
+            data.topics.forEach((t: any) => {
+              items.push({
+                id: `topic-${t.id}`,
+                title: t.title,
+                subtitle: t.subject?.name ? `${t.subject.name} • ${t.unitName || 'Unit'}` : t.unitName,
+                category: 'Topic',
+                icon: 'menu_book',
+                action: () => navigateTo(`/subjects/${t.subject?.code || ''}`),
+              });
+            });
+          }
+
+          if (Array.isArray(data.assignments)) {
+            data.assignments.forEach((a: any) => {
+              items.push({
+                id: `assign-${a.id}`,
+                title: a.title,
+                subtitle: a.subject?.name ? `${a.subject.name} • Due ${a.dueDate ? new Date(a.dueDate).toLocaleDateString() : 'Upcoming'}` : undefined,
+                category: 'Assignment',
+                icon: 'assignment',
+                action: () => navigateTo('/assignments'),
+              });
+            });
+          }
+
+          if (Array.isArray(data.resources)) {
+            data.resources.forEach((r: any) => {
+              items.push({
+                id: `res-${r.id}`,
+                title: r.title,
+                subtitle: r.subject?.name ? `${r.subject.name} • ${r.type || 'Document'}` : r.type,
+                category: 'Resource',
+                icon: 'description',
+                action: () => navigateTo('/resources'),
+              });
+            });
+          }
+
+          if (isCurrent) setDbResults(items);
+        }
+      } catch (err) {
+        console.error('Search query error:', err);
+      } finally {
+        if (isCurrent) setIsSearchingDb(false);
+      }
+    }, 150);
+
+    return () => {
+      isCurrent = false;
+      clearTimeout(fetchTimer);
+    };
+  }, [query]);
 
   if (!isCommandPaletteOpen) return null;
 
@@ -34,161 +163,133 @@ export default function CommandPaletteModal() {
     router.push(path);
   };
 
-  const defaultItems: QuickResult[] = [
-    // Slash commands
-    { id: 'sc-1', title: '/explain-concept Bernstein 3NF Synthesis candidate key check', category: 'Slash Command', icon: 'terminal', badge: 'AI Copilot', action: () => navigateTo('/nivora-ai?q=/explain-concept+Bernstein+3NF+Synthesis') },
-    { id: 'sc-2', title: '/solve-pyq GATE 2024 DBMS B+ Tree leaf capacity query', category: 'Slash Command', icon: 'terminal', badge: 'PYQ Solver', action: () => navigateTo('/nivora-ai?q=/solve-pyq+DBMS+B+Tree') },
-    { id: 'sc-3', title: '/simulate-attendance 2 absences CS-301 DBMS impact', category: 'Slash Command', icon: 'science', badge: 'Simulator', action: () => navigateTo('/attendance') },
-    { id: 'sc-4', title: '/quiz-me 5 questions on AVL Tree Rotations and Height Invariants', category: 'Slash Command', icon: 'psychology', badge: 'Quiz', action: () => navigateTo('/subjects/CS-301?tab=quizzes') },
-    
-    // Quick navigation
-    { id: 'nav-1', title: 'Home Command Center', category: 'Navigation', icon: 'dashboard', action: () => navigateTo('/home') },
-    { id: 'nav-2', title: 'My Learning & Active Tracks', category: 'Navigation', icon: 'local_library', action: () => navigateTo('/learning') },
-    { id: 'nav-3', title: 'Database Management Systems (CS-301)', category: 'Subject', icon: 'auto_stories', badge: 'Active Course', action: () => navigateTo('/subjects/CS-301') },
-    { id: 'nav-4', title: 'Data Structures & Algorithms (CS-302)', category: 'Subject', icon: 'auto_stories', badge: 'Active Course', action: () => navigateTo('/subjects') },
-    { id: 'nav-5', title: 'Resource Vault (284 Indexed Assets)', category: 'Navigation', icon: 'folder', action: () => navigateTo('/resources') },
-    { id: 'nav-6', title: 'Academic Planner & Timeline Calendar', category: 'Navigation', icon: 'calendar_today', action: () => navigateTo('/planner') },
-    { id: 'nav-7', title: 'Reboot & Digital Balance Telemetry', category: 'Navigation', icon: 'self_improvement', action: () => navigateTo('/reboot') },
-    { id: 'nav-8', title: 'Music & Connect Lounges', category: 'Navigation', icon: 'headphones', action: () => navigateTo('/music') },
-    { id: 'nav-9', title: 'Career & Recruiter Dossier (Jane Street Pipeline)', category: 'Navigation', icon: 'work_outline', action: () => navigateTo('/career') },
-    { id: 'nav-10', title: 'Skills & Projects (Raft Consensus Proofs)', category: 'Navigation', icon: 'code', action: () => navigateTo('/skills') },
-    
-    // Quick Actions
-    { id: 'act-1', title: 'Start 25m Deep Work Reset Session', category: 'Action', icon: 'timelapse', badge: 'Cognitive Reset', action: () => { setIsCommandPaletteOpen(false); startResetSession(25); } },
-    { id: 'act-2', title: 'Launch SQL Scratchpad Drawer', category: 'Action', icon: 'terminal', badge: 'Interactive', action: () => navigateTo('/subjects/CS-301') },
-  ];
+  const cleanQuery = query.trim().toLowerCase();
 
-  const filteredItems = query
-    ? defaultItems.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query.toLowerCase()) ||
-          item.category.toLowerCase().includes(query.toLowerCase())
-      )
-    : defaultItems;
+  // Match static targets strictly when query is non-empty
+  const staticMatches: SearchResultItem[] = cleanQuery
+    ? STATIC_SEARCH_TARGETS.filter(
+        (target) =>
+          target.title.toLowerCase().includes(cleanQuery) ||
+          target.category.toLowerCase().includes(cleanQuery) ||
+          (target.subtitle && target.subtitle.toLowerCase().includes(cleanQuery))
+      ).map((target) => ({
+        id: target.id,
+        title: target.title,
+        subtitle: target.subtitle,
+        category: target.category,
+        icon: target.icon,
+        action: () => navigateTo(target.path),
+      }))
+    : [];
+
+  // Combine unique results
+  const allResults = cleanQuery
+    ? [...staticMatches, ...dbResults.filter((d) => !staticMatches.some((s) => s.title.toLowerCase() === d.title.toLowerCase()))]
+    : [];
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === backdropRef.current) {
+      setIsCommandPaletteOpen(false);
+    }
+  };
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-start justify-center pt-16 sm:pt-24 px-4"
-      onClick={() => setIsCommandPaletteOpen(false)}
+      ref={backdropRef}
+      onClick={handleBackdropClick}
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 animate-in fade-in duration-100"
     >
       <div
-        className="relative w-full max-w-2xl rounded-2xl bg-surface-container-low border border-outline-variant/40 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="relative w-full max-w-xl rounded-2xl bg-surface-container-low border border-outline-variant/40 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3.5 border-b border-outline-variant/30 bg-surface-container">
-          <span className="material-symbols-outlined text-primary text-[22px] mr-3">terminal</span>
+        {/* Simple Search Input Bar: [ 🔍 Search... ] */}
+        <div className="flex items-center px-4 py-3 bg-surface-container border-b border-outline-variant/30">
+          <span className="material-symbols-outlined text-on-surface-variant text-[20px] mr-3 shrink-0">
+            search
+          </span>
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Escape') setIsCommandPaletteOpen(false);
-              if (e.key === 'Enter' && filteredItems.length > 0) {
-                filteredItems[0].action();
+              if (e.key === 'Escape') {
+                setIsCommandPaletteOpen(false);
+              } else if (e.key === 'Enter' && allResults.length > 0) {
+                allResults[0].action();
               }
             }}
-            placeholder="Ask NIVORA AI or type slash commands (/solve-pyq, /explain-concept)..."
-            className="w-full bg-transparent text-on-surface font-body-md placeholder:text-on-surface-variant/50 focus:outline-none"
+            placeholder="Search..."
+            className="w-full bg-transparent text-on-surface font-body-md text-sm placeholder:text-on-surface-variant/50 focus:outline-none"
           />
-          <kbd className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-label-tag border border-outline-variant/30">
+          {query.trim().length > 0 && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="p-1 rounded-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors mr-2 text-xs"
+              aria-label="Clear query"
+            >
+              <span className="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          )}
+          <kbd className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-[11px] border border-outline-variant/30 font-medium shrink-0">
             ESC
           </kbd>
         </div>
 
-        {/* Slash Command Tags Strip */}
-        <div className="flex flex-wrap items-center gap-1.5 px-4 py-2 border-b border-outline-variant/20 bg-surface-container-lowest/50">
-          <span className="font-label-tag text-[9px] uppercase tracking-widest text-on-surface-variant/70">
-            Suggested:
-          </span>
-          <button
-            onClick={() => setQuery('/solve-pyq ')}
-            className="px-2 py-0.5 rounded-full bg-surface-container text-secondary font-label-tag text-[10px] hover:bg-secondary-container transition-colors"
-          >
-            /solve-pyq
-          </button>
-          <button
-            onClick={() => setQuery('/explain-concept ')}
-            className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-[10px]"
-          >
-            /explain-concept
-          </button>
-          <button
-            onClick={() => setQuery('/debug-code ')}
-            className="px-2 py-0.5 rounded-full bg-surface-container text-secondary font-label-tag text-[10px] hover:bg-secondary-container transition-colors"
-          >
-            /debug-code
-          </button>
-          <button
-            onClick={() => setQuery('/simulate-attendance ')}
-            className="px-2 py-0.5 rounded-full bg-surface-container text-tertiary font-label-tag text-[10px] hover:bg-surface-container-highest transition-colors"
-          >
-            /simulate-attendance
-          </button>
-        </div>
-
-        {/* Results List */}
-        <div className="max-h-96 overflow-y-auto p-2 space-y-1">
-          {filteredItems.length === 0 ? (
-            <div className="p-8 text-center text-on-surface-variant">
-              <span className="material-symbols-outlined text-[32px] text-outline-variant mb-2">
-                manage_search
-              </span>
-              <p className="font-body-md text-on-surface">No exact command found</p>
-              <p className="text-body-sm text-on-surface-variant/70 mt-1">
-                Press Enter to run &quot;{query}&quot; directly in NIVORA AI Assistant.
-              </p>
-              <button
-                onClick={() => navigateTo(`/nivora-ai?q=${encodeURIComponent(query)}`)}
-                className="mt-3 px-3 py-1.5 rounded-lg bg-primary text-on-primary font-button-text text-button-text"
-              >
-                Send to Copilot →
-              </button>
-            </div>
-          ) : (
-            filteredItems.map((item, index) => (
-              <div
-                key={item.id}
-                onClick={item.action}
-                className="flex items-center justify-between px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer transition-colors group"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-surface-container-high group-hover:bg-secondary-container group-hover:text-on-secondary-container flex items-center justify-center transition-colors">
-                    <span className="material-symbols-outlined text-[16px]">{item.icon}</span>
+        {/* Search Results Area - ONLY rendered when query is non-empty */}
+        {cleanQuery.length > 0 && (
+          <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+            {allResults.length === 0 ? (
+              <div className="py-8 px-4 text-center text-on-surface-variant text-sm">
+                {isSearchingDb ? (
+                  <div className="flex items-center justify-center gap-2 text-on-surface-variant">
+                    <div className="w-3.5 h-3.5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                    <span>Searching...</span>
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="font-body-md text-on-surface text-sm truncate font-medium">
-                      {item.title}
-                    </span>
-                    <span className="font-label-tag text-[10px] text-on-surface-variant/70">
+                ) : (
+                  <p>No results found for &quot;{query}&quot;</p>
+                )}
+              </div>
+            ) : (
+              allResults.map((item, index) => (
+                <div
+                  key={item.id}
+                  onClick={item.action}
+                  className="flex items-center justify-between px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-on-surface cursor-pointer transition-colors group"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-surface-container-high group-hover:bg-secondary-container group-hover:text-on-secondary-container flex items-center justify-center transition-colors shrink-0">
+                      <span className="material-symbols-outlined text-[18px]">{item.icon}</span>
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-body-md text-on-surface text-xs sm:text-sm truncate font-medium">
+                        {item.title}
+                      </span>
+                      {item.subtitle && (
+                        <span className="font-label-tag text-[10px] text-on-surface-variant/70 truncate">
+                          {item.subtitle}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0 ml-3">
+                    <span className="px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-tag text-[10px]">
                       {item.category}
                     </span>
+                    {index === 0 && (
+                      <span className="hidden sm:inline font-mono text-[10px] text-on-surface-variant/50">
+                        ↵
+                      </span>
+                    )}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  {item.badge && (
-                    <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-tag text-[10px]">
-                      {item.badge}
-                    </span>
-                  )}
-                  {index === 0 && (
-                    <span className="hidden sm:inline font-label-mono-wide text-[10px] text-on-surface-variant/50">
-                      ↵ select
-                    </span>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Footer info */}
-        <div className="px-4 py-2 border-t border-outline-variant/20 bg-surface-container text-xs text-on-surface-variant flex items-center justify-between font-label-mono-wide text-[10px]">
-          <span>Autonomous Academic Copilot &amp; Synthesizer</span>
-          <span>NIVORA SCHOLAR-4.5</span>
-        </div>
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

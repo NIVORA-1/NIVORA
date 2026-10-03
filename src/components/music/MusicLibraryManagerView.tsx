@@ -61,7 +61,7 @@ export default function MusicLibraryManagerView({
         const q = searchQuery.toLowerCase();
         const matchTitle = t.title.toLowerCase().includes(q);
         const matchArtist = t.artist.toLowerCase().includes(q);
-        const matchAlbum = t.album.toLowerCase().includes(q);
+        const matchAlbum = (t.album || '').toLowerCase().includes(q);
         const matchCategory = t.category.toLowerCase().includes(q);
         const matchTags = (t.tags || []).some((tag) => tag.toLowerCase().includes(q));
         if (!matchTitle && !matchArtist && !matchAlbum && !matchCategory && !matchTags) {
@@ -140,7 +140,7 @@ export default function MusicLibraryManagerView({
             Music Library Manager
           </h2>
           <p className="font-body-sm text-xs text-on-surface-variant">
-            Manage audio tracks, assign acoustic study categories, and import local audio files.
+            Manage audio tracks, assign acoustic study categories, and configure external audio streams.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ export default function MusicLibraryManagerView({
             {allTracks.length}
           </div>
           <p className="font-body-sm text-[11px] text-on-surface-variant">
-            Catalog & imported soundscapes
+            Catalog & configured soundscapes
           </p>
         </div>
 
@@ -193,13 +193,13 @@ export default function MusicLibraryManagerView({
 
         <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-1">
           <span className="font-label-tag text-[10px] uppercase text-amber-400 font-bold">
-            Imported Tracks
+            External Tracks
           </span>
           <div className="font-headline-md text-2xl font-bold text-on-surface">
             {importedTracks.length}
           </div>
           <p className="font-body-sm text-[11px] text-on-surface-variant">
-            Custom local MP3 / audio files
+            Configured external audio streams
           </p>
         </div>
       </div>

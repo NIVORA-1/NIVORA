@@ -1,1593 +1,1025 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import Link from 'next/link';
-import NivoraLogo from '@/components/ui/NivoraLogo';
-import {
-  Track,
-  Artist,
-  Album,
-  Playlist,
-  MusicCategory,
-  TRACKS,
-  ARTISTS,
-  ALBUMS,
-  DEFAULT_PLAYLISTS,
-  CAMPUS_LOUNGES,
-  STUDY_CONTEXT_MIXES,
-  QUICK_ACCESS_CARDS,
-} from '@/lib/musicData';
-import { getRecentlyPlayedTrackIds } from '@/lib/musicStore';
-import { useMusic } from '@/context/MusicContext';
-import TrackRow from '@/components/music/TrackRow';
-import MusicArtwork from '@/components/music/MusicArtwork';
-import HoverPreview from '@/components/ui/HoverPreview';
-import BulkMusicImporterModal from '@/components/music/BulkMusicImporterModal';
-import MusicLibraryManagerView from '@/components/music/MusicLibraryManagerView';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useMusic, UserPlaylist } from '@/context/MusicContext';
+import { useApp } from '@/context/AppContext';
+import { Track, youtubeItemToTrack } from '@/lib/musicData';
+import MusicSongRow from '@/components/music/MusicSongRow';
+import MusicCard from '@/components/music/MusicCard';
+import PlaylistDetailView from '@/components/music/PlaylistDetailView';
+import AddToPlaylistModal from '@/components/music/AddToPlaylistModal';
+
+type MusicNavTab = 'home' | 'search' | 'library' | 'playlists' | 'recent';
+
+const FILTER_TAGS = ['Focus', 'Coding', 'Study', 'Reading', 'Relax', 'Workout'] as const;
+
+// Exact query mappings per requirements
+const FILTER_QUERIES: Record<string, string> = {
+  Focus: 'deep focus instrumental music',
+  Coding: 'coding music',
+  Study: 'lofi study music',
+  Reading: 'reading ambient music',
+  Relax: 'calm relaxing music',
+  Workout: 'workout music',
+};
+
+const FILTER_CATEGORY_MAP: Record<string, 'focus' | 'lofi' | 'ambient'> = {
+  Focus: 'focus',
+  Coding: 'focus',
+  Study: 'lofi',
+  Reading: 'ambient',
+  Relax: 'ambient',
+  Workout: 'focus',
+};
+
+const SEARCH_SUGGESTIONS = [
+  'lofi study',
+  'deep focus',
+  'coding music',
+  'calm piano',
+  'instrumental study',
+  'ambient focus',
+];
 
 export default function MusicPage() {
+  const { user } = useApp();
   const {
     currentTrack,
     isPlaying,
-    togglePlay,
     playTrack,
-    volume,
-    setVolume,
-    likedTrackIds,
-    playlists,
-    activeLounge,
-    activeFocusSession,
-    activeContextId,
-    setActiveContextId,
-    setSelectedLoungeForModal,
+    togglePlay,
+    favorites,
+    recentlyPlayed,
+    userPlaylists,
     setIsCreatePlaylistOpen,
-    startContextFocusSession,
-    deletePlaylist,
-    allTracks,
-    importedTracks,
-    isImporterOpen,
-    setIsImporterOpen,
-    refreshLibrary,
   } = useMusic();
 
-  // Sub-Navigation Views
-  const [activeView, setActiveView] = useState<
-    'home' | 'search' | 'library' | 'manage' | 'liked' | 'recent' | 'playlist' | 'album' | 'artist' | 'category'
-  >('home');
-  const [selectedEntityId, setSelectedEntityId] = useState<string>('');
+  // Navigation tab: Home, Search, Library, Playlists, Recently Played
+  const [activeTab, setActiveTab] = useState<MusicNavTab>('home');
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState<string | null>(null);
 
-  // Search State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchCategory, setSearchCategory] = useState<'all' | 'tracks' | 'artists' | 'albums' | 'playlists'>('all');
+  // Home filter state
+  const [selectedFilter, setSelectedFilter] = useState<string>('Focus');
+  const [filterRecommendations, setFilterRecommendations] = useState<Track[]>([]);
+  const [isLoadingFilterRecs, setIsLoadingFilterRecs] = useState<boolean>(true);
+  const [filterError, setFilterError] = useState<string | null>(null);
 
-  // Library State
-  const [libraryFilter, setLibraryFilter] = useState<'all' | 'playlists' | 'liked' | 'albums' | 'artists'>('all');
-  const [librarySort, setLibrarySort] = useState<'recent' | 'alpha' | 'count'>('recent');
+  // Search state
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchResults, setSearchResults] = useState<Track[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [searchHasSearched, setSearchHasSearched] = useState<boolean>(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const searchDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Technical Engine Panel Toggle
-  const [showTechnicalPanel, setShowTechnicalPanel] = useState(false);
+  // Library sub-filter
+  const [librarySubTab, setLibrarySubTab] = useState<'liked' | 'recent' | 'playlists'>('liked');
 
-  // Navigation Helper
-  const navigateTo = (view: typeof activeView, id = '') => {
-    setActiveView(view);
-    setSelectedEntityId(id);
+  // Add to Playlist modal state
+  const [trackForPlaylistModal, setTrackForPlaylistModal] = useState<Track | null>(null);
+
+  // ----------------------------------------------------
+  // FETCH RECOMMENDATIONS WHEN FILTER CHANGES
+  // ----------------------------------------------------
+  const fetchFilterRecs = useCallback(async (tag: string) => {
+    setIsLoadingFilterRecs(true);
+    setFilterError(null);
+    const query = FILTER_QUERIES[tag] || 'deep focus instrumental music';
+    const category = FILTER_CATEGORY_MAP[tag] || 'focus';
+
+    try {
+      const res = await fetch(`/api/music/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const errorMsg =
+          data.error ||
+          (res.status === 503 ? 'Music service is not configured.' : 'Unable to load music right now.');
+        setFilterError(errorMsg);
+        setFilterRecommendations([]);
+        return;
+      }
+
+      if (data.items && Array.isArray(data.items)) {
+        const mapped = data.items.map((item: any) => youtubeItemToTrack(item, category));
+        setFilterRecommendations(mapped);
+        setFilterError(null);
+      } else {
+        setFilterRecommendations([]);
+      }
+    } catch (e) {
+      console.warn('Error fetching YouTube music:', e);
+      setFilterError('Unable to load music right now.');
+      setFilterRecommendations([]);
+    } finally {
+      setIsLoadingFilterRecs(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchFilterRecs(selectedFilter);
+  }, [selectedFilter, fetchFilterRecs]);
+
+  // ----------------------------------------------------
+  // DEBOUNCED SEARCH EXECUTION (350ms)
+  // ----------------------------------------------------
+  const executeSearch = useCallback(async (q: string) => {
+    const trimmed = q.trim();
+    if (!trimmed) {
+      setSearchResults([]);
+      setIsSearching(false);
+      setSearchHasSearched(false);
+      setSearchError(null);
+      return;
+    }
+
+    setIsSearching(true);
+    setSearchHasSearched(true);
+    setSearchError(null);
+
+    try {
+      const res = await fetch(`/api/music/search?q=${encodeURIComponent(trimmed)}`);
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const errorMsg =
+          data.error ||
+          (res.status === 503 ? 'Music service is not configured.' : 'Unable to load music right now.');
+        setSearchError(errorMsg);
+        setSearchResults([]);
+        return;
+      }
+
+      if (data.items && Array.isArray(data.items)) {
+        const mapped = data.items.map((item: any) => youtubeItemToTrack(item, 'focus'));
+        setSearchResults(mapped);
+        setSearchError(null);
+      } else {
+        setSearchResults([]);
+      }
+    } catch (e) {
+      console.warn('Search API error:', e);
+      setSearchError('Unable to load music right now.');
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  const handleSearchChange = (val: string) => {
+    setSearchQuery(val);
+    if (searchDebounceRef.current) {
+      clearTimeout(searchDebounceRef.current);
+    }
+    searchDebounceRef.current = setTimeout(() => {
+      executeSearch(val);
+    }, 350);
+  };
+
+  const handleSearchSuggestionClick = (query: string) => {
+    setSearchQuery(query);
+    executeSearch(query);
+  };
+
+  // Navigation handlers
+  const handleNavClick = (tab: MusicNavTab) => {
+    setActiveTab(tab);
+    setSelectedPlaylistId(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // --------------------------------------------------
-  // COMPUTED DATA FOR VIEWS
-  // --------------------------------------------------
-  // Liked Tracks
-  const likedTracks = useMemo(() => {
-    return allTracks.filter((t) => likedTrackIds.includes(t.id));
-  }, [allTracks, likedTrackIds]);
+  const handleQuickFavorites = () => {
+    setActiveTab('library');
+    setLibrarySubTab('liked');
+    setSelectedPlaylistId(null);
+  };
 
-  // Recently Played Tracks from store
-  const recentlyPlayedTracks = useMemo(() => {
-    const ids = getRecentlyPlayedTrackIds();
-    const list = ids
-      .map((id) => allTracks.find((t) => t.id === id))
-      .filter((t): t is Track => !!t);
-    return list.length > 0 ? list : allTracks.slice(0, 4);
-  }, [allTracks, currentTrack]);
-
-  // Selected Playlist
-  const selectedPlaylist = useMemo(() => {
-    const all = [...playlists, ...DEFAULT_PLAYLISTS];
-    return all.find((p) => p.id === selectedEntityId) || playlists[0] || DEFAULT_PLAYLISTS[0];
-  }, [playlists, selectedEntityId]);
-
-  const selectedPlaylistTracks = useMemo(() => {
-    if (!selectedPlaylist) return [];
-    return selectedPlaylist.trackIds
-      .map((tId) => allTracks.find((t) => t.id === tId))
-      .filter((t): t is Track => !!t);
-  }, [allTracks, selectedPlaylist]);
-
-  // Selected Album
-  const selectedAlbum = useMemo(() => {
-    return ALBUMS.find((a) => a.id === selectedEntityId) || ALBUMS[0];
-  }, [selectedEntityId]);
-
-  const selectedAlbumTracks = useMemo(() => {
-    if (!selectedAlbum) return [];
-    return selectedAlbum.trackIds
-      .map((tId) => allTracks.find((t) => t.id === tId))
-      .filter((t): t is Track => !!t);
-  }, [allTracks, selectedAlbum]);
-
-  // Selected Artist
-  const selectedArtist = useMemo(() => {
-    return ARTISTS.find((a) => a.id === selectedEntityId) || ARTISTS[0];
-  }, [selectedEntityId]);
-
-  const selectedArtistTracks = useMemo(() => {
-    if (!selectedArtist) return [];
-    return selectedArtist.popularTrackIds
-      .map((tId) => allTracks.find((t) => t.id === tId))
-      .filter((t): t is Track => !!t);
-  }, [allTracks, selectedArtist]);
-
-  const selectedArtistAlbums = useMemo(() => {
-    if (!selectedArtist) return [];
-    return ALBUMS.filter((a) => a.artistId === selectedArtist.id);
-  }, [selectedArtist]);
-
-  // Category Filtered Tracks
-  const categoryTracks = useMemo(() => {
-    return allTracks.filter((t) => t.category.toLowerCase() === selectedEntityId.toLowerCase());
-  }, [allTracks, selectedEntityId]);
-
-  // Search Results
-  const searchResults = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) {
-      return { tracks: [], artists: [], albums: [], playlists: [] };
-    }
-
-    const matchedTracks = allTracks.filter(
-      (t) =>
-        t.title.toLowerCase().includes(q) ||
-        t.artist.toLowerCase().includes(q) ||
-        t.album.toLowerCase().includes(q) ||
-        t.mood.toLowerCase().includes(q) ||
-        t.category.toLowerCase().includes(q) ||
-        (t.tags && t.tags.some((tag) => tag.toLowerCase().includes(q))) ||
-        (t.whyThisTrack && t.whyThisTrack.toLowerCase().includes(q))
-    );
-
-    const matchedArtists = ARTISTS.filter(
-      (a) => a.name.toLowerCase().includes(q) || a.genre.toLowerCase().includes(q)
-    );
-
-    const matchedAlbums = ALBUMS.filter(
-      (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.artist.toLowerCase().includes(q) ||
-        a.genre.toLowerCase().includes(q)
-    );
-
-    const matchedPlaylists = [...playlists, ...DEFAULT_PLAYLISTS].filter(
-      (p) => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-    );
-
-    return {
-      tracks: matchedTracks,
-      artists: matchedArtists,
-      albums: matchedAlbums,
-      playlists: matchedPlaylists,
-    };
-  }, [searchQuery, playlists]);
-
-  // Total formatted time helper
-  const calculateTotalDuration = (tracks: Track[]) => {
-    const totalSecs = tracks.reduce((acc, t) => acc + t.duration, 0);
-    const m = Math.floor(totalSecs / 60);
-    return `${m} min`;
+  const handleOpenAddToPlaylist = (track: Track) => {
+    setTrackForPlaylistModal(track);
   };
 
   return (
-    <div className="flex flex-col w-full max-w-[1440px] mx-auto space-y-space-lg pb-space-3xl animate-in fade-in duration-200">
+    <div className="w-full max-w-[1440px] mx-auto space-y-6 pb-28 animate-in fade-in duration-200">
       {/* -------------------------------------------------- */}
-      {/* TOP STATUS & TELEMETRY STRIP                       */}
+      {/* 1. CLEAN MODERN HEADER (PART 3)                    */}
       {/* -------------------------------------------------- */}
-      <section className="flex flex-col gap-space-xs">
-        <div className="flex flex-wrap items-center justify-between gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-xl border border-outline-variant/30 shadow-sm">
-          <div className="flex items-center gap-space-sm font-label-mono-wide text-label-mono-wide text-on-surface-variant uppercase flex-wrap">
-            <NivoraLogo size="compact" href="/home" priority />
-            <div className="h-4 w-px bg-outline-variant/40 hidden sm:block" />
-            <span className="inline-block w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span>LIFE CORE</span>
-            <span className="text-outline-variant">/</span>
-            <span className="text-primary font-bold">ACOUSTICS &amp; PEER SPACES</span>
-            <span className="text-outline-variant">•</span>
-            <span className="text-secondary font-bold">
-              {activeLounge ? `IN ROOM: ${activeLounge.name}` : 'STUDENT AUDIO ENGINE'}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-space-md font-label-tag text-label-tag text-on-surface-variant">
-            <span className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[14px] text-primary">sensors</span>
-              142 Peers Connected
-            </span>
-            <span className="flex items-center gap-1.5 hidden sm:flex">
-              <span className="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
-              Bodleian Relay (14ms)
-            </span>
-          </div>
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface">
+            Music
+          </h1>
+          <p className="text-xs sm:text-sm text-on-surface-variant mt-1">
+            Focus, study, relax, or recharge.
+          </p>
         </div>
 
-        {/* Page Title & Context Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md pt-space-xs">
-          <div className="space-y-1">
-            <h1 className="font-display-hero text-2xl sm:text-4xl text-on-surface font-bold tracking-tight">
-              Music &amp; Focus Engine
-            </h1>
-            <p className="font-body-md text-body-md text-on-surface-variant max-w-3xl">
-              Context-adaptive academic audio, precision binaural frequencies, and synchronized study lounges built for sustained intellectual flow.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-space-xs flex-wrap">
-            <button
-              onClick={() => setIsImporterOpen(true)}
-              className="flex items-center gap-space-2xs px-3.5 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed transition-all font-button-text text-button-text shadow-md font-bold"
-            >
-              <span className="material-symbols-outlined text-[18px]">upload_file</span>
-              <span>+ Add Music</span>
-            </button>
-
-            <button
-              onClick={() => setIsCreatePlaylistOpen(true)}
-              className="flex items-center gap-space-2xs px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-colors font-button-text text-button-text shadow-sm font-semibold"
-            >
-              <span className="material-symbols-outlined text-[18px]">playlist_add</span>
-              <span>New Playlist</span>
-            </button>
-
-            <button
-              onClick={() => {
-                const gammaTrack = TRACKS.find((t) => t.id === 'track-1') || TRACKS[0];
-                playTrack(gammaTrack);
-              }}
-              className="flex items-center gap-space-2xs px-4 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface transition-all font-button-text text-button-text shadow-sm font-semibold hidden sm:flex"
-            >
-              <span className="material-symbols-outlined text-[18px]">headphones</span>
-              <span>40Hz Boost</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* -------------------------------------------------- */}
-      {/* SECONDARY NAVIGATION BAR (Music Tabs)              */}
-      {/* -------------------------------------------------- */}
-      <nav className="flex items-center justify-between border-b border-outline-variant/30 pb-2 overflow-x-auto gap-4">
-        <div className="flex items-center gap-1 sm:gap-2">
+        {/* Right side clean actions */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {/* Quick Search */}
           <button
-            onClick={() => navigateTo('home')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'home'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+            type="button"
+            onClick={() => handleNavClick('search')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+              activeTab === 'search'
+                ? 'bg-primary/10 border-primary text-primary'
+                : 'bg-surface-container hover:bg-surface-container-high border-white/10 text-on-surface'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">home</span>
-            <span>Music Home</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('search')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'search'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-            }`}
-          >
-            <span className="material-symbols-outlined text-[18px]">search</span>
+            <span className="material-symbols-outlined text-[16px]">search</span>
             <span>Search</span>
           </button>
 
+          {/* Quick Favorites */}
           <button
-            onClick={() => navigateTo('library')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'library'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-            }`}
+            type="button"
+            onClick={handleQuickFavorites}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high border border-white/10 text-on-surface text-xs font-semibold transition-all cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">library_music</span>
-            <span>Your Library</span>
+            <span className="material-symbols-outlined text-[16px] text-primary">favorite</span>
+            <span>Favorites ({favorites.length})</span>
           </button>
 
+          {/* Create Playlist */}
           <button
-            onClick={() => navigateTo('manage')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'manage'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-            }`}
+            type="button"
+            onClick={() => setIsCreatePlaylistOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-primary text-on-primary text-xs font-bold hover:bg-primary-fixed hover:scale-105 active:scale-95 transition-all shadow-md cursor-pointer"
           >
-            <span className="material-symbols-outlined text-[18px]">tune</span>
-            <span>Manage Music</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('liked')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'liked'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-            }`}
-          >
-            <span className="material-symbols-outlined text-[18px] text-primary">favorite</span>
-            <span>Liked Tracks ({likedTracks.length})</span>
-          </button>
-
-          <button
-            onClick={() => navigateTo('recent')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-              activeView === 'recent'
-                ? 'bg-secondary-container text-on-secondary-container font-bold shadow-sm'
-                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
-            }`}
-          >
-            <span className="material-symbols-outlined text-[18px]">history</span>
-            <span>Recently Played</span>
+            <span className="material-symbols-outlined text-[18px]">playlist_add</span>
+            <span>Create Playlist</span>
           </button>
         </div>
+      </header>
 
-        {/* Technical Engine Toggle */}
+      {/* Unauthenticated notice */}
+      {!user && (
+        <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-surface-container border border-primary/20 text-xs text-on-surface">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-[18px]">info</span>
+            <span>Sign in to save your favorites, playlists, and listening history across devices.</span>
+          </div>
+          <a
+            href="/login"
+            className="text-primary font-bold hover:underline shrink-0 text-xs"
+          >
+            Sign in
+          </a>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 2. NEW CLEAN NAVIGATION (PART 2)                   */}
+      {/* -------------------------------------------------- */}
+      <nav className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-white/5 scrollbar-none">
         <button
-          onClick={() => setShowTechnicalPanel(!showTechnicalPanel)}
-          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-label-mono-wide uppercase transition-colors whitespace-nowrap border ${
-            showTechnicalPanel
-              ? 'bg-surface-container-high border-primary text-primary font-bold'
-              : 'border-outline-variant/30 text-on-surface-variant hover:text-on-surface'
+          type="button"
+          onClick={() => handleNavClick('home')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+            activeTab === 'home' && !selectedPlaylistId
+              ? 'bg-primary text-on-primary shadow-sm font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
           }`}
-          title="Toggle Acoustic Engine Console"
         >
-          <span className="material-symbols-outlined text-[16px]">tune</span>
-          <span className="hidden sm:inline">Acoustic Engine</span>
+          <span className="material-symbols-outlined text-[18px]">home</span>
+          <span>Home</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleNavClick('search')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+            activeTab === 'search'
+              ? 'bg-primary text-on-primary shadow-sm font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[18px]">search</span>
+          <span>Search</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleNavClick('library')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+            activeTab === 'library' && !selectedPlaylistId
+              ? 'bg-primary text-on-primary shadow-sm font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[18px]">library_music</span>
+          <span>Library</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleNavClick('playlists')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+            activeTab === 'playlists' || selectedPlaylistId
+              ? 'bg-primary text-on-primary shadow-sm font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[18px]">queue_music</span>
+          <span>Playlists ({userPlaylists.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleNavClick('recent')}
+          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer ${
+            activeTab === 'recent'
+              ? 'bg-primary text-on-primary shadow-sm font-bold'
+              : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+          }`}
+        >
+          <span className="material-symbols-outlined text-[18px]">history</span>
+          <span>Recently Played</span>
         </button>
       </nav>
 
       {/* -------------------------------------------------- */}
-      {/* OPTIONAL TECHNICAL ACOUSTIC PANEL                  */}
+      {/* 3. PLAYLIST DETAIL SUB-VIEW (If selected)          */}
       {/* -------------------------------------------------- */}
-      {showTechnicalPanel && (
-        <div className="p-4 rounded-2xl bg-surface-container-low border border-primary/30 shadow-md space-y-3 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2">
-            <div className="flex items-center gap-2 font-label-tag text-xs uppercase text-primary font-bold">
-              <span className="material-symbols-outlined text-[18px]">graphic_eq</span>
-              Low-Latency Web Audio Synthesizer Telemetry
-            </div>
-            <span className="font-label-mono-wide text-[10px] text-on-surface-variant">
-              Engine: WebAudio API 44.1kHz • Buffer 2048 • 0.0ms Relay
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 space-y-1">
-              <div className="font-label-tag text-[10px] uppercase text-on-surface-variant">Active Mode</div>
-              <div className="font-headline-sm text-xs font-bold text-on-surface uppercase">
-                {currentTrack.soundType} Carrier
-              </div>
-              <div className="font-label-mono-wide text-[10px] text-primary">
-                {currentTrack.freq ? `${currentTrack.freq}Hz Delta Frequency` : 'Multi-pole Filtered'}
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 space-y-1">
-              <div className="font-label-tag text-[10px] uppercase text-on-surface-variant">Master Gain</div>
-              <div className="font-headline-sm text-xs font-bold text-on-surface">
-                {Math.round(volume * 100)}% ({((volume - 1) * 36).toFixed(1)} dB)
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={volume}
-                onChange={(e) => setVolume(parseFloat(e.target.value))}
-                className="w-full h-1 accent-primary bg-surface-container-highest rounded"
-              />
-            </div>
-
-            <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 space-y-1">
-              <div className="font-label-tag text-[10px] uppercase text-on-surface-variant">Audio Masking</div>
-              <div className="font-headline-sm text-xs font-bold text-on-surface">
-                Pink / Brown Noise Attenuation
-              </div>
-              <div className="font-label-mono-wide text-[10px] text-secondary">
-                Speech Intelligibility Supression Active
-              </div>
-            </div>
-
-            <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/20 space-y-1">
-              <div className="font-label-tag text-[10px] uppercase text-on-surface-variant">Stereo Separation</div>
-              <div className="font-headline-sm text-xs font-bold text-on-surface">
-                ±85% Binaural Pan Offset
-              </div>
-              <div className="font-label-mono-wide text-[10px] text-on-surface-variant">
-                Phase aligned for headphone acoustics
-              </div>
-            </div>
-          </div>
-        </div>
+      {selectedPlaylistId && (
+        <PlaylistDetailView
+          playlistId={selectedPlaylistId}
+          onBack={() => setSelectedPlaylistId(null)}
+          onAddToPlaylist={handleOpenAddToPlaylist}
+        />
       )}
 
-      {/* ================================================== */}
-      {/* VIEW: MUSIC HOME                                   */}
-      {/* ================================================== */}
-      {activeView === 'home' && (
-        <div className="space-y-space-xl">
-          {/* Section: "What are you doing right now?" Study Context Picker */}
-          <section className="space-y-space-xs">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="font-label-tag text-xs uppercase tracking-widest text-primary font-bold">
-                  STUDY CONTEXT ENGINE
-                </span>
-                <span className="text-on-surface-variant text-xs">• What are you doing right now?</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2">
-              {STUDY_CONTEXT_MIXES.map((mix) => {
-                const isActive = activeContextId === mix.id || activeFocusSession?.name === mix.title;
-                return (
-                  <button
-                    key={mix.id}
-                    onClick={() => {
-                      const contextTracks = TRACKS.filter(
-                        (t) =>
-                          t.category === mix.contextTag.toLowerCase() ||
-                          (t.tags && t.tags.includes(mix.contextTag.toLowerCase())) ||
-                          (t.tags && t.tags.includes(mix.title.toLowerCase()))
-                      );
-                      const primaryTrack =
-                        TRACKS.find((t) => t.id === mix.defaultTrackId) || contextTracks[0] || TRACKS[0];
-                      playTrack(primaryTrack, contextTracks.length > 0 ? contextTracks : TRACKS);
-                      startContextFocusSession(mix.title, mix.durationMins, mix.id);
-                    }}
-                    className={`p-3 rounded-xl text-left transition-all group space-y-1 shadow-sm relative ${
-                      isActive
-                        ? 'bg-surface-container border-2 border-primary shadow-md ring-1 ring-primary/40'
-                        : 'bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`material-symbols-outlined text-[20px] transition-transform ${
-                          isActive ? 'text-primary scale-110' : 'text-primary group-hover:scale-110'
-                        }`}
-                      >
-                        {mix.icon}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />}
-                        <span className="font-label-mono-wide text-[9px] text-on-surface-variant font-semibold">
-                          {mix.durationMins}m
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      className={`font-headline-sm text-xs font-bold transition-colors truncate ${
-                        isActive ? 'text-primary' : 'text-on-surface group-hover:text-primary'
-                      }`}
-                    >
-                      {mix.title}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="font-label-tag text-[9px] text-on-surface-variant truncate">
-                        {mix.contextTag}
-                      </span>
-                      {isActive && (
-                        <span className="font-label-mono-wide text-[8px] uppercase tracking-wider text-primary font-bold">
-                          ACTIVE
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* Section: QUICK ACCESS CATEGORIES */}
-          <section className="space-y-space-xs">
-            <div className="flex items-center justify-between">
-              <h2 className="font-headline-md text-base font-bold text-on-surface">
-                Nivora Sound Categories
-              </h2>
-              <span className="font-label-mono-wide text-xs text-on-surface-variant">7 Soundscapes</span>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
-              {QUICK_ACCESS_CARDS.map((card) => (
-                <div
-                  key={card.id}
-                  onClick={() => navigateTo('category', card.category)}
-                  className="group relative rounded-xl overflow-hidden aspect-[4/3] border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all"
+      {/* -------------------------------------------------- */}
+      {/* 4. HOME VIEW (PART 4)                              */}
+      {/* -------------------------------------------------- */}
+      {!selectedPlaylistId && activeTab === 'home' && (
+        <div className="space-y-10 animate-in fade-in duration-200">
+          {/* Section 1: What do you want to listen to? */}
+          <section className="space-y-3">
+            <h2 className="text-xs uppercase font-bold tracking-wider text-on-surface-variant">
+              What do you want to listen to?
+            </h2>
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {FILTER_TAGS.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => setSelectedFilter(tag)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer border ${
+                    selectedFilter === tag
+                      ? 'bg-primary border-primary text-on-primary shadow-sm font-bold'
+                      : 'bg-surface-container hover:bg-surface-container-high border-white/10 text-on-surface-variant hover:text-on-surface'
+                  }`}
                 >
-                  <MusicArtwork
-                    src={card.artwork}
-                    alt={card.title}
-                    category={card.category}
-                    title={card.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-2.5 flex flex-col justify-end">
-                    <h3 className="font-headline-sm text-xs font-bold text-white group-hover:text-primary transition-colors">
-                      {card.title}
-                    </h3>
-                    <p className="font-label-tag text-[9px] text-white/70 truncate">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
+                  {tag}
+                </button>
               ))}
             </div>
           </section>
 
-          {/* Section: CONTINUE LISTENING */}
-          <section className="space-y-space-xs">
-            <div className="flex items-center justify-between">
-              <h2 className="font-headline-md text-base font-bold text-on-surface">
-                Continue Listening
-              </h2>
-              <button
-                onClick={() => navigateTo('recent')}
-                className="font-label-mono-wide text-xs text-primary hover:underline"
-              >
-                View History
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {recentlyPlayedTracks.slice(0, 4).map((track) => (
-                <div
-                  key={track.id}
-                  onClick={() => playTrack(track, recentlyPlayedTracks)}
-                  className="group p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 hover:border-outline-variant/70 transition-all flex items-center justify-between gap-3 shadow-sm cursor-pointer"
-                >
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-outline-variant/30">
-                      <MusicArtwork
-                        src={track.artwork}
-                        alt={track.title}
-                        category={track.category}
-                        title={track.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                        {track.title}
-                      </h4>
-                      <p className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                        {track.artist}
-                      </p>
-                      <span className="font-label-mono-wide text-[9px] text-primary uppercase font-semibold">
-                        {track.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (currentTrack.id === track.id && isPlaying) {
-                        togglePlay();
-                      } else {
-                        playTrack(track, recentlyPlayedTracks);
-                      }
-                    }}
-                    className="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 hover:bg-primary-fixed transition-colors shadow-sm font-bold"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">
-                      {currentTrack.id === track.id && isPlaying ? 'pause' : 'play_arrow'}
-                    </span>
-                  </button>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Section: MADE FOR YOUR STUDY (Personalized playlists) */}
-          <section className="space-y-space-xs">
-            <div className="flex items-center justify-between">
+          {/* Error Message Alert Banner */}
+          {filterError && (
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-3 text-amber-300">
+              <span className="material-symbols-outlined text-2xl shrink-0">warning</span>
               <div>
-                <h2 className="font-headline-md text-base font-bold text-on-surface">
-                  Made For Your Study
-                </h2>
-                <p className="font-body-sm text-xs text-on-surface-variant">
-                  Contextual student study mixes tailored for intense cognitive cadences.
-                </p>
+                <p className="text-sm font-semibold">{filterError}</p>
+                {filterError === 'Music service is not configured.' && (
+                  <p className="text-xs text-amber-300/80 mt-0.5">Please configure YOUTUBE_API_KEY in the server environment.</p>
+                )}
               </div>
-              <button
-                onClick={() => navigateTo('library')}
-                className="font-label-mono-wide text-xs text-primary hover:underline"
-              >
-                All Playlists ({DEFAULT_PLAYLISTS.length})
-              </button>
             </div>
+          )}
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {DEFAULT_PLAYLISTS.slice(0, 6).map((playlist) => (
-                <div
-                  key={playlist.id}
-                  onClick={() => navigateTo('playlist', playlist.id)}
-                  className="group p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all space-y-2.5"
-                >
-                  <div className="relative aspect-square rounded-xl overflow-hidden border border-outline-variant/30">
-                    <MusicArtwork
-                      src={playlist.artwork}
-                      alt={playlist.name}
-                      category={playlist.contextTag}
-                      title={playlist.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const tracks = playlist.trackIds
-                            .map((id) => TRACKS.find((t) => t.id === id))
-                            .filter((t): t is Track => !!t);
-                          if (tracks.length > 0) {
-                            playTrack(tracks[0], tracks);
-                          }
+          {/* Loading Skeletons */}
+          {isLoadingFilterRecs && (
+            <div className="space-y-8">
+              <div className="space-y-3.5">
+                <div className="h-4 w-44 bg-surface-container rounded animate-pulse" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="p-4 rounded-2xl bg-surface-container animate-pulse space-y-3">
+                      <div className="aspect-video w-full rounded-xl bg-surface-container-high" />
+                      <div className="h-4 w-3/4 bg-surface-container-high rounded" />
+                      <div className="h-3 w-1/2 bg-surface-container-high rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-3.5">
+                <div className="h-4 w-48 bg-surface-container rounded animate-pulse" />
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="p-3 rounded-2xl bg-surface-container animate-pulse space-y-2">
+                      <div className="aspect-video sm:aspect-square w-full rounded-xl bg-surface-container-high" />
+                      <div className="h-3 w-3/4 bg-surface-container-high rounded" />
+                      <div className="h-2.5 w-1/2 bg-surface-container-high rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Real YouTube API Results */}
+          {!isLoadingFilterRecs && !filterError && filterRecommendations.length > 0 && (
+            <>
+              {/* Section 2: Featured Real YouTube Music */}
+              <section className="space-y-3.5">
+                <h2 className="text-sm font-bold text-on-surface">Featured {selectedFilter} Music</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {filterRecommendations.slice(0, 4).map((track) => {
+                    const targetVideoId = track?.videoId || track?.id;
+                    const isTrackPlaying =
+                      isPlaying &&
+                      Boolean(targetVideoId) &&
+                      ((Boolean(currentTrack?.videoId) && (currentTrack.videoId === targetVideoId || currentTrack.videoId === track.id)) ||
+                       (Boolean(currentTrack?.id) && (currentTrack.id === targetVideoId || currentTrack.id === track.id)));
+
+                    return (
+                      <div
+                        key={track.id}
+                        onClick={() => {
+                          if (targetVideoId) playTrack(track, filterRecommendations);
                         }}
-                        className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-transform"
-                        title={`Play ${playlist.name}`}
+                        className="group relative flex flex-col justify-between p-4 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/15 transition-all shadow-sm cursor-pointer overflow-hidden"
                       >
-                        <span className="material-symbols-outlined text-[24px]">play_arrow</span>
-                      </button>
+                        <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-surface-container-high border border-white/10 mb-3">
+                          <img
+                            src={track.artwork || track.coverUrl || `https://img.youtube.com/vi/${track.id}/hqdefault.jpg`}
+                            alt={track.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                          {track.durationFormatted && (
+                            <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded bg-black/75 backdrop-blur-md text-[10px] font-mono font-semibold text-white/90">
+                              {track.durationFormatted}
+                            </div>
+                          )}
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!targetVideoId) return;
+                              if (isTrackPlaying) togglePlay();
+                              else playTrack(track, filterRecommendations);
+                            }}
+                            className={`absolute bottom-2.5 right-2.5 w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg transition-all cursor-pointer font-bold ${
+                              isTrackPlaying ? 'scale-100 opacity-100' : 'opacity-90 group-hover:scale-110'
+                            }`}
+                            title={isTrackPlaying ? 'Pause' : 'Play'}
+                          >
+                            <span className="material-symbols-outlined text-[20px]">
+                              {isTrackPlaying ? 'pause' : 'play_arrow'}
+                            </span>
+                          </button>
+                        </div>
+
+                        <div className="space-y-1">
+                          <h3 className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-1" title={track.title}>
+                            {track.title}
+                          </h3>
+                          <p className="text-xs text-on-surface-variant truncate">
+                            {track.channelTitle || track.artist}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+
+              {/* Section 3: Made For Your Study (Real Music Cards) */}
+              {filterRecommendations.length > 4 && (
+                <section className="space-y-3.5">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-sm font-bold text-on-surface">Made For Your Study</h2>
+                      <p className="text-xs text-on-surface-variant">
+                        Curated {selectedFilter.toLowerCase()} soundtracks for focused sessions
+                      </p>
                     </div>
                   </div>
 
-                  <div>
-                    <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                      {playlist.name}
-                    </h4>
-                    <p className="font-body-sm text-[10.5px] text-on-surface-variant line-clamp-2 mt-0.5 leading-tight">
-                      {playlist.description}
-                    </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                    {filterRecommendations.slice(4).map((track) => (
+                      <MusicCard
+                        key={track.id}
+                        track={track}
+                        onAddToPlaylist={handleOpenAddToPlaylist}
+                      />
+                    ))}
                   </div>
-                </div>
-              ))}
+                </section>
+              )}
+            </>
+          )}
+
+          {/* Empty state when no results and no error */}
+          {!isLoadingFilterRecs && !filterError && filterRecommendations.length === 0 && (
+            <div className="py-16 text-center space-y-2 rounded-2xl bg-surface-container/30 border border-white/5">
+              <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                music_off
+              </span>
+              <p className="text-sm text-on-surface-variant font-medium">No music found.</p>
             </div>
-          </section>
+          )}
 
-          {/* Two-Column Section: Curated Soundscapes (8 cols) & Campus Lounges (4 cols) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
-            {/* Left: Study Soundscapes */}
-            <div className="lg:col-span-7 space-y-space-xs">
-              <div className="flex items-center justify-between">
-                <h3 className="font-headline-md text-base font-bold text-on-surface">
-                  Curated Academic Soundscapes
-                </h3>
-                <span className="font-label-mono-wide text-xs text-on-surface-variant">Binaural &amp; Acoustic</span>
+          {/* Section 4: Continue Listening (Real Supabase history only) */}
+          <section className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-bold text-on-surface">Continue Listening</h2>
+              {recentlyPlayed.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleNavClick('recent')}
+                  className="text-xs text-primary font-semibold hover:underline"
+                >
+                  View All ({recentlyPlayed.length})
+                </button>
+              )}
+            </div>
+
+            {recentlyPlayed.length === 0 ? (
+              <div className="p-6 rounded-2xl bg-surface-container/40 border border-white/5 text-center text-xs text-on-surface-variant">
+                Your listening history will appear here.
               </div>
-
-              <div className="space-y-1.5 bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 shadow-sm">
-                {TRACKS.slice(0, 7).map((track, i) => (
-                  <TrackRow key={track.id} track={track} index={i} contextQueue={TRACKS} />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {recentlyPlayed.slice(0, 4).map((track, idx) => (
+                  <MusicSongRow
+                    key={track.id + idx}
+                    track={track}
+                    showIndex={false}
+                    onAddToPlaylist={handleOpenAddToPlaylist}
+                  />
                 ))}
               </div>
-            </div>
+            )}
+          </section>
 
-            {/* Right: Live Campus Lounges */}
-            <div className="lg:col-span-5 space-y-space-xs">
-              <div className="flex items-center justify-between">
-                <h3 className="font-headline-md text-base font-bold text-on-surface">
-                  Live Study Lounges
-                </h3>
-                <span className="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-[10px] font-bold">
-                  {CAMPUS_LOUNGES.length} Active Rooms
-                </span>
+          {/* Section 5: Your Library Quick Access */}
+          <section className="space-y-3">
+            <h2 className="text-sm font-bold text-on-surface">Your Library</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Liked Songs Tile */}
+              <div
+                onClick={() => {
+                  setActiveTab('library');
+                  setLibrarySubTab('liked');
+                }}
+                className="flex items-center gap-3.5 p-4 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/10 transition-all cursor-pointer group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[24px] filled">favorite</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+                    Liked Songs
+                  </div>
+                  <div className="text-xs text-on-surface-variant">
+                    {favorites.length} {favorites.length === 1 ? 'track' : 'tracks'}
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-2 bg-surface-container-low p-3 rounded-2xl border border-outline-variant/30 shadow-sm">
-                {CAMPUS_LOUNGES.map((lounge) => {
-                  const isCurrentLounge = activeLounge?.id === lounge.id;
-                  return (
-                    <div
-                      key={lounge.id}
-                      className="p-3 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/20 transition-all flex items-center justify-between gap-3"
-                    >
-                      <div className="min-w-0 space-y-0.5">
-                        <div className="flex items-center gap-1.5">
-                          <span className={`w-1.5 h-1.5 rounded-full ${isCurrentLounge ? 'bg-primary animate-ping' : 'bg-secondary'}`} />
-                          <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate">
-                            {lounge.name}
-                          </h4>
-                        </div>
-                        <div className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                          {lounge.peers} students connected • Host: {lounge.host}
-                        </div>
-                      </div>
+              {/* Recently Played Tile */}
+              <div
+                onClick={() => handleNavClick('recent')}
+                className="flex items-center gap-3.5 p-4 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/10 transition-all cursor-pointer group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-secondary/20 text-secondary flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[24px]">history</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
+                    Recently Played
+                  </div>
+                  <div className="text-xs text-on-surface-variant">
+                    {recentlyPlayed.length} {recentlyPlayed.length === 1 ? 'track' : 'tracks'}
+                  </div>
+                </div>
+              </div>
 
-                      <button
-                        onClick={() => setSelectedLoungeForModal(lounge)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-button-text font-bold transition-all shrink-0 ${
-                          isCurrentLounge
-                            ? 'bg-secondary-container text-on-secondary-container border border-primary/30'
-                            : 'bg-primary text-on-primary hover:bg-primary-fixed shadow-sm'
-                        }`}
-                      >
-                        {isCurrentLounge ? 'In Room' : 'Join'}
-                      </button>
-                    </div>
-                  );
-                })}
+              {/* Playlists Tile */}
+              <div
+                onClick={() => handleNavClick('playlists')}
+                className="flex items-center gap-3.5 p-4 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/10 transition-all cursor-pointer group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-surface-container-high text-on-surface flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[24px]">queue_music</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+                    Your Playlists
+                  </div>
+                  <div className="text-xs text-on-surface-variant">
+                    {userPlaylists.length} {userPlaylists.length === 1 ? 'playlist' : 'playlists'}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       )}
 
-      {/* ================================================== */}
-      {/* VIEW: SEARCH SYSTEM                                */}
-      {/* ================================================== */}
-      {activeView === 'search' && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          {/* Search Input Field */}
-          <div className="relative max-w-2xl">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[22px]">
+      {/* -------------------------------------------------- */}
+      {/* 5. SEARCH VIEW (PART 5)                            */}
+      {/* -------------------------------------------------- */}
+      {!selectedPlaylistId && activeTab === 'search' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          {/* Large Search Input */}
+          <div className="relative w-full max-w-2xl">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-[22px] text-on-surface-variant">
               search
             </span>
             <input
               type="text"
               autoFocus
-              placeholder="Search tracks, artists, albums, playlists, genres, or moods..."
+              placeholder="Search songs, artists, playlists..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-12 py-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/40 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary font-body-md text-sm shadow-md"
+              onChange={(e) => handleSearchChange(e.target.value)}
+              className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-surface-container border border-white/10 focus:border-primary text-sm sm:text-base text-on-surface placeholder:text-on-surface-variant/60 focus:outline-none transition-all shadow-lg"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSearchResults([]);
+                  setSearchHasSearched(false);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-on-surface-variant hover:text-on-surface cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <span className="material-symbols-outlined text-[18px]">close</span>
               </button>
             )}
           </div>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-1">
-            {(['all', 'tracks', 'artists', 'albums', 'playlists'] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSearchCategory(cat)}
-                className={`px-3 py-1 rounded-full text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-                  searchCategory === cat
-                    ? 'bg-primary text-on-primary font-bold shadow-sm'
-                    : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Empty Search State */}
-          {!searchQuery.trim() ? (
-            <div className="py-12 text-center space-y-4">
-              <span className="material-symbols-outlined text-[48px] text-on-surface-variant/40">
-                manage_search
-              </span>
-              <div className="space-y-1 max-w-md mx-auto">
-                <h3 className="font-headline-md text-base font-bold text-on-surface">
-                  Search Nivora Academic Audio
-                </h3>
-                <p className="font-body-sm text-xs text-on-surface-variant">
-                  Find neuro-acoustic carrier tones, rain soundscapes, lo-fi coding grooves, or classical felt piano studies.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-                <span className="text-xs text-on-surface-variant">Popular searches:</span>
-                {['40Hz Gamma', 'Bodleian Rain', 'Chopin Focus', 'LoFi Compiler', 'Deep Flow'].map((hint) => (
-                  <button
-                    key={hint}
-                    onClick={() => setSearchQuery(hint)}
-                    className="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-mono-wide text-xs"
-                  >
-                    {hint}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            /* Search Results */
-            <div className="space-y-6">
-              {/* Tracks Section */}
-              {(searchCategory === 'all' || searchCategory === 'tracks') && searchResults.tracks.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="font-headline-sm text-sm font-bold text-on-surface">
-                    Tracks ({searchResults.tracks.length})
-                  </h3>
-                  <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-                    {searchResults.tracks.map((t, idx) => (
-                      <TrackRow
-                        key={t.id}
-                        track={t}
-                        index={idx}
-                        contextQueue={searchResults.tracks}
-                        onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-                        onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Artists Section */}
-              {(searchCategory === 'all' || searchCategory === 'artists') && searchResults.artists.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="font-headline-sm text-sm font-bold text-on-surface">
-                    Artists ({searchResults.artists.length})
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {searchResults.artists.map((artist) => (
-                      <div
-                        key={artist.id}
-                        onClick={() => navigateTo('artist', artist.id)}
-                        className="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer transition-all text-center space-y-2"
-                      >
-                        <div className="w-20 h-20 rounded-full mx-auto overflow-hidden border border-outline-variant/30 shadow-sm">
-                          <MusicArtwork
-                            src={artist.artwork}
-                            alt={artist.name}
-                            title={artist.name}
-                            category="artist"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-headline-sm text-xs font-bold text-on-surface truncate">
-                            {artist.name}
-                          </div>
-                          <div className="font-label-tag text-[9px] text-on-surface-variant truncate">
-                            {artist.genre}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Albums Section */}
-              {(searchCategory === 'all' || searchCategory === 'albums') && searchResults.albums.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="font-headline-sm text-sm font-bold text-on-surface">
-                    Albums ({searchResults.albums.length})
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {searchResults.albums.map((album) => (
-                      <div
-                        key={album.id}
-                        onClick={() => navigateTo('album', album.id)}
-                        className="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer transition-all space-y-2"
-                      >
-                        <div className="w-full aspect-square rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
-                          <MusicArtwork
-                            src={album.artwork}
-                            alt={album.title}
-                            title={album.title}
-                            category={album.genre}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-headline-sm text-xs font-bold text-on-surface truncate">
-                            {album.title}
-                          </div>
-                          <div className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                            {album.artist} • {album.releaseYear}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Playlists Section */}
-              {(searchCategory === 'all' || searchCategory === 'playlists') && searchResults.playlists.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="font-headline-sm text-sm font-bold text-on-surface">
-                    Playlists ({searchResults.playlists.length})
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {searchResults.playlists.map((pl) => (
-                      <div
-                        key={pl.id}
-                        onClick={() => navigateTo('playlist', pl.id)}
-                        className="p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer transition-all space-y-2"
-                      >
-                        <div className="w-full aspect-square rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
-                          <MusicArtwork
-                            src={pl.artwork}
-                            alt={pl.name}
-                            title={pl.name}
-                            category={pl.contextTag || 'playlist'}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-headline-sm text-xs font-bold text-on-surface truncate">
-                            {pl.name}
-                          </div>
-                          <div className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                            {pl.trackIds.length} Tracks
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* No Results Fallback */}
-              {searchResults.tracks.length === 0 &&
-                searchResults.artists.length === 0 &&
-                searchResults.albums.length === 0 &&
-                searchResults.playlists.length === 0 && (
-                  <div className="py-12 text-center space-y-2">
-                    <p className="font-headline-sm text-sm font-bold text-on-surface">
-                      No matching soundscapes found for &ldquo;{searchQuery}&rdquo;
-                    </p>
-                    <p className="font-body-sm text-xs text-on-surface-variant">
-                      Try searching by keyword like &ldquo;Gamma&rdquo;, &ldquo;Focus&rdquo;, &ldquo;Rain&rdquo;, or &ldquo;Coding&rdquo;.
-                    </p>
-                  </div>
-                )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: YOUR LIBRARY                                 */}
-      {/* ================================================== */}
-      {activeView === 'library' && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          {/* Library Header & Filters */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline-variant/20 pb-3">
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {(['all', 'playlists', 'liked', 'albums', 'artists'] as const).map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setLibraryFilter(filter)}
-                  className={`px-3 py-1 rounded-lg text-xs font-label-mono-wide uppercase transition-colors whitespace-nowrap ${
-                    libraryFilter === filter
-                      ? 'bg-secondary-container text-on-secondary-container font-bold'
-                      : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-3">
-              <span className="font-label-tag text-xs uppercase text-on-surface-variant">Sort:</span>
-              <select
-                value={librarySort}
-                onChange={(e) => setLibrarySort(e.target.value as any)}
-                className="bg-surface-container border border-outline-variant/30 text-on-surface text-xs font-label-mono-wide uppercase rounded-lg px-2.5 py-1 focus:outline-none"
-              >
-                <option value="recent">Recently Added</option>
-                <option value="alpha">Alphabetical</option>
-                <option value="count">Track Count</option>
-              </select>
-
-              <button
-                onClick={() => setIsImporterOpen(true)}
-                className="px-3 py-1 rounded-lg bg-primary text-on-primary text-xs font-button-text font-bold hover:bg-primary-fixed shadow-sm flex items-center gap-1"
-              >
-                <span className="material-symbols-outlined text-[16px]">upload_file</span>
-                <span>+ Add Music</span>
-              </button>
-
-              <button
-                onClick={() => navigateTo('manage')}
-                className="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-bright border border-outline-variant/30 text-on-surface text-xs font-button-text font-semibold shadow-sm flex items-center gap-1"
-              >
-                <span className="material-symbols-outlined text-[16px]">tune</span>
-                <span>Manage Music</span>
-              </button>
-
-              <button
-                onClick={() => setIsCreatePlaylistOpen(true)}
-                className="px-3 py-1 rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface text-xs font-button-text font-semibold shadow-sm border border-outline-variant/20"
-              >
-                + New Playlist
-              </button>
-            </div>
-          </div>
-
-          {/* Library Grid Items */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {/* Liked Songs Special Card */}
-            {(libraryFilter === 'all' || libraryFilter === 'liked') && (
-              <div
-                onClick={() => navigateTo('liked')}
-                className="p-4 rounded-2xl bg-gradient-to-br from-[#1C2A30] to-[#172329] border border-primary/40 hover:border-primary cursor-pointer shadow-md transition-all space-y-4 flex flex-col justify-between"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold shadow-md">
-                  <span className="material-symbols-outlined text-[28px] filled">favorite</span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-sm font-bold text-on-surface">Liked Tracks</h4>
-                  <p className="font-label-tag text-[10px] text-primary font-semibold mt-0.5">
-                    {likedTracks.length} Saved Tracks
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Manage Library / Imported Tracks Card */}
-            {(libraryFilter === 'all' || libraryFilter === 'playlists') && (
-              <div
-                onClick={() => navigateTo('manage')}
-                className="p-4 rounded-2xl bg-gradient-to-br from-[#1A2822] to-[#121F1A] border border-[#8FC5A7]/30 hover:border-[#8FC5A7] cursor-pointer shadow-md transition-all space-y-4 flex flex-col justify-between group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-[#8FC5A7]/15 border border-[#8FC5A7]/25 text-[#8FC5A7] flex items-center justify-center font-bold shadow-md group-hover:scale-105 transition-transform">
-                  <span className="material-symbols-outlined text-[28px]">library_music</span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-sm font-bold text-on-surface">Manage Music</h4>
-                  <p className="font-label-tag text-[10px] text-[#8FC5A7] font-semibold mt-0.5">
-                    {importedTracks.length} Imported Tracks • Full Manager
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Playlists */}
-            {(libraryFilter === 'all' || libraryFilter === 'playlists') &&
-              playlists.map((pl) => (
-                <div
-                  key={pl.id}
-                  onClick={() => navigateTo('playlist', pl.id)}
-                  className="group p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all space-y-2"
-                >
-                  <div className="w-full aspect-square rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
-                    <MusicArtwork
-                      src={pl.artwork}
-                      alt={pl.name}
-                      title={pl.name}
-                      category={pl.contextTag || 'playlist'}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                      {pl.name}
-                    </h4>
-                    <p className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                      {pl.isCustom ? 'Custom Playlist' : 'Nivora Mix'} • {pl.trackIds.length} Tracks
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-            {/* Saved Albums */}
-            {(libraryFilter === 'all' || libraryFilter === 'albums') &&
-              ALBUMS.map((alb) => (
-                <div
-                  key={alb.id}
-                  onClick={() => navigateTo('album', alb.id)}
-                  className="group p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all space-y-2"
-                >
-                  <div className="w-full aspect-square rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
-                    <MusicArtwork
-                      src={alb.artwork}
-                      alt={alb.title}
-                      title={alb.title}
-                      category={alb.genre}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                      {alb.title}
-                    </h4>
-                    <p className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                      {alb.artist} • {alb.releaseYear}
-                    </p>
-                  </div>
-                </div>
-              ))}
-
-            {/* Saved Artists */}
-            {(libraryFilter === 'all' || libraryFilter === 'artists') &&
-              ARTISTS.map((art) => (
-                <div
-                  key={art.id}
-                  onClick={() => navigateTo('artist', art.id)}
-                  className="group p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all space-y-2 text-center"
-                >
-                  <div className="w-24 h-24 rounded-full mx-auto overflow-hidden border border-outline-variant/30 shadow-sm">
-                    <MusicArtwork
-                      src={art.artwork}
-                      alt={art.name}
-                      title={art.name}
-                      category="artist"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                      {art.name}
-                    </h4>
-                    <p className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                      {art.genre}
-                    </p>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: LIKED TRACKS                                 */}
-      {/* ================================================== */}
-      {activeView === 'liked' && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          {/* Header Banner */}
-          <div className="p-6 rounded-2xl bg-gradient-to-r from-surface-container-low to-surface-container border border-outline-variant/30 flex flex-col sm:flex-row sm:items-end justify-between gap-4 shadow-sm">
-            <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-2xl bg-primary text-on-primary flex items-center justify-center font-bold shadow-md shrink-0">
-                <span className="material-symbols-outlined text-[44px] filled">favorite</span>
-              </div>
-              <div className="space-y-1">
-                <span className="font-label-tag text-xs uppercase text-primary font-bold tracking-widest">
-                  PLAYLIST
-                </span>
-                <h2 className="font-display-hero text-2xl sm:text-4xl text-on-surface font-bold">
-                  Liked Tracks
-                </h2>
-                <p className="font-body-sm text-xs text-on-surface-variant">
-                  {likedTracks.length} tracks • {calculateTotalDuration(likedTracks)} total audio
-                </p>
-              </div>
-            </div>
-
-            {likedTracks.length > 0 && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => playTrack(likedTracks[0], likedTracks)}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-md flex items-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-[20px]">play_arrow</span>
-                  <span>Play All</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Liked Tracks List */}
-          {likedTracks.length === 0 ? (
-            <div className="p-12 text-center rounded-2xl bg-surface-container-low border border-outline-variant/20 space-y-3">
-              <span className="material-symbols-outlined text-[48px] text-on-surface-variant/40">
-                favorite_border
-              </span>
-              <h3 className="font-headline-md text-base font-bold text-on-surface">
-                Your sound starts here
-              </h3>
-              <p className="font-body-sm text-xs text-on-surface-variant max-w-sm mx-auto">
-                Like tracks while listening to build your personal library of study soundscapes.
-              </p>
-            </div>
-          ) : (
-            <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-              {likedTracks.map((t, idx) => (
-                <TrackRow
-                  key={t.id}
-                  track={t}
-                  index={idx}
-                  contextQueue={likedTracks}
-                  onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-                  onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: RECENTLY PLAYED                              */}
-      {/* ================================================== */}
-      {activeView === 'recent' && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
-            <div>
-              <h2 className="font-headline-md text-lg font-bold text-on-surface">Recently Played</h2>
-              <p className="font-body-sm text-xs text-on-surface-variant">
-                History of your focus and acoustic study sessions.
-              </p>
-            </div>
-            {recentlyPlayedTracks.length > 0 && (
-              <button
-                onClick={() => playTrack(recentlyPlayedTracks[0], recentlyPlayedTracks)}
-                className="px-4 py-2 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-sm flex items-center gap-1.5"
-              >
-                <span className="material-symbols-outlined text-[18px]">play_arrow</span>
-                <span>Play All</span>
-              </button>
-            )}
-          </div>
-
-          {recentlyPlayedTracks.length > 0 ? (
-            <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-              {recentlyPlayedTracks.map((t, idx) => (
-                <TrackRow
-                  key={t.id}
-                  track={t}
-                  index={idx}
-                  contextQueue={recentlyPlayedTracks}
-                  onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-                  onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="py-16 text-center border border-dashed border-outline-variant/30 rounded-2xl bg-surface-container-low space-y-3">
-              <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">history</span>
-              <div className="font-headline-sm text-sm font-semibold text-on-surface">
-                No recently played tracks yet
-              </div>
-              <p className="font-body-sm text-xs text-on-surface-variant max-w-sm mx-auto">
-                Start listening to any soundscape, study mix, or category and your playback history will appear here.
-              </p>
-              <button
-                onClick={() => navigateTo('home')}
-                className="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-xs font-semibold text-on-surface transition-colors"
-              >
-                Explore Music Home
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: PLAYLIST DETAIL                              */}
-      {/* ================================================== */}
-      {activeView === 'playlist' && selectedPlaylist && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          <button
-            onClick={() => navigateTo('home')}
-            className="flex items-center gap-1 text-xs font-label-mono-wide text-on-surface-variant hover:text-on-surface uppercase"
-          >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
-
-          <div className="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row sm:items-end justify-between gap-6 shadow-sm">
-            <div className="flex items-center gap-5">
-              <MusicArtwork
-                src={selectedPlaylist.artwork}
-                alt={selectedPlaylist.name}
-                title={selectedPlaylist.name}
-                category="focus"
-                className="w-28 h-28 rounded-2xl object-cover border border-outline-variant/40 shadow-lg shrink-0"
-              />
-              <div className="space-y-1.5">
-                <span className="font-label-tag text-xs uppercase text-primary font-bold tracking-widest">
-                  {selectedPlaylist.isCustom ? 'USER PLAYLIST' : 'STUDY MIX'}
-                </span>
-                <h2 className="font-headline-md text-2xl sm:text-3xl font-bold text-on-surface">
-                  {selectedPlaylist.name}
-                </h2>
-                <p className="font-body-sm text-xs text-on-surface-variant max-w-xl">
-                  {selectedPlaylist.description}
-                </p>
-                <div className="font-label-mono-wide text-[10.5px] text-on-surface-variant/80">
-                  {selectedPlaylistTracks.length} tracks • {calculateTotalDuration(selectedPlaylistTracks)}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0">
-              {selectedPlaylistTracks.length > 0 && (
-                <button
-                  onClick={() => playTrack(selectedPlaylistTracks[0], selectedPlaylistTracks)}
-                  className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-md flex items-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-[20px]">play_arrow</span>
-                  <span>Play Mix</span>
-                </button>
-              )}
-
-              {selectedPlaylist.isCustom && (
-                <button
-                  onClick={() => {
-                    deletePlaylist(selectedPlaylist.id);
-                    navigateTo('library');
-                  }}
-                  className="p-2.5 rounded-xl bg-surface-container hover:bg-error-container/20 text-on-surface-variant hover:text-error transition-colors"
-                  title="Delete Playlist"
-                >
-                  <span className="material-symbols-outlined text-[18px]">delete</span>
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-            {selectedPlaylistTracks.map((t, idx) => (
-              <TrackRow
-                key={t.id}
-                track={t}
-                index={idx}
-                contextQueue={selectedPlaylistTracks}
-                onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-                onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: ALBUM DETAIL                                 */}
-      {/* ================================================== */}
-      {activeView === 'album' && selectedAlbum && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          <button
-            onClick={() => navigateTo('home')}
-            className="flex items-center gap-1 text-xs font-label-mono-wide text-on-surface-variant hover:text-on-surface uppercase"
-          >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
-
-          <div className="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row sm:items-end justify-between gap-6 shadow-sm">
-            <div className="flex items-center gap-5">
-              <MusicArtwork
-                src={selectedAlbum.artwork}
-                alt={selectedAlbum.title}
-                title={selectedAlbum.title}
-                category="ambient"
-                className="w-28 h-28 rounded-2xl object-cover border border-outline-variant/40 shadow-lg shrink-0"
-              />
-              <div className="space-y-1.5">
-                <span className="font-label-tag text-xs uppercase text-primary font-bold tracking-widest">
-                  ALBUM
-                </span>
-                <h2 className="font-headline-md text-2xl sm:text-3xl font-bold text-on-surface">
-                  {selectedAlbum.title}
-                </h2>
-                <div className="flex items-center gap-2 font-body-md text-xs text-on-surface font-semibold">
-                  <span
-                    onClick={() => navigateTo('artist', selectedAlbum.artistId)}
-                    className="hover:text-primary cursor-pointer hover:underline"
-                  >
-                    {selectedAlbum.artist}
-                  </span>
-                  <span>•</span>
-                  <span>{selectedAlbum.releaseYear}</span>
-                  <span>•</span>
-                  <span className="text-on-surface-variant font-normal">
-                    {selectedAlbumTracks.length} tracks ({calculateTotalDuration(selectedAlbumTracks)})
-                  </span>
-                </div>
-                <p className="font-body-sm text-xs text-on-surface-variant max-w-xl">
-                  {selectedAlbum.description}
-                </p>
-              </div>
-            </div>
-
-            {selectedAlbumTracks.length > 0 && (
-              <button
-                onClick={() => playTrack(selectedAlbumTracks[0], selectedAlbumTracks)}
-                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-md flex items-center gap-2 shrink-0"
-              >
-                <span className="material-symbols-outlined text-[20px]">play_arrow</span>
-                <span>Play Album</span>
-              </button>
-            )}
-          </div>
-
-          <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-            {selectedAlbumTracks.map((t, idx) => (
-              <TrackRow
-                key={t.id}
-                track={t}
-                index={idx}
-                contextQueue={selectedAlbumTracks}
-                onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-              />
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* ================================================== */}
-      {/* VIEW: ARTIST PROFILE                               */}
-      {/* ================================================== */}
-      {activeView === 'artist' && selectedArtist && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          <button
-            onClick={() => navigateTo('home')}
-            className="flex items-center gap-1 text-xs font-label-mono-wide text-on-surface-variant hover:text-on-surface uppercase"
-          >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
-
-          {/* Artist Hero Header */}
-          <div className="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm">
-            <div className="flex items-center gap-5">
-              <MusicArtwork
-                src={selectedArtist.artwork}
-                alt={selectedArtist.name}
-                title={selectedArtist.name}
-                category="classical"
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border border-outline-variant/40 shadow-lg shrink-0"
-              />
-              <div className="space-y-1.5">
-                <span className="font-label-tag text-xs uppercase text-primary font-bold tracking-widest">
-                  VERIFIED SOUND ARTIST
-                </span>
-                <h2 className="font-headline-md text-2xl sm:text-3xl font-bold text-on-surface">
-                  {selectedArtist.name}
-                </h2>
-                <div className="font-label-mono-wide text-xs text-secondary font-semibold">
-                  {selectedArtist.monthlyListeners}
-                </div>
-                <p className="font-body-sm text-xs text-on-surface-variant max-w-xl">
-                  {selectedArtist.bio}
-                </p>
-              </div>
-            </div>
-
-            {selectedArtistTracks.length > 0 && (
-              <button
-                onClick={() => playTrack(selectedArtistTracks[0], selectedArtistTracks)}
-                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-md flex items-center gap-2 shrink-0"
-              >
-                <span className="material-symbols-outlined text-[20px]">play_arrow</span>
-                <span>Play Top Tracks</span>
-              </button>
-            )}
-          </div>
-
-          {/* Popular Tracks */}
+          {/* Quick Search Chips */}
           <div className="space-y-2">
-            <h3 className="font-headline-sm text-sm font-bold text-on-surface">Popular Soundscapes</h3>
-            <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-              {selectedArtistTracks.map((t, idx) => (
-                <TrackRow
-                  key={t.id}
-                  track={t}
-                  index={idx}
-                  contextQueue={selectedArtistTracks}
-                  onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-                />
+            <span className="text-[11px] font-bold uppercase text-on-surface-variant tracking-wider">
+              Popular Searches
+            </span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {SEARCH_SUGGESTIONS.map((suggestion) => (
+                <button
+                  key={suggestion}
+                  type="button"
+                  onClick={() => handleSearchSuggestionClick(suggestion)}
+                  className="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high border border-white/10 text-xs text-on-surface-variant hover:text-on-surface transition-all cursor-pointer"
+                >
+                  {suggestion}
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Discography Albums */}
-          {selectedArtistAlbums.length > 0 && (
-            <div className="space-y-2">
-              <h3 className="font-headline-sm text-sm font-bold text-on-surface">Discography</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {selectedArtistAlbums.map((alb) => (
+          {/* Search Results Area */}
+          <div className="space-y-3 pt-2">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                {isSearching
+                  ? 'Searching YouTube...'
+                  : searchHasSearched
+                  ? `Results (${searchResults.length})`
+                  : 'Recommended Study Soundtracks'}
+              </h3>
+            </div>
+
+            {/* Search Error Alert Banner */}
+            {searchError && (
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center gap-3 text-amber-300">
+                <span className="material-symbols-outlined text-2xl shrink-0">warning</span>
+                <div>
+                  <p className="text-sm font-semibold">{searchError}</p>
+                  {searchError === 'Music service is not configured.' && (
+                    <p className="text-xs text-amber-300/80 mt-0.5">Please configure YOUTUBE_API_KEY in the server environment.</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Skeleton Loading State */}
+            {isSearching && (
+              <div className="space-y-2">
+                {[...Array(6)].map((_, i) => (
                   <div
-                    key={alb.id}
-                    onClick={() => navigateTo('album', alb.id)}
-                    className="group p-3 rounded-2xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 hover:border-primary/50 cursor-pointer shadow-sm transition-all space-y-2"
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-surface-container animate-pulse"
                   >
-                    <MusicArtwork
-                      src={alb.artwork}
-                      alt={alb.title}
-                      title={alb.title}
-                      category="ambient"
-                      className="w-full aspect-square rounded-xl object-cover border border-outline-variant/30 shadow-sm"
-                    />
-                    <div>
-                      <h4 className="font-headline-sm text-xs font-bold text-on-surface truncate group-hover:text-primary transition-colors">
-                        {alb.title}
-                      </h4>
-                      <p className="font-label-tag text-[10px] text-on-surface-variant truncate">
-                        {alb.releaseYear} • {alb.genre}
-                      </p>
+                    <div className="w-10 h-10 rounded-lg bg-surface-container-high shrink-0" />
+                    <div className="space-y-1.5 flex-1">
+                      <div className="h-3.5 w-1/3 bg-surface-container-high rounded" />
+                      <div className="h-2.5 w-1/4 bg-surface-container-high rounded" />
                     </div>
                   </div>
                 ))}
               </div>
+            )}
+
+            {/* No Results Empty State */}
+            {!isSearching && !searchError && searchHasSearched && searchResults.length === 0 && (
+              <div className="py-16 text-center space-y-2 rounded-2xl bg-surface-container/30 border border-white/5">
+                <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                  search_off
+                </span>
+                <p className="text-sm text-on-surface-variant font-medium">No music found.</p>
+                <p className="text-xs text-on-surface-variant/60">
+                  Try searching for &quot;lofi study&quot;, &quot;deep focus&quot;, or &quot;coding music&quot;.
+                </p>
+              </div>
+            )}
+
+            {/* Search Results List */}
+            {!isSearching && !searchError && searchResults.length > 0 && (
+              <div className="space-y-1.5">
+                {searchResults.map((track, idx) => (
+                  <MusicSongRow
+                    key={track.id + idx}
+                    track={track}
+                    index={idx}
+                    onAddToPlaylist={handleOpenAddToPlaylist}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Initial suggestions if no search performed yet */}
+            {!isSearching && !searchHasSearched && !searchError && (
+              <div className="space-y-1.5">
+                {filterRecommendations.map((track, idx) => (
+                  <MusicSongRow
+                    key={track.id + idx}
+                    track={track}
+                    index={idx}
+                    onAddToPlaylist={handleOpenAddToPlaylist}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 6. LIBRARY VIEW (PART 18)                          */}
+      {/* -------------------------------------------------- */}
+      {!selectedPlaylistId && activeTab === 'library' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          {/* Sub-Tabs: Liked Songs | Recently Played | Saved Playlists */}
+          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+            <button
+              type="button"
+              onClick={() => setLibrarySubTab('liked')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                librarySubTab === 'liked'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+              }`}
+            >
+              Liked Songs ({favorites.length})
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setLibrarySubTab('recent')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                librarySubTab === 'recent'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+              }`}
+            >
+              Recently Played ({recentlyPlayed.length})
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setLibrarySubTab('playlists')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                librarySubTab === 'playlists'
+                  ? 'bg-primary text-on-primary font-bold shadow-sm'
+                  : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+              }`}
+            >
+              Saved Playlists ({userPlaylists.length})
+            </button>
+          </div>
+
+          {/* SubTab A: Liked Songs */}
+          {librarySubTab === 'liked' && (
+            <div className="space-y-3">
+              {favorites.length === 0 ? (
+                <div className="py-14 text-center rounded-2xl bg-surface-container/30 border border-white/5 space-y-2">
+                  <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                    favorite_border
+                  </span>
+                  <p className="text-sm text-on-surface-variant">No liked songs yet.</p>
+                  <p className="text-xs text-on-surface-variant/60">
+                    Click the heart icon on any song to add it to your favorites.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  {favorites.map((track, idx) => (
+                    <MusicSongRow
+                      key={track.id + idx}
+                      track={track}
+                      index={idx}
+                      onAddToPlaylist={handleOpenAddToPlaylist}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SubTab B: Recently Played */}
+          {librarySubTab === 'recent' && (
+            <div className="space-y-3">
+              {recentlyPlayed.length === 0 ? (
+                <div className="py-14 text-center rounded-2xl bg-surface-container/30 border border-white/5 space-y-2">
+                  <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                    history
+                  </span>
+                  <p className="text-sm text-on-surface-variant">Your listening history will appear here.</p>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  {recentlyPlayed.map((track, idx) => (
+                    <MusicSongRow
+                      key={track.id + idx}
+                      track={track}
+                      index={idx}
+                      onAddToPlaylist={handleOpenAddToPlaylist}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SubTab C: Saved Playlists */}
+          {librarySubTab === 'playlists' && (
+            <div className="space-y-3">
+              {userPlaylists.length === 0 ? (
+                <div className="py-14 text-center rounded-2xl bg-surface-container/30 border border-white/5 space-y-3">
+                  <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                    playlist_add
+                  </span>
+                  <p className="text-sm text-on-surface-variant">No playlists created yet.</p>
+                  <button
+                    type="button"
+                    onClick={() => setIsCreatePlaylistOpen(true)}
+                    className="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold hover:bg-primary-fixed shadow-md"
+                  >
+                    Create Your First Playlist
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  {userPlaylists.map((pl) => (
+                    <div
+                      key={pl.id}
+                      onClick={() => setSelectedPlaylistId(pl.id)}
+                      className="flex items-center gap-3.5 p-3.5 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/10 transition-all cursor-pointer group"
+                    >
+                      <img
+                        src={pl.artwork || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80'}
+                        alt={pl.name}
+                        className="w-14 h-14 rounded-xl object-cover shrink-0 border border-white/10"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                          {pl.name}
+                        </div>
+                        <div className="text-xs text-on-surface-variant truncate">
+                          {pl.trackCount || 0} {pl.trackCount === 1 ? 'song' : 'songs'}
+                        </div>
+                      </div>
+                      <span className="material-symbols-outlined text-on-surface-variant text-[20px] group-hover:translate-x-1 transition-transform">
+                        chevron_right
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
       )}
 
-      {/* ================================================== */}
-      {/* VIEW: CATEGORY FILTER VIEW                         */}
-      {/* ================================================== */}
-      {activeView === 'category' && (
-        <div className="space-y-space-md animate-in fade-in duration-150">
-          <button
-            onClick={() => navigateTo('home')}
-            className="flex items-center gap-1 text-xs font-label-mono-wide text-on-surface-variant hover:text-on-surface uppercase"
-          >
-            <span className="material-symbols-outlined text-[16px]">arrow_back</span>
-            <span>Back to Home</span>
-          </button>
+      {/* -------------------------------------------------- */}
+      {/* 7. PLAYLISTS TAB (PART 16 & 17)                    */}
+      {/* -------------------------------------------------- */}
+      {!selectedPlaylistId && activeTab === 'playlists' && (
+        <div className="space-y-6 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-on-surface">Your Playlists</h2>
+            <button
+              type="button"
+              onClick={() => setIsCreatePlaylistOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-on-primary text-xs font-bold hover:bg-primary-fixed shadow-md cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[16px]">add</span>
+              <span>New Playlist</span>
+            </button>
+          </div>
 
-          <div className="p-6 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between">
-            <div className="space-y-1">
-              <span className="font-label-tag text-xs uppercase text-primary font-bold tracking-widest">
-                NIVORA SOUND CATEGORY
+          {userPlaylists.length === 0 ? (
+            <div className="py-16 text-center rounded-2xl bg-surface-container/30 border border-white/5 space-y-3">
+              <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                queue_music
               </span>
-              <h2 className="font-headline-md text-2xl font-bold text-on-surface uppercase">
-                {selectedEntityId}
-              </h2>
-              <p className="font-body-sm text-xs text-on-surface-variant">
-                Curated soundscapes filtered specifically for {selectedEntityId} study workflows.
+              <p className="text-sm text-on-surface-variant">You don&apos;t have any playlists yet.</p>
+              <p className="text-xs text-on-surface-variant/60 max-w-sm mx-auto">
+                Create custom playlists to group your favorite study soundtracks, lo-fi beats, or ambient noise.
               </p>
-            </div>
-
-            {categoryTracks.length > 0 && (
               <button
-                onClick={() => playTrack(categoryTracks[0], categoryTracks)}
-                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-button-text text-xs font-bold hover:bg-primary-fixed shadow-md flex items-center gap-2"
+                type="button"
+                onClick={() => setIsCreatePlaylistOpen(true)}
+                className="px-4 py-2 rounded-xl bg-primary text-on-primary text-xs font-bold hover:bg-primary-fixed shadow-md mt-2 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[20px]">play_arrow</span>
-                <span>Play Category</span>
+                + Create Playlist
               </button>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {userPlaylists.map((pl) => (
+                <div
+                  key={pl.id}
+                  onClick={() => setSelectedPlaylistId(pl.id)}
+                  className="group relative flex items-center gap-4 p-4 rounded-2xl bg-surface-container/70 hover:bg-surface-container border border-white/5 hover:border-white/10 transition-all shadow-sm cursor-pointer"
+                >
+                  <img
+                    src={pl.artwork || 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&auto=format&fit=crop&q=80'}
+                    alt={pl.name}
+                    className="w-16 h-16 rounded-xl object-cover shrink-0 border border-white/10 group-hover:scale-105 transition-transform"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors truncate">
+                      {pl.name}
+                    </h3>
+                    <p className="text-xs text-on-surface-variant truncate mt-0.5">
+                      {pl.description || `${pl.trackCount || 0} tracks`}
+                    </p>
+                    <div className="text-[10px] text-on-surface-variant/60 mt-1">
+                      {pl.trackCount || 0} {pl.trackCount === 1 ? 'song' : 'songs'}
+                    </div>
+                  </div>
 
-          <div className="bg-surface-container-low p-2 rounded-2xl border border-outline-variant/30 space-y-1">
-            {categoryTracks.map((t, idx) => (
-              <TrackRow
-                key={t.id}
-                track={t}
-                index={idx}
-                contextQueue={categoryTracks}
-                onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-                onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-              />
-            ))}
-          </div>
+                  <span className="material-symbols-outlined text-on-surface-variant text-[22px] group-hover:text-primary group-hover:translate-x-1 transition-all">
+                    chevron_right
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* ================================================== */}
-      {/* VIEW: MUSIC LIBRARY MANAGER / ADMIN               */}
-      {/* ================================================== */}
-      {activeView === 'manage' && (
-        <MusicLibraryManagerView
-          onBack={() => navigateTo('library')}
-          onOpenImporter={() => setIsImporterOpen(true)}
-          onNavigateArtist={(artistId) => navigateTo('artist', artistId)}
-          onNavigateAlbum={(albumId) => navigateTo('album', albumId)}
-        />
+      {/* -------------------------------------------------- */}
+      {/* 8. RECENTLY PLAYED TAB                             */}
+      {/* -------------------------------------------------- */}
+      {!selectedPlaylistId && activeTab === 'recent' && (
+        <div className="space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-on-surface">Recently Played Tracks</h2>
+            <span className="text-xs text-on-surface-variant">
+              {recentlyPlayed.length} {recentlyPlayed.length === 1 ? 'track' : 'tracks'}
+            </span>
+          </div>
+
+          {recentlyPlayed.length === 0 ? (
+            <div className="py-16 text-center rounded-2xl bg-surface-container/30 border border-white/5 space-y-2">
+              <span className="material-symbols-outlined text-4xl text-on-surface-variant/40">
+                history
+              </span>
+              <p className="text-sm text-on-surface-variant">Your listening history will appear here.</p>
+              <p className="text-xs text-on-surface-variant/60">
+                Start playing any track and it will automatically be remembered here.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-1.5">
+              {recentlyPlayed.map((track, idx) => (
+                <MusicSongRow
+                  key={track.id + idx}
+                  track={track}
+                  index={idx}
+                  onAddToPlaylist={handleOpenAddToPlaylist}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
-      {/* ================================================== */}
-      {/* BULK MUSIC IMPORTER MODAL                          */}
-      {/* ================================================== */}
-      <BulkMusicImporterModal
-        isOpen={isImporterOpen}
-        onClose={() => setIsImporterOpen(false)}
-        onSuccess={() => {
-          refreshLibrary();
-        }}
+      {/* Add To Playlist Modal */}
+      <AddToPlaylistModal
+        track={trackForPlaylistModal}
+        isOpen={Boolean(trackForPlaylistModal)}
+        onClose={() => setTrackForPlaylistModal(null)}
       />
     </div>
   );

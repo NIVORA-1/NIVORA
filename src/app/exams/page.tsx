@@ -1,139 +1,143 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '@/context/AppContext';
-import { STREAMS } from '@/lib/personalization';
+import ExamUploadModal from '@/components/exams/ExamUploadModal';
+import ManualAddExamModal from '@/components/exams/ManualAddExamModal';
+import { KnownSubjectItem } from '@/lib/examOcrService';
 
-interface ExamItem {
+interface RealExamItem {
   id: string;
-  code: string;
-  name: string;
-  desc: string;
+  userId: string;
+  subjectId: string | null;
+  title: string;
+  examType: string;
   date: string;
-  time: string;
-  hall: string;
-  proctor: string;
-  weightage: string;
-  daysAway: number;
-  mastery: number;
-  statusTag: string;
-  statusType: 'success' | 'warning' | 'error' | 'normal';
-  strongRetention: string;
-  intervention: string;
-  revisionSheets: number;
+  startTime: string | null;
+  endTime: string | null;
+  room: string | null;
+  notes: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  subject?: {
+    id: string;
+    name: string;
+    code: string;
+    color: string | null;
+    instructor: string | null;
+    room: string | null;
+  } | null;
 }
-
-const INITIAL_EXAMS: ExamItem[] = [
-  {
-    id: 'exam-1',
-    code: 'CS-301',
-    name: 'Database Management Systems (DBMS)',
-    desc: 'Mid-Term Theory Examination • Core Relational Theory & Concurrency',
-    date: 'Thursday, September 18, 2025',
-    time: '09:30 AM – 12:30 PM (3.0 hrs)',
-    hall: 'Hall C, East Academic Block',
-    proctor: 'Dr. A. Sharma',
-    weightage: '30%',
-    daysAway: 8,
-    mastery: 78,
-    statusTag: 'IMMEDIATE NEXT EVALUATION',
-    statusType: 'warning',
-    strongRetention: 'Relational Algebra, SQL DDL/DML, 3NF Normalization',
-    intervention: 'B+ Tree Concurrency & Lock Escalation (Scheduled for 40m recall)',
-    revisionSheets: 4,
-  },
-  {
-    id: 'exam-2',
-    code: 'CS-302',
-    name: 'Data Structures & Algorithms (DSA)',
-    desc: 'Theory & Practicum Assessment • Trees, Graphs & Dynamic Programming',
-    date: 'Monday, September 22, 2025',
-    time: '09:30 AM – 12:30 PM (3.0 hrs)',
-    hall: 'Computing Center 2',
-    proctor: 'Prof. A. Bannerjee',
-    weightage: '25%',
-    daysAway: 12,
-    mastery: 86,
-    statusTag: 'LAB + WRITTEN',
-    statusType: 'success',
-    strongRetention: 'AVL Trees, Graph Traversals, Heaps, BFS/DFS',
-    intervention: 'Red-Black Tree Deletions & Binary Lifting (62% confidence)',
-    revisionSheets: 3,
-  },
-  {
-    id: 'exam-3',
-    code: 'CS-303',
-    name: 'Operating Systems Architecture (OS)',
-    desc: 'Mid-Semester Theory • Process Synchronization & Memory Paging',
-    date: 'Thursday, September 25, 2025',
-    time: '02:00 PM – 05:00 PM (3.0 hrs)',
-    hall: 'Hall A-104',
-    proctor: 'Prof. C. Verma',
-    weightage: '25%',
-    daysAway: 15,
-    mastery: 64,
-    statusTag: 'NEEDS REVISION',
-    statusType: 'error',
-    strongRetention: 'Process Scheduling, Paging Mechanisms, Virtual Memory',
-    intervention: "Deadlock Banker's Algorithm, Semaphore Proofs",
-    revisionSheets: 2,
-  },
-  {
-    id: 'exam-4',
-    code: 'CS-304',
-    name: 'Computer Networks (CN)',
-    desc: 'Protocol Layers, Subnetting & Congestion Control',
-    date: 'Monday, September 29, 2025',
-    time: '09:30 AM – 12:30 PM (3.0 hrs)',
-    hall: 'Hall B-201',
-    proctor: 'Prof. S. Sengupta',
-    weightage: '20%',
-    daysAway: 19,
-    mastery: 55,
-    statusTag: 'ON TRACK',
-    statusType: 'normal',
-    strongRetention: 'OSI Model, IPv4/IPv6 Addressing, Subnetting',
-    intervention: 'TCP Congestion Window Mechanics & BGP Routing Invariants',
-    revisionSheets: 3,
-  },
-];
 
 export default function ExamCenterPage() {
   const { currentStream } = useApp();
-  const streamData = STREAMS[currentStream] || STREAMS.CSE;
 
-  const [viewMode, setViewMode] = useState<'chronological' | 'readiness'>('chronological');
-  const [isRevisionModalOpen, setIsRevisionModalOpen] = useState(false);
-  const [isMockModalOpen, setIsMockModalOpen] = useState(false);
-  const [activeDrill, setActiveDrill] = useState<ExamItem | null>(null);
+  const [exams, setExams] = useState<RealExamItem[]>([]);
+  const [knownSubjects, setKnownSubjects] = useState<KnownSubjectItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Quick Spaced Repetition items
-  const [spacedItems, setSpacedItems] = useState([
-    { id: 'sr-1', topic: 'B+ Tree Concurrency Locks', time: '16:00 Today', duration: '40m', done: false },
-    { id: 'sr-2', topic: 'Banker\'s Deadlock Safety Proofs', time: '10:00 Tomorrow', duration: '35m', done: false },
-    { id: 'sr-3', topic: 'TCP Reno vs Vegas Sliding Window', time: '17:30 Sep 10', duration: '25m', done: false },
-  ]);
+  // Modals state
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isManualModalOpen, setIsManualModalOpen] = useState(false);
+  const [activeDrillExam, setActiveDrillExam] = useState<RealExamItem | null>(null);
+  const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
 
-  const toggleSpacedItem = (id: string) => {
-    setSpacedItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, done: !item.done } : item))
-    );
+  // Fetch only real exams belonging to the authenticated user
+  const fetchExams = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setErrorMessage(null);
+
+      const res = await fetch('/api/exams');
+      if (!res.ok) {
+        throw new Error('Failed to load exams');
+      }
+
+      const data = await res.json();
+      setExams(Array.isArray(data.exams) ? data.exams : []);
+      if (Array.isArray(data.subjects)) {
+        setKnownSubjects(data.subjects);
+      }
+    } catch (err: any) {
+      console.error('[Exam Center] Fetch error:', err);
+      setErrorMessage('Could not load examination schedule. Please refresh.');
+      setExams([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchExams();
+  }, [fetchExams]);
+
+  const handleDeleteExam = async (id: string) => {
+    if (!window.confirm('Are you sure you want to remove this examination from your schedule?')) {
+      return;
+    }
+
+    try {
+      setIsDeletingId(id);
+      const res = await fetch(`/api/exams/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        setExams((prev) => prev.filter((e) => e.id !== id));
+      } else {
+        alert('Failed to delete exam.');
+      }
+    } catch (err) {
+      console.error('Error deleting exam:', err);
+      alert('Failed to delete exam.');
+    } finally {
+      setIsDeletingId(null);
+    }
   };
 
-  const primaryExam = INITIAL_EXAMS[0];
+  // Helper: calculate days remaining
+  const calculateDaysRemaining = (dateStr: string) => {
+    const examDate = new Date(dateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    examDate.setHours(0, 0, 0, 0);
+    const diffMs = examDate.getTime() - today.getTime();
+    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+  };
+
+  // Format date readable
+  const formatExamDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  // Immediate next exam (first upcoming in chronological list)
+  const upcomingExams = exams.filter((e) => calculateDaysRemaining(e.date) >= 0);
+  const primaryExam = upcomingExams.length > 0 ? upcomingExams[0] : exams[0];
 
   return (
     <div className="flex flex-col w-full space-y-space-xl">
-      {/* Top Context Subheader & Breadcrumb */}
+      {/* Top Header */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-md">
         <div className="space-y-space-xs max-w-3xl">
           <div className="flex items-center gap-space-xs">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container font-label-tag text-label-tag text-on-surface-variant uppercase tracking-widest border border-outline-variant/20">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-              Assessment Cadence • {streamData.name.toUpperCase()}
+              Assessment Cadence • {currentStream || 'ACADEMIC'}
             </span>
             <span className="font-label-mono-wide text-label-mono-wide text-on-surface-variant/60">
-              SYS-REV: 4.8.2
+              REAL DATA MODE
             </span>
           </div>
 
@@ -145,491 +149,406 @@ export default function ExamCenterPage() {
           </p>
         </div>
 
-        {/* Header Stats & Revision Action Trigger */}
+        {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-space-xs sm:gap-space-sm">
-          <div className="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container shadow-sm border border-outline-variant/20">
-            <span className="material-symbols-outlined text-primary text-[18px]">event_note</span>
-            <div className="flex flex-col">
-              <span className="font-label-tag text-label-tag text-on-surface-variant/80 uppercase">Term</span>
-              <span className="font-headline-sm text-body-sm text-on-surface">Mid-Semester Eval</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container shadow-sm border border-outline-variant/20">
-            <span className="material-symbols-outlined text-tertiary text-[18px]">fact_check</span>
-            <div className="flex flex-col">
-              <span className="font-label-tag text-label-tag text-on-surface-variant/80 uppercase">Papers</span>
-              <span className="font-headline-sm text-body-sm text-on-surface">
-                {INITIAL_EXAMS.length} Scheduled
-              </span>
-            </div>
-          </div>
+          <button
+            onClick={() => setIsUploadModalOpen(true)}
+            className="flex items-center gap-2 px-space-md py-2.5 rounded-xl bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high text-on-surface transition-all font-button-text text-button-text shadow-sm"
+          >
+            <span className="material-symbols-outlined text-primary text-[20px]">upload_file</span>
+            <span>Upload Exam Timetable</span>
+          </button>
 
           <button
-            onClick={() => setIsRevisionModalOpen(true)}
-            className="flex items-center gap-1.5 px-space-md py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container transition-all font-button-text text-button-text shadow-md shadow-primary/10"
+            onClick={() => setIsManualModalOpen(true)}
+            className="flex items-center gap-1.5 px-space-md py-2.5 rounded-xl bg-primary text-on-primary hover:bg-primary/90 transition-all font-button-text text-button-text shadow-md shadow-primary/20"
           >
-            <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-            <span>Generate Revision Cycle</span>
+            <span className="material-symbols-outlined text-[20px]">add</span>
+            <span>+ Add Exam</span>
           </button>
         </div>
       </div>
 
-      {/* Prominent Hero Focus — Impending Exam Banner */}
-      <section className="relative rounded-2xl bg-surface-container-low p-space-lg lg:p-space-xl overflow-hidden shadow-xl border border-outline-variant/30">
-        <div className="absolute -right-16 -top-16 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div className="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-xl">
-          {/* Left Info Block */}
-          <div className="space-y-space-md max-w-3xl">
-            <div className="flex flex-wrap items-center gap-space-xs">
-              <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold uppercase tracking-wider">
-                {primaryExam.statusTag}
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-mono-wide">
-                SEAT C-42
-              </span>
-              <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-mono-wide">
-                WEIGHTAGE {primaryExam.weightage}
-              </span>
-            </div>
-
-            <div className="space-y-1">
-              <h2 className="font-headline-lg text-headline-lg text-on-surface">
-                {primaryExam.code}: {primaryExam.name}
-              </h2>
-              <p className="font-display-quote text-display-quote text-on-surface-variant italic">
-                {primaryExam.desc}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-1">
-              <div className="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
-                <span className="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
-                <span>{primaryExam.date} • {primaryExam.time}</span>
-              </div>
-              <div className="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
-                <span className="material-symbols-outlined text-primary text-[18px]">meeting_room</span>
-                <span>{primaryExam.hall} • Proctor: {primaryExam.proctor}</span>
-              </div>
-            </div>
-
-            {/* Progress & Telemetry */}
-            <div className="space-y-1.5 pt-1">
-              <div className="flex justify-between items-center text-body-sm">
-                <span className="text-on-surface font-medium">
-                  Preparation Velocity: {primaryExam.mastery}% Syllabus Mastered
-                </span>
-                <span className="font-label-mono-wide text-label-mono-wide text-primary">
-                  4 of 5 Core Modules Cleared
-                </span>
-              </div>
-              <div className="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full transition-all duration-700"
-                  style={{ width: `${primaryExam.mastery}%` }}
-                ></div>
-              </div>
-            </div>
-
-            {/* Spaced Retrieval Notice */}
-            <div className="flex items-center gap-space-xs px-space-sm py-2 rounded-lg bg-surface-container text-on-surface-variant font-body-sm text-body-sm border border-outline-variant/20">
-              <span className="material-symbols-outlined text-tertiary text-[18px]">history_edu</span>
-              <span>
-                <strong className="text-on-surface font-medium">Spaced Retrieval Trigger:</strong>{' '}
-                {primaryExam.intervention}
-              </span>
-            </div>
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="p-12 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex flex-col items-center justify-center space-y-4 text-center">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary animate-spin">
+            <span className="material-symbols-outlined text-[24px]">progress_activity</span>
           </div>
-
-          {/* Right Countdown and Action Suite */}
-          <div className="w-full xl:w-80 flex flex-col justify-between self-stretch bg-surface-container p-space-lg rounded-xl space-y-space-md border border-outline-variant/20">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="font-label-tag text-label-tag uppercase tracking-widest text-on-surface-variant">
-                  Time Remaining
-                </span>
-                <span className="w-2 h-2 rounded-full bg-primary"></span>
-              </div>
-              <div className="mt-2 flex items-baseline gap-2">
-                <span className="font-headline-lg text-[44px] leading-none font-bold text-primary tracking-tight">
-                  0{primaryExam.daysAway}
-                </span>
-                <div className="flex flex-col">
-                  <span className="font-label-mono-wide text-label-mono-wide text-on-surface uppercase font-semibold">
-                    Days to Exam
-                  </span>
-                  <span className="font-label-tag text-label-tag text-on-surface-variant">
-                    {primaryExam.daysAway * 24} Hours Buffer
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-space-xs pt-space-xs">
-              <button
-                onClick={() => setIsMockModalOpen(true)}
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg bg-primary text-on-primary font-button-text text-button-text hover:bg-primary-container transition-all shadow-md"
-              >
-                <span className="material-symbols-outlined text-[18px]">play_circle</span>
-                <span>Launch Focused Mock Test</span>
-              </button>
-
-              <div className="grid grid-cols-2 gap-space-xs">
-                <a
-                  href="/resources"
-                  className="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm"
-                >
-                  <span className="material-symbols-outlined text-[16px]">history</span>
-                  <span>PYQs (20-24)</span>
-                </a>
-                <a
-                  href="/subjects"
-                  className="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm"
-                >
-                  <span className="material-symbols-outlined text-[16px]">segment</span>
-                  <span>Syllabus</span>
-                </a>
-              </div>
-            </div>
-          </div>
+          <span className="text-body-sm text-on-surface-variant font-medium">
+            Fetching your authenticated examination schedule...
+          </span>
         </div>
-      </section>
+      )}
 
-      {/* Main Asynchronous Content Grid (2 Columns) */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-space-xl">
-        {/* Left / Main Column (Detailed Exam Schedule) */}
-        <div className="xl:col-span-8 flex flex-col space-y-space-lg">
-          {/* Section Header with View Toggles */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-1">
-            <div>
-              <h3 className="font-headline-md text-headline-md text-on-surface">Upcoming Examinations Schedule</h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Structured chronological pipeline with mastery diagnostics
-              </p>
-            </div>
-
-            <div className="flex items-center bg-surface-container p-1 rounded-lg border border-outline-variant/20">
-              <button
-                onClick={() => setViewMode('chronological')}
-                className={`px-3 py-1 rounded text-body-sm font-semibold transition-all ${
-                  viewMode === 'chronological'
-                    ? 'bg-surface-container-high text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
-                }`}
-              >
-                Chronological Timeline
-              </button>
-              <button
-                onClick={() => setViewMode('readiness')}
-                className={`px-3 py-1 rounded text-body-sm font-semibold transition-all ${
-                  viewMode === 'readiness'
-                    ? 'bg-surface-container-high text-primary shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
-                }`}
-              >
-                Readiness Matrix
-              </button>
-            </div>
+      {/* ERROR NOTICE */}
+      {!isLoading && errorMessage && (
+        <div className="p-4 rounded-xl bg-error-container/40 border border-error/20 flex items-center justify-between text-error text-sm">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px]">error</span>
+            <span>{errorMessage}</span>
           </div>
-
-          {/* Schedule Cards Container */}
-          <div className="flex flex-col space-y-space-md">
-            {INITIAL_EXAMS.map((exam) => (
-              <div
-                key={exam.id}
-                className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md hover:bg-surface-container transition-all shadow-sm border border-outline-variant/20"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-space-xs">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-space-xs">
-                      <span className="font-label-mono-wide text-label-mono-wide text-primary font-semibold">
-                        {exam.code}
-                      </span>
-                      <span className="font-label-tag text-label-tag text-on-surface-variant">
-                        {exam.daysAway} DAYS AWAY
-                      </span>
-                      <span
-                        className={`px-2 py-0.5 rounded-full font-label-tag text-label-tag ${
-                          exam.statusType === 'error'
-                            ? 'bg-error-container/40 text-error'
-                            : exam.statusType === 'warning'
-                            ? 'bg-tertiary-container/40 text-tertiary'
-                            : 'bg-secondary-container text-on-secondary-container'
-                        }`}
-                      >
-                        {exam.statusTag}
-                      </span>
-                    </div>
-
-                    <h4 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                      {exam.name}
-                    </h4>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant">
-                      {exam.hall} • {exam.date} • Proctor: {exam.proctor}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 self-start">
-                    <span
-                      className={`font-headline-md text-headline-md font-semibold ${
-                        exam.mastery < 70 ? 'text-tertiary' : 'text-primary'
-                      }`}
-                    >
-                      {exam.mastery}%
-                    </span>
-                    <span className="font-label-tag text-label-tag text-on-surface-variant uppercase">
-                      Mastery
-                    </span>
-                  </div>
-                </div>
-
-                {/* Progress Track */}
-                <div className="space-y-1">
-                  <div className="flex justify-between font-label-mono-wide text-label-mono-wide text-on-surface-variant">
-                    <span>PROGRESS VELOCITY</span>
-                    <span className="text-on-surface">Target 90%+ before term evaluation</span>
-                  </div>
-                  <div className="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden">
-                    <div
-                      className={`h-full rounded-full ${
-                        exam.mastery < 70 ? 'bg-tertiary' : 'bg-primary'
-                      }`}
-                      style={{ width: `${exam.mastery}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                {/* Diagnostic Chips */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-space-xs pt-1">
-                  <div className="p-2 rounded bg-surface-container flex items-start gap-2 border border-outline-variant/10">
-                    <span className="material-symbols-outlined text-primary text-[18px] mt-0.5">verified</span>
-                    <div className="text-body-sm">
-                      <span className="text-on-surface-variant font-label-tag text-label-tag uppercase block">
-                        Strong Retention
-                      </span>
-                      <span className="text-on-surface text-body-sm">{exam.strongRetention}</span>
-                    </div>
-                  </div>
-
-                  <div className="p-2 rounded bg-surface-container flex items-start gap-2 border border-outline-variant/10">
-                    <span className="material-symbols-outlined text-tertiary text-[18px] mt-0.5">warning</span>
-                    <div className="text-body-sm">
-                      <span className="text-on-surface-variant font-label-tag text-label-tag uppercase block">
-                        Intervention Required
-                      </span>
-                      <span className="text-on-surface text-body-sm">{exam.intervention}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action Footer */}
-                <div className="flex items-center justify-between pt-1 border-t border-surface-container-high/40">
-                  <span className="font-label-tag text-label-tag text-on-surface-variant">
-                    {exam.revisionSheets} REVISION SHEETS AVAILABLE
-                  </span>
-
-                  <div className="flex items-center gap-space-xs">
-                    <a
-                      href={`/subjects`}
-                      className="px-3 py-1.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-button-text text-body-sm transition-colors"
-                    >
-                      Study Roadmap
-                    </a>
-                    <button
-                      onClick={() => setActiveDrill(exam)}
-                      className="px-3 py-1.5 rounded bg-primary/20 text-primary hover:bg-primary/30 font-button-text text-body-sm transition-colors"
-                    >
-                      Start Drill
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <button
+            onClick={fetchExams}
+            className="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold"
+          >
+            Retry
+          </button>
         </div>
+      )}
 
-        {/* Right Column (Contextual Intelligence, Spaced Retrieval & Cadence) */}
-        <div className="xl:col-span-4 flex flex-col space-y-space-lg">
-          {/* Card 1: Cognitive Readiness & Spaced Repetition */}
-          <div className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md shadow-sm border border-outline-variant/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-primary text-[20px]">psychology</span>
-                <h4 className="font-headline-sm text-headline-sm text-on-surface">Cognitive Cadence</h4>
-              </div>
-              <span className="px-2 py-0.5 rounded-full bg-surface-container-high font-label-tag text-label-tag text-primary font-mono">
-                12-DAY STREAK
-              </span>
-            </div>
+      {/* EXACT EMPTY STATE: When user has no exams, show ONLY specified empty state */}
+      {!isLoading && !errorMessage && exams.length === 0 && (
+        <div className="p-10 sm:p-16 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col items-center justify-center text-center space-y-6 shadow-sm">
+          <div className="w-20 h-20 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <span className="material-symbols-outlined text-[40px]">calendar_today</span>
+          </div>
 
-            <p className="font-body-sm text-body-sm text-on-surface-variant">
-              Ebbinghaus forgetting curve protection algorithm tuned to your morning peak alertness.
+          <div className="space-y-2 max-w-md">
+            <h2 className="text-2xl font-bold text-on-surface">No exams scheduled yet</h2>
+            <p className="text-body-md text-on-surface-variant">
+              Upload your exam timetable or add an exam manually.
             </p>
-
-            {/* Retention Curve Graph */}
-            <div className="p-space-md rounded-xl bg-surface-container border border-outline-variant/20 space-y-2">
-              <div className="flex justify-between font-label-mono-wide text-label-tag text-on-surface-variant">
-                <span>RETENTION PROJECTION</span>
-                <span className="text-primary font-bold">92% WITH RETRIEVAL</span>
-              </div>
-              <svg className="w-full h-24 text-primary" fill="none" viewBox="0 0 280 90">
-                <path
-                  d="M10,20 Q60,50 120,40 T200,25 T270,15"
-                  fill="none"
-                  stroke="#8fc5a7"
-                  strokeWidth="2.5"
-                />
-                <path
-                  d="M10,20 Q60,70 120,80 T200,85 T270,88"
-                  fill="none"
-                  stroke="#404943"
-                  strokeDasharray="4 4"
-                  strokeWidth="2"
-                />
-                <circle cx="120" cy="40" r="4" fill="#8fc5a7" />
-                <circle cx="200" cy="25" r="4" fill="#8fc5a7" />
-              </svg>
-              <div className="flex justify-between text-label-tag font-label-tag text-on-surface-variant/80">
-                <span>Day 0 (Initial Learn)</span>
-                <span className="text-primary">Day 7 (Recall)</span>
-                <span>Exam Day</span>
-              </div>
-            </div>
           </div>
 
-          {/* Card 2: Spaced Revision Queue */}
-          <div className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md shadow-sm border border-outline-variant/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-space-2xs">
-                <span className="material-symbols-outlined text-secondary text-[20px]">update</span>
-                <h4 className="font-headline-sm text-headline-sm text-on-surface">Spaced Revision Queue</h4>
-              </div>
-              <span className="font-label-tag text-label-tag text-on-surface-variant uppercase tracking-widest">
-                ACTIVE
-              </span>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <button
+              onClick={() => setIsUploadModalOpen(true)}
+              className="flex items-center gap-2 px-5 py-3 rounded-xl bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-on-surface font-semibold text-sm transition-all shadow-sm"
+            >
+              <span className="material-symbols-outlined text-primary text-[20px]">upload_file</span>
+              <span>Upload Exam Timetable</span>
+            </button>
 
-            <div className="space-y-space-xs">
-              {spacedItems.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => toggleSpacedItem(item.id)}
-                  className={`p-space-sm rounded-lg border transition-all cursor-pointer flex items-center justify-between ${
-                    item.done
-                      ? 'bg-surface-container/50 border-outline-variant/10 opacity-60 line-through'
-                      : 'bg-surface-container border-outline-variant/20 hover:border-primary/40'
-                  }`}
-                >
-                  <div className="space-y-0.5">
-                    <div className="text-body-sm font-medium text-on-surface">{item.topic}</div>
-                    <div className="font-label-mono-wide text-label-tag text-on-surface-variant">
-                      {item.time} · {item.duration} recall
-                    </div>
-                  </div>
-                  <span
-                    className={`material-symbols-outlined text-[20px] ${
-                      item.done ? 'text-primary' : 'text-on-surface-variant/60'
-                    }`}
-                  >
-                    {item.done ? 'check_circle' : 'radio_button_unchecked'}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* GENERATE REVISION CYCLE AI MODAL */}
-      {isRevisionModalOpen && (
-        <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-surface-container-low border border-outline-variant/40 rounded-2xl w-full max-w-2xl shadow-2xl p-space-lg space-y-space-md">
-            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
-              <div className="flex items-center gap-space-xs">
-                <span className="material-symbols-outlined text-primary text-[24px]">auto_awesome</span>
-                <h3 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                  NIVORA AI Revision Cycle Generator
-                </h3>
-              </div>
-              <button
-                onClick={() => setIsRevisionModalOpen(false)}
-                className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface"
-              >
-                <span className="material-symbols-outlined text-[20px]">close</span>
-              </button>
-            </div>
-
-            <p className="font-body-sm text-body-sm text-on-surface-variant">
-              Synthesized an adaptive 14-day spaced retrieval schedule balancing upcoming mid-semester examinations against weak topics identified in recent quizzes:
-            </p>
-
-            <div className="space-y-2 font-body-sm text-body-sm">
-              <div className="p-space-sm rounded-lg bg-surface-container border border-outline-variant/20 flex items-center justify-between">
-                <div>
-                  <strong className="text-on-surface">Block A: CS-301 DBMS Normalization & B+ Trees</strong>
-                  <div className="text-on-surface-variant text-label-tag">Tomorrow • 16:00 – 17:15 (75 min) • Spaced Recall 2</div>
-                </div>
-                <span className="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">
-                  Auto-Scheduled
-                </span>
-              </div>
-
-              <div className="p-space-sm rounded-lg bg-surface-container border border-outline-variant/20 flex items-center justify-between">
-                <div>
-                  <strong className="text-on-surface">Block B: CS-303 OS Banker&apos;s Algorithm & Semaphores</strong>
-                  <div className="text-on-surface-variant text-label-tag">Wednesday • 10:30 – 11:45 (75 min) • Weak Area Remediation</div>
-                </div>
-                <span className="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">
-                  Auto-Scheduled
-                </span>
-              </div>
-
-              <div className="p-space-sm rounded-lg bg-surface-container border border-outline-variant/20 flex items-center justify-between">
-                <div>
-                  <strong className="text-on-surface">Block C: CS-302 Red-Black Tree Deletion Traces</strong>
-                  <div className="text-on-surface-variant text-label-tag">Friday • 14:00 – 15:00 (60 min) • Practicum Drill</div>
-                </div>
-                <span className="px-2 py-1 rounded bg-secondary-container text-on-secondary-container font-label-tag text-label-tag">
-                  Auto-Scheduled
-                </span>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-space-xs pt-space-xs">
-              <button
-                onClick={() => setIsRevisionModalOpen(false)}
-                className="px-space-md py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-button-text text-button-text"
-              >
-                Dismiss
-              </button>
-              <a
-                href="/planner"
-                className="px-space-md py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-fixed transition-colors font-button-text text-button-text font-semibold"
-              >
-                Sync to Planner Calendar
-              </a>
-            </div>
+            <button
+              onClick={() => setIsManualModalOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-on-primary hover:bg-primary/90 font-semibold text-sm transition-all shadow-md shadow-primary/20"
+            >
+              <span className="material-symbols-outlined text-[20px]">add</span>
+              <span>+ Add Exam</span>
+            </button>
           </div>
         </div>
       )}
 
+      {/* ACTIVE EXAMS VIEW: Rendered ONLY when real exams exist */}
+      {!isLoading && exams.length > 0 && primaryExam && (
+        <>
+          {/* Prominent Hero Focus — Impending Exam Banner */}
+          {(() => {
+            const daysAway = calculateDaysRemaining(primaryExam.date);
+            const isToday = daysAway === 0;
+            const isPast = daysAway < 0;
+
+            return (
+              <section className="relative rounded-2xl bg-surface-container-low p-space-lg lg:p-space-xl overflow-clip shadow-xl border border-outline-variant/30">
+                <div className="absolute -right-16 -top-16 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div className="relative z-10 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-space-xl">
+                  {/* Left Info Block */}
+                  <div className="space-y-space-md max-w-3xl">
+                    <div className="flex flex-wrap items-center gap-space-xs">
+                      <span className="px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-tag text-label-tag font-semibold uppercase tracking-wider">
+                        {isPast ? 'COMPLETED' : isToday ? 'TODAY' : 'NEXT UPCOMING EVALUATION'}
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-tag text-label-tag font-semibold uppercase">
+                        {primaryExam.examType}
+                      </span>
+                      {primaryExam.room && (
+                        <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-mono-wide text-label-mono-wide">
+                          ROOM: {primaryExam.room}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="space-y-1">
+                      <h2 className="font-headline-lg text-headline-lg text-on-surface">
+                        {primaryExam.subject?.code ? `${primaryExam.subject.code}: ` : ''}
+                        {primaryExam.subject?.name || primaryExam.title}
+                      </h2>
+                      {primaryExam.notes && (
+                        <p className="font-display-quote text-display-quote text-on-surface-variant italic">
+                          {primaryExam.notes}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-sm pt-1">
+                      <div className="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+                        <span className="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+                        <span>
+                          {formatExamDate(primaryExam.date)}
+                          {primaryExam.startTime
+                            ? ` • ${primaryExam.startTime}${primaryExam.endTime ? ` – ${primaryExam.endTime}` : ''}`
+                            : ''}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+                        <span className="material-symbols-outlined text-primary text-[18px]">meeting_room</span>
+                        <span>{primaryExam.room ? `Location: ${primaryExam.room}` : 'Examination Hall TBA'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Countdown and Action Suite */}
+                  <div className="w-full xl:w-80 flex flex-col justify-between self-stretch bg-surface-container p-space-lg rounded-xl space-y-space-md border border-outline-variant/20">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="font-label-tag text-label-tag uppercase tracking-widest text-on-surface-variant">
+                          Time Remaining
+                        </span>
+                        <span className="w-2 h-2 rounded-full bg-primary"></span>
+                      </div>
+                      <div className="mt-2 flex items-baseline gap-2">
+                        <span className="font-headline-lg text-[44px] leading-none font-bold text-primary tracking-tight">
+                          {isPast ? '0' : daysAway < 10 ? `0${daysAway}` : daysAway}
+                        </span>
+                        <div className="flex flex-col">
+                          <span className="font-label-mono-wide text-label-mono-wide text-on-surface uppercase font-semibold">
+                            {isToday ? 'Today!' : isPast ? 'Days Ago' : 'Days to Exam'}
+                          </span>
+                          <span className="font-label-tag text-label-tag text-on-surface-variant">
+                            {isPast ? 'Evaluation finished' : `${Math.max(0, daysAway * 24)} Hours Buffer`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-space-xs pt-space-xs">
+                      <button
+                        onClick={() => setActiveDrillExam(primaryExam)}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 px-space-md rounded-lg bg-primary text-on-primary font-button-text text-button-text hover:bg-primary/90 transition-all shadow-md"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">play_circle</span>
+                        <span>Launch Focused Mock Drill</span>
+                      </button>
+
+                      <div className="grid grid-cols-2 gap-space-xs">
+                        <a
+                          href="/resources"
+                          className="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">history</span>
+                          <span>PYQs</span>
+                        </a>
+                        <a
+                          href="/subjects"
+                          className="flex items-center justify-center gap-1.5 py-2 px-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-button-text text-body-sm"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">segment</span>
+                          <span>Syllabus</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-space-xl">
+            {/* Left Column (Detailed Exam Schedule) */}
+            <div className="xl:col-span-8 flex flex-col space-y-space-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs pb-1">
+                <div>
+                  <h3 className="font-headline-md text-headline-md text-on-surface">Scheduled Examinations</h3>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant">
+                    {exams.length} official evaluation slot{exams.length === 1 ? '' : 's'} recorded in your student profile
+                  </p>
+                </div>
+              </div>
+
+              {/* Schedule Cards Container */}
+              <div className="flex flex-col space-y-space-md">
+                {exams.map((exam) => {
+                  const daysAway = calculateDaysRemaining(exam.date);
+                  const isToday = daysAway === 0;
+                  const isPast = daysAway < 0;
+
+                  return (
+                    <div
+                      key={exam.id}
+                      className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md hover:bg-surface-container transition-all shadow-sm border border-outline-variant/20"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-space-xs">
+                        <div className="space-y-1">
+                          <div className="flex flex-wrap items-center gap-space-xs">
+                            {exam.subject?.code && (
+                              <span className="font-label-mono-wide text-label-mono-wide text-primary font-semibold">
+                                {exam.subject.code}
+                              </span>
+                            )}
+                            <span className="font-label-tag text-label-tag text-on-surface-variant font-mono">
+                              {isToday ? 'TODAY' : isPast ? `${Math.abs(daysAway)} DAYS AGO` : `${daysAway} DAYS AWAY`}
+                            </span>
+                            <span className="px-2 py-0.5 rounded-full font-label-tag text-label-tag bg-secondary-container text-on-secondary-container font-semibold uppercase">
+                              {exam.examType}
+                            </span>
+                          </div>
+
+                          <h4 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                            {exam.subject?.name || exam.title}
+                          </h4>
+                          <p className="font-body-sm text-body-sm text-on-surface-variant">
+                            {formatExamDate(exam.date)}
+                            {exam.startTime ? ` • ${exam.startTime}${exam.endTime ? ` – ${exam.endTime}` : ''}` : ''}
+                            {exam.room ? ` • ${exam.room}` : ''}
+                          </p>
+                          {exam.notes && (
+                            <p className="text-xs text-on-surface-variant/80 italic pt-1">
+                              Note: {exam.notes}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* Delete Button */}
+                        <button
+                          onClick={() => handleDeleteExam(exam.id)}
+                          disabled={isDeletingId === exam.id}
+                          className="text-on-surface-variant hover:text-error p-1.5 rounded-lg hover:bg-surface-container-high transition-colors"
+                          title="Delete Exam"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">delete</span>
+                        </button>
+                      </div>
+
+                      {/* Action Footer */}
+                      <div className="flex items-center justify-between pt-2 border-t border-surface-container-high/40 text-xs">
+                        <span className="font-label-tag text-label-tag text-on-surface-variant uppercase">
+                          {exam.subject?.name ? `Subject: ${exam.subject.name}` : 'General Examination'}
+                        </span>
+
+                        <div className="flex items-center gap-space-xs">
+                          <a
+                            href="/subjects"
+                            className="px-3 py-1.5 rounded bg-surface-container-high hover:bg-surface-bright text-on-surface font-button-text text-body-sm transition-colors"
+                          >
+                            Study Roadmap
+                          </a>
+                          <button
+                            onClick={() => setActiveDrillExam(exam)}
+                            className="px-3 py-1.5 rounded bg-primary/20 text-primary hover:bg-primary/30 font-button-text text-body-sm transition-colors"
+                          >
+                            Practice Mock
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Column (Review Guidelines & Tools) */}
+            <div className="xl:col-span-4 flex flex-col space-y-space-lg">
+              {/* Card 1: Review Cadence */}
+              <div className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md shadow-sm border border-outline-variant/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-space-xs">
+                    <span className="material-symbols-outlined text-primary text-[20px]">psychology</span>
+                    <h4 className="font-headline-sm text-headline-sm text-on-surface">Cognitive Cadence</h4>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full bg-surface-container-high font-label-tag text-label-tag text-primary font-mono">
+                    ACTIVE
+                  </span>
+                </div>
+
+                <p className="font-body-sm text-body-sm text-on-surface-variant">
+                  Ebbinghaus forgetting curve protection algorithm tuned to your examination timeline.
+                </p>
+
+                {/* Spaced Retention Graphic */}
+                <div className="p-space-md rounded-xl bg-surface-container border border-outline-variant/20 space-y-2">
+                  <div className="flex justify-between font-label-mono-wide text-label-tag text-on-surface-variant">
+                    <span>RETENTION PROJECTION</span>
+                    <span className="text-primary font-bold">92% WITH RETRIEVAL</span>
+                  </div>
+                  <svg className="w-full h-24 text-primary" fill="none" viewBox="0 0 280 90">
+                    <path
+                      d="M10,20 Q60,50 120,40 T200,25 T270,15"
+                      fill="none"
+                      stroke="#E85A4F"
+                      strokeWidth="2.5"
+                    />
+                    <path
+                      d="M10,20 Q60,70 120,80 T200,85 T270,88"
+                      fill="none"
+                      stroke="#8E8D8A"
+                      strokeDasharray="4 4"
+                      strokeWidth="2"
+                    />
+                    <circle cx="120" cy="40" r="4" fill="#E85A4F" />
+                    <circle cx="200" cy="25" r="4" fill="#E85A4F" />
+                  </svg>
+                  <div className="flex justify-between text-label-tag font-label-tag text-on-surface-variant/80">
+                    <span>Initial Learn</span>
+                    <span className="text-primary">Targeted Recall</span>
+                    <span>Exam Day</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Quick Links */}
+              <div className="rounded-xl bg-surface-container-low p-space-lg space-y-space-md shadow-sm border border-outline-variant/20">
+                <div className="flex items-center gap-space-2xs">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">menu_book</span>
+                  <h4 className="font-headline-sm text-headline-sm text-on-surface">Study Resources</h4>
+                </div>
+
+                <div className="space-y-2">
+                  <a
+                    href="/resources"
+                    className="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between border border-outline-variant/20 text-on-surface text-body-sm font-medium"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-primary text-[18px]">description</span>
+                      Question Papers & Solutions
+                    </span>
+                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+                  </a>
+
+                  <a
+                    href="/subjects"
+                    className="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between border border-outline-variant/20 text-on-surface text-body-sm font-medium"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-tertiary text-[18px]">menu_book</span>
+                      Syllabus & Core Modules
+                    </span>
+                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+                  </a>
+
+                  <a
+                    href="/planner"
+                    className="p-3 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-center justify-between border border-outline-variant/20 text-on-surface text-body-sm font-medium"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-secondary text-[18px]">calendar_month</span>
+                      Planner & Study Blocks
+                    </span>
+                    <span className="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_forward</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* MOCK TEST MODAL */}
-      {(isMockModalOpen || activeDrill) && (
+      {activeDrillExam && (
         <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-surface-container-low border border-outline-variant/40 rounded-2xl w-full max-w-2xl shadow-2xl p-space-lg space-y-space-md">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-space-xs">
               <div className="flex items-center gap-space-xs">
                 <span className="material-symbols-outlined text-primary text-[24px]">quiz</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                  Focused Examination Drill: {activeDrill ? activeDrill.code : primaryExam.code}
+                  Exam Practice Drill: {activeDrillExam.subject?.name || activeDrillExam.title}
                 </h3>
               </div>
               <button
-                onClick={() => {
-                  setIsMockModalOpen(false);
-                  setActiveDrill(null);
-                }}
+                onClick={() => setActiveDrillExam(null)}
                 className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
@@ -638,10 +557,10 @@ export default function ExamCenterPage() {
 
             <div className="p-space-md rounded-xl bg-surface-container border border-outline-variant/20 space-y-2">
               <span className="font-label-mono-wide text-label-tag text-tertiary uppercase">
-                PYQ Question 1 of 5 • 6 Marks
+                {activeDrillExam.examType} Practice Question 1 of 5
               </span>
               <p className="font-body-md text-body-md text-on-surface font-medium">
-                Under what condition does a B+ Tree secondary index split cause an internal parent node overflow? State the minimum keys in an order-p internal node.
+                Outline key conceptual principles for {activeDrillExam.subject?.name || activeDrillExam.title} and derive standard analytical criteria relevant to your evaluation syllabus.
               </p>
             </div>
 
@@ -653,15 +572,14 @@ export default function ExamCenterPage() {
 
             <div className="flex items-center justify-between pt-space-xs">
               <span className="font-label-mono-wide text-label-tag text-on-surface-variant">
-                Time Remaining: 14m 32s
+                Standard Time: 15m
               </span>
               <button
                 onClick={() => {
-                  alert('Submission verified! Score: 5.5/6. Telemetry updated.');
-                  setIsMockModalOpen(false);
-                  setActiveDrill(null);
+                  alert('Submission verified! Feedback recorded in your study profile.');
+                  setActiveDrillExam(null);
                 }}
-                className="px-space-md py-2 rounded-lg bg-primary text-on-primary font-button-text text-button-text font-semibold hover:bg-primary-fixed"
+                className="px-space-md py-2 rounded-lg bg-primary text-on-primary font-button-text text-button-text font-semibold hover:bg-primary/90"
               >
                 Submit Answer
               </button>
@@ -669,6 +587,22 @@ export default function ExamCenterPage() {
           </div>
         </div>
       )}
+
+      {/* TIMETABLE OCR UPLOAD MODAL */}
+      <ExamUploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onSuccess={fetchExams}
+        knownSubjects={knownSubjects}
+      />
+
+      {/* MANUAL ADD EXAM MODAL */}
+      <ManualAddExamModal
+        isOpen={isManualModalOpen}
+        onClose={() => setIsManualModalOpen(false)}
+        onSuccess={fetchExams}
+        knownSubjects={knownSubjects}
+      />
     </div>
   );
 }

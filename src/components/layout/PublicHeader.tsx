@@ -30,12 +30,14 @@ export default function PublicHeader({
       const el = document.getElementById(sectionId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.location.href = `/#${sectionId}`;
       }
     }
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0F171B]/90 backdrop-blur-xl border-b border-[#29383D]/60 px-4 sm:px-8 py-3 transition-all">
+    <header className="sticky top-0 z-50 w-full bg-background/90 backdrop-blur-xl px-4 sm:px-8 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Left: Official NIVORA Brand Logo */}
         <div className="flex items-center shrink-0">
@@ -55,33 +57,33 @@ export default function PublicHeader({
               <button
                 key={item.id}
                 onClick={() => handleItemClick(item.sectionId)}
-                className={`relative py-1 tracking-wide cursor-pointer ${
-                  isActive ? 'text-[#8FC5A7]' : 'text-[#A6ADA9]'
+                className={`relative py-1 tracking-wide cursor-pointer transition-colors ${
+                  isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
                 {item.label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-[#8FC5A7] rounded-full" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-primary rounded-full" />
                 )}
               </button>
             );
           })}
 
-          <div className="h-4 w-px bg-[#29383D]" />
+          <div className="h-4 w-px bg-border" />
 
           {/* Theme Toggle Button */}
           <ThemeToggle />
 
           <Link
             href="/login"
-            className="text-xs font-semibold text-[#A6ADA9] px-2 py-1"
+            className="text-xs font-semibold text-on-surface-variant hover:text-on-surface px-2 py-1 transition-colors"
           >
             Login
           </Link>
 
           <Link
-            href="/login"
-            className="px-4 py-1.5 rounded-full bg-[#8FC5A7] text-[#0F171B] text-xs font-bold tracking-wide shadow-sm flex items-center gap-1.5"
+            href="/signup"
+            className="px-4 py-1.5 rounded-full bg-primary text-white hover:bg-coral text-xs font-bold tracking-wide shadow-sm flex items-center gap-1.5 transition-colors"
           >
             <span>Get Started</span>
             <span className="material-symbols-outlined text-[14px]">
@@ -94,14 +96,14 @@ export default function PublicHeader({
         <div className="flex md:hidden items-center gap-1.5 sm:gap-2.5 shrink-0">
           <ThemeToggle />
           <Link
-            href="/login"
-            className="px-2.5 py-1 rounded-full bg-[#8FC5A7] text-[#0F171B] text-xs font-bold shrink-0"
+            href="/signup"
+            className="px-2.5 py-1 rounded-full bg-primary text-white hover:bg-coral text-xs font-bold shrink-0 transition-colors"
           >
             Get Started →
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1 rounded-lg text-[#A6ADA9]"
+            className="p-1 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors"
             aria-label="Toggle navigation menu"
           >
             <span className="material-symbols-outlined text-[20px]">
@@ -113,16 +115,25 @@ export default function PublicHeader({
 
       {/* Mobile dropdown menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden pt-3 pb-2 border-t border-[#29383D]/60 mt-3 space-y-2 animate-in slide-in-from-top-2">
+        <div className="md:hidden pt-3 pb-2 border-t border-border/60 mt-3 space-y-2">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleItemClick(item.sectionId)}
-              className="block w-full text-left px-3 py-2 text-xs font-medium text-[#A6ADA9] rounded-lg"
+              className="block w-full text-left px-3 py-2 text-xs font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors"
             >
               {item.label}
             </button>
           ))}
+          <div className="pt-2 border-t border-border/40 mt-2">
+            <Link
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block w-full text-left px-3 py-2 text-xs font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-lg transition-colors"
+            >
+              Login
+            </Link>
+          </div>
         </div>
       )}
     </header>

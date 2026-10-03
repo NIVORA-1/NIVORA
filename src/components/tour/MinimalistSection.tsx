@@ -62,16 +62,16 @@ export default function MinimalistSection() {
     <section id="minimalist" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       {/* Header Label */}
       <div data-mini-heading className="text-center space-y-3 mb-14">
-        <div className="font-mono text-[10px] tracking-[0.25em] text-[#747F7B] uppercase font-bold">
+        <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           MINIMALIST BY DESIGN
         </div>
-        <h2 className="text-3xl sm:text-5xl font-display font-bold tracking-[-0.025em] text-[#F1F0E8] leading-[1.15]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
           Only what matters.{' '}
-          <span className="font-serif italic text-[#8FC5A7] font-normal">
+          <span className="italic text-primary">
             When it matters.
           </span>
         </h2>
-        <p className="mt-4 font-mono text-[11px] sm:text-xs tracking-[0.18em] leading-relaxed text-[#747F7B] max-w-2xl mx-auto uppercase font-normal">
+        <p className="mt-4 font-sans text-xs sm:text-sm tracking-wider leading-relaxed text-on-surface-variant max-w-2xl mx-auto uppercase font-medium">
           NIVORA REDUCES THE NOISE OF TRADITIONAL LMS TOOLS. REPLACING DISTRACTION WITH INTENTIONAL FLOW.
         </p>
       </div>
@@ -79,12 +79,12 @@ export default function MinimalistSection() {
       {/* Side-by-Side Showcase */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Interactive Clean Workflow Accordion (7 cols) */}
-        <div data-mini-left className="lg:col-span-7 rounded-2xl bg-[#172329] border border-[#29383D] p-6 sm:p-7 shadow-xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#29383D]">
-            <span className="font-mono text-xs text-[#F1F0E8] font-bold tracking-wider uppercase">
+        <div data-mini-left className="lg:col-span-7 rounded-2xl bg-surface-container border border-border p-6 sm:p-7 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
+            <span className="font-sans text-xs text-on-surface font-bold tracking-wider uppercase">
               Intentional Interaction Model
             </span>
-            <span className="font-mono text-[10px] text-[#8FC5A7] font-semibold">ZERO NOISE PRINCIPLE</span>
+            <span className="font-sans text-[10px] text-primary font-bold uppercase">ZERO NOISE PRINCIPLE</span>
           </div>
 
           <div className="space-y-3">
@@ -94,7 +94,7 @@ export default function MinimalistSection() {
                 <div
                   key={item.title}
                   data-mini-item
-                  className="rounded-xl bg-[#1C2A30] border border-[#29383D] overflow-hidden"
+                  className="rounded-xl bg-surface-container-low border border-border overflow-clip"
                 >
                   <button
                     onClick={() => setOpenAccordion(isOpen ? -1 : idx)}
@@ -102,24 +102,24 @@ export default function MinimalistSection() {
                     aria-expanded={isOpen}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[11px] text-[#8FC5A7] font-bold">
+                      <span className="font-sans text-xs text-primary font-bold">
                         0{idx + 1}
                       </span>
-                      <span className="font-sans text-sm font-bold text-[#F1F0E8]">
+                      <span className="font-sans text-sm font-bold text-on-surface">
                         {item.title}
                       </span>
                     </div>
-                    <span className="material-symbols-outlined text-[18px] text-[#A6ADA9] transition-transform duration-200">
+                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant transition-transform duration-200">
                       {isOpen ? 'remove' : 'add'}
                     </span>
                   </button>
 
                   {isOpen && (
-                    <div className="px-4 pb-4 pt-1 border-t border-[#29383D]/60 animate-in fade-in duration-150">
-                      <p className="font-sans text-xs text-[#A6ADA9] leading-relaxed font-normal">
+                    <div className="px-4 pb-4 pt-1 border-t border-border/60">
+                      <p className="font-sans text-xs text-on-surface-variant leading-relaxed font-normal">
                         {item.desc}
                       </p>
-                      <div className="mt-2.5 font-mono text-[9px] text-[#8FC5A7] uppercase tracking-wider font-semibold">
+                      <div className="mt-2.5 font-sans text-[10px] text-primary uppercase tracking-wider font-bold">
                         {item.metric}
                       </div>
                     </div>
@@ -131,24 +131,24 @@ export default function MinimalistSection() {
         </div>
 
         {/* Right Column: NIVORA Insight Telemetry Card (5 cols) */}
-        <div data-mini-telemetry className="lg:col-span-5 rounded-2xl bg-[#172329] border border-[#29383D] p-6 sm:p-7 shadow-xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#29383D]">
+        <div data-mini-telemetry className="lg:col-span-5 rounded-2xl bg-surface-container border border-border p-6 sm:p-7 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-[#8FC5A7]">
+              <span className="material-symbols-outlined text-[18px] text-primary">
                 psychology
               </span>
-              <span className="font-mono text-[11px] tracking-wider text-[#8FC5A7] uppercase font-bold">
+              <span className="font-sans text-xs tracking-wider text-primary uppercase font-bold">
                 NIVORA INSIGHT
               </span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-[#8FC5A7] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-coral" />
           </div>
 
           <div className="space-y-2">
-            <p className="font-sans text-sm text-[#F1F0E8] font-semibold leading-snug">
+            <p className="font-sans text-sm text-on-surface font-semibold leading-snug">
               &ldquo;Your recent quiz results show that Core Analytical Derivations and Unit 03 Concepts are currently your weakest topics.&rdquo;
             </p>
-            <p className="font-sans text-xs text-[#A6ADA9] leading-relaxed font-normal">
+            <p className="font-sans text-xs text-on-surface-variant leading-relaxed font-normal">
               Spend 40 minutes reviewing key derivations and foundational practice sets before tomorrow&apos;s lecture.
             </p>
           </div>
@@ -156,7 +156,7 @@ export default function MinimalistSection() {
           <div className="flex items-center gap-3 pt-2">
             <Link
               href="/learning"
-              className="px-4 py-2 rounded-lg bg-[#8FC5A7] text-[#0F171B] font-sans text-xs font-bold flex items-center gap-1 shadow-sm"
+              className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-coral transition-colors font-sans text-xs font-bold flex items-center gap-1 shadow-sm"
             >
               <span>Start Revision</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -164,25 +164,25 @@ export default function MinimalistSection() {
 
             <button
               onClick={() => setShowWhyInsight(!showWhyInsight)}
-              className="font-sans text-xs text-[#A6ADA9] underline underline-offset-4 cursor-pointer"
+              className="font-sans text-xs text-on-surface-variant hover:text-on-surface underline underline-offset-4 cursor-pointer"
             >
               Why this?
             </button>
           </div>
 
           {showWhyInsight && (
-            <div className="p-3 rounded-lg bg-[#1C2A30] border border-[#29383D] text-[11px] text-[#A6ADA9] space-y-1.5 animate-in fade-in duration-200">
+            <div className="p-3 rounded-lg bg-surface-container-high border border-border text-[11px] text-on-surface-variant space-y-1.5">
               <div>
-                <strong className="text-[#F1F0E8]">Deficit Vector:</strong> Unit 03 Milestone Quiz score was 54%, below your 85% mastery target.
+                <strong className="text-on-surface">Deficit Vector:</strong> Unit 03 Milestone Quiz score was 54%, below your 85% mastery target.
               </div>
               <div>
-                <strong className="text-[#F1F0E8]">Impact:</strong> Major mid-term examination in 18 days allocates 30% weightage to these concepts.
+                <strong className="text-on-surface">Impact:</strong> Major mid-term examination in 18 days allocates 30% weightage to these concepts.
               </div>
             </div>
           )}
 
-          <div className="pt-4 border-t border-[#29383D]/60 text-center">
-            <span className="font-serif italic text-sm text-[#8FC5A7]">
+          <div className="pt-4 border-t border-border/60 text-center">
+            <span className="font-display italic text-lg sm:text-xl text-primary font-normal">
               &ldquo;Less information, higher clarity.&rdquo;
             </span>
           </div>

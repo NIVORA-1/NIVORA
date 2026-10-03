@@ -17,23 +17,23 @@ export interface NivoraLogoProps {
 
 const SIZE_CLASSES: Record<NivoraLogoSize, string> = {
   // Mobile / compact navigation
-  compact: 'h-6 sm:h-7 w-auto',
+  compact: 'h-7 sm:h-8 w-auto',
   // Small badge or secondary header
-  small: 'h-7 sm:h-8 w-auto',
+  small: 'h-8 sm:h-9 w-auto',
   // Standard navigation / sidebar / headers
-  medium: 'h-8 sm:h-9 md:h-10 w-auto',
+  medium: 'h-9 sm:h-10 md:h-11 w-auto',
   // Auth pages / onboarding / prominent branding
-  large: 'h-12 sm:h-14 md:h-16 w-auto',
+  large: 'h-14 sm:h-16 md:h-20 w-auto',
   // Hero display / welcome displays
-  hero: 'h-16 sm:h-20 md:h-24 w-auto',
+  hero: 'h-20 sm:h-24 md:h-28 w-auto',
   // Fully responsive across Mobile -> Tablet -> Desktop
-  responsive: 'h-7 sm:h-8 md:h-9 lg:h-10 w-auto',
+  responsive: 'h-8 sm:h-9 md:h-10 lg:h-11 w-auto',
 };
 
 /**
  * Official Nivora Brand Logo Component
- * Renders the exact official uploaded brand mark preserving original typography,
- * geometry, colors, and aspect ratio (1024:571).
+ * Renders the official transparent brand mark containing the sculpted 3D rose-gold/blue symbol
+ * and embossed NIVORA wordmark with zero background box.
  */
 export default function NivoraLogo({
   size = 'responsive',
@@ -48,13 +48,13 @@ export default function NivoraLogo({
 
   const imageElement = (
     <img
-      src="/assets/nivora-logo.png"
+      src="/nivora-logo-transparent.png"
       alt={alt}
-      width={1024}
-      height={571}
+      width={478}
+      height={400}
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
-      className={`aspect-[1024/571] object-contain rounded-md select-none shrink-0 transition-opacity ${sizeClass} ${imageClassName}`}
+      className={`aspect-[478/400] object-contain select-none shrink-0 transition-opacity ${sizeClass} ${imageClassName}`}
       style={{
         imageRendering: 'auto',
       }}
@@ -66,7 +66,7 @@ export default function NivoraLogo({
       <Link
         href={href}
         onClick={onClick}
-        className={`inline-flex items-center shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8FC5A7] rounded-md ${className}`}
+        className={`inline-flex items-center shrink-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-coral rounded-md ${className}`}
         aria-label={alt}
       >
         {imageElement}

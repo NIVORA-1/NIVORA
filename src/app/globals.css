@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400;1,9..40,600;1,9..40,700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400;1,6..72,500;1,6..72,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 @tailwind base;
@@ -7,71 +7,250 @@
 
 @layer base {
   :root,
-  [data-theme="dark"] {
-    --font-primary: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-display: 'DM Sans', 'Manrope', sans-serif;
-    --font-serif: 'Newsreader', Georgia, serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    --font-jakarta: 'Manrope', sans-serif;
-
-    color-scheme: dark;
-
-    /* Nivora Dark Theme Design Tokens */
-    --background: #0F171B;
-    --background-subtle: #070F13;
-    --surface: #172329;
-    --surface-elevated: #1C2A30;
-    --surface-hover: #22323A;
-    --surface-preview: rgba(19, 28, 32, 0.96);
-    --border: #29383D;
-    --border-subtle: rgba(41, 56, 61, 0.6);
-    --border-accent: rgba(143, 197, 167, 0.3);
-    --border-preview: rgba(143, 197, 167, 0.3);
-    --text-primary: #F4F3EE;
-    --text-secondary: #C0C7C3;
-    --text-muted: #8E9A94;
-    --text-disabled: #5E6965;
-    --accent: #8FC5A7;
-    --accent-hover: #aae1c2;
-    --accent-soft: rgba(143, 197, 167, 0.12);
-    --accent-text: #09120E;
-    --header-bg: rgba(15, 23, 27, 0.92);
-    --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
-    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
-    --shadow-preview: 0 16px 36px rgba(0, 0, 0, 0.65);
-    --scrollbar-track: #0c1418;
-    --scrollbar-thumb: #232b2f;
-    --scrollbar-thumb-hover: #2e363a;
-  }
-
   [data-theme="light"] {
+    --font-primary: var(--font-manrope, 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+    --font-display: var(--font-instrument-serif, 'Instrument Serif', Georgia, serif);
+    --font-serif: var(--font-instrument-serif, 'Instrument Serif', Georgia, serif);
+    --font-editorial: var(--font-instrument-serif, 'Instrument Serif', Georgia, serif);
+    --font-mono: var(--font-manrope, 'Manrope', -apple-system, sans-serif);
+    --font-code: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-jakarta: var(--font-manrope, 'Manrope', sans-serif);
+
     color-scheme: light;
 
-    /* Nivora Premium Editorial Light Theme Design Tokens */
-    --background: #F8F7F4;
-    --background-subtle: #EFECE5;
-    --surface: #FFFFFF;
-    --surface-elevated: #FAF9F5;
-    --surface-hover: #F2EFE7;
-    --surface-preview: rgba(255, 255, 255, 0.98);
-    --border: #E0DDD4;
-    --border-subtle: rgba(224, 221, 212, 0.85);
-    --border-accent: rgba(63, 117, 90, 0.35);
-    --border-preview: #E0DDD4;
-    --text-primary: #121A1D;
-    --text-secondary: #576460;
-    --text-muted: #76837E;
-    --accent: #3F755A;
-    --accent-hover: #326049;
-    --accent-soft: rgba(63, 117, 90, 0.1);
+    /* ========================================================
+       NIVORA CENTRALIZED COLOR TOKENS — LIGHT MODE
+       Dominant Background: Warm Ivory (#EAE7DC)
+       Secondary Cards & Nav: Muted Sand (#D8C3A5)
+       Dividers & Muted Text: Warm Gray (#8E8D8A)
+       Secondary Accents & Highlights: Coral (#E98074)
+       Primary CTA & Key Actions: Deep Coral (#E85A4F)
+       ======================================================== */
+    --nivora-bg: #EAE7DC;
+    --nivora-surface: #F8F6F0;
+    --nivora-surface-secondary: #D8C3A5;
+    --nivora-text: #262220;
+    --nivora-text-muted: #8E8D8A;
+    --nivora-border: #D8C3A5;
+    --nivora-accent: #E98074;
+    --nivora-accent-strong: #E85A4F;
+    --nivora-accent-soft: rgba(233, 128, 116, 0.15);
+
+    /* RGB channels for Tailwind alpha transparency support */
+    --outline-rgb: 142 141 138;
+    --outline-variant-rgb: 216 195 165;
+    --surface-rgb: 248 246 240;
+    --surface-lowest-rgb: 234 231 220;
+    --surface-low-rgb: 243 239 230;
+    --surface-container-rgb: 250 248 243;
+    --surface-high-rgb: 234 229 217;
+    --surface-highest-rgb: 221 215 201;
+    --on-surface-rgb: 38 34 32;
+    --on-surface-variant-rgb: 110 107 103;
+    --background-rgb: 234 231 220;
+    --primary-rgb: 232 90 79;
+    --secondary-rgb: 216 195 165;
+    --secondary-container-rgb: 216 195 165;
+    --tertiary-rgb: 142 141 138;
+    --error-rgb: 232 90 79;
+
+    /* Semantic Theme Tokens */
+    --background: #EAE7DC;
+    --background-subtle: #DFDACD;
+    --surface: #F8F6F0;
+    --surface-dim: #E3DEC8;
+    --surface-bright: #FFFFFF;
+    --surface-container-lowest: #EAE7DC;
+    --surface-container-low: #F3EFE6;
+    --surface-container: #FAF8F3;
+    --surface-container-high: #EAE5D9;
+    --surface-container-highest: #DDD7C9;
+    --surface-variant: #D8C3A5;
+    --surface-elevated: #FAF8F3;
+    --surface-hover: #ECE7DA;
+    --surface-preview: rgba(248, 246, 240, 0.98);
+
+    --on-surface: #262220;
+    --on-surface-variant: #6E6B67;
+    --text-primary: #262220;
+    --text-secondary: #6E6B67;
+    --text-muted: #8E8D8A;
+    --text-disabled: #A8A49D;
+
+    --border: #D8C3A5;
+    --border-subtle: rgba(142, 141, 138, 0.28);
+    --border-accent: rgba(232, 90, 79, 0.35);
+    --border-preview: #D8C3A5;
+    --outline: #8E8D8A;
+    --outline-variant: #D8C3A5;
+
+    /* Primary Accent: Deep Coral for Primary CTAs & Active States */
+    --primary: #E85A4F;
+    --primary-container: #F6CDC8;
+    --primary-fixed: #E85A4F;
+    --primary-fixed-dim: #E98074;
+    --on-primary: #FFFFFF;
+    --on-primary-container: #262220;
+    --on-primary-fixed: #FFFFFF;
+    --on-primary-fixed-variant: #FFFFFF;
+    --inverse-primary: #FFB4AB;
+
+    /* Secondary: Muted Sand for Selected Navigation & Secondary Cards */
+    --secondary: #D8C3A5;
+    --secondary-container: #D8C3A5;
+    --secondary-fixed: #E6D7C3;
+    --secondary-fixed-dim: #D8C3A5;
+    --on-secondary: #262220;
+    --on-secondary-container: #262220;
+    --on-secondary-fixed: #262220;
+    --on-secondary-fixed-variant: #262220;
+
+    /* Soft Accent: Coral */
+    --accent: #E98074;
+    --accent-hover: #E85A4F;
+    --accent-soft: rgba(233, 128, 116, 0.14);
     --accent-text: #FFFFFF;
-    --header-bg: rgba(248, 247, 244, 0.92);
-    --shadow: 0 10px 30px -5px rgba(20, 28, 32, 0.07), 0 4px 6px -2px rgba(20, 28, 32, 0.04);
-    --shadow-card: 0 2px 14px rgba(20, 28, 32, 0.05);
-    --shadow-preview: 0 20px 40px -10px rgba(20, 28, 32, 0.12), 0 0 0 1px rgba(63, 117, 90, 0.15);
-    --scrollbar-track: #F8F7F4;
-    --scrollbar-thumb: #D8D5CD;
-    --scrollbar-thumb-hover: #C4C1B8;
+
+    /* Tertiary: Warm Gray */
+    --tertiary: #8E8D8A;
+    --tertiary-container: #ECE7DA;
+    --tertiary-fixed: #D8C3A5;
+    --tertiary-fixed-dim: #8E8D8A;
+    --on-tertiary: #FFFFFF;
+    --on-tertiary-container: #262220;
+
+    /* Semantic Alerts: Deep Coral based */
+    --error: #E85A4F;
+    --error-container: #FADAD7;
+    --on-error: #FFFFFF;
+    --on-error-container: #690005;
+
+    --header-bg: rgba(234, 231, 220, 0.94);
+    --shadow: 0 10px 30px -5px rgba(38, 34, 32, 0.08), 0 4px 6px -2px rgba(38, 34, 32, 0.04);
+    --shadow-card: 0 2px 14px rgba(38, 34, 32, 0.06);
+    --shadow-preview: 0 20px 40px -10px rgba(38, 34, 32, 0.12), 0 0 0 1px rgba(232, 90, 79, 0.15);
+    --scrollbar-track: #EAE7DC;
+    --scrollbar-thumb: #D8C3A5;
+    --scrollbar-thumb-hover: #8E8D8A;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+
+    /* ========================================================
+       NIVORA CENTRALIZED COLOR TOKENS — DARK MODE
+       Deep Warm Neutral Background: #161514
+       Muted Warm Surfaces: #211F1D / #282522
+       Warm Gray Secondary Elements: #8E8D8A
+       Coral Soft Accents: #E98074
+       Deep Coral Key Actions & CTAs: #E85A4F
+       ======================================================== */
+    --nivora-bg: #161514;
+    --nivora-surface: #211F1D;
+    --nivora-surface-secondary: #282522;
+    --nivora-text: #EAE7DC;
+    --nivora-text-muted: #8E8D8A;
+    --nivora-border: rgba(216, 195, 165, 0.18);
+    --nivora-accent: #E98074;
+    --nivora-accent-strong: #E85A4F;
+    --nivora-accent-soft: rgba(233, 128, 116, 0.15);
+
+    /* RGB channels for Tailwind alpha transparency support */
+    --outline-rgb: 142 141 138;
+    --outline-variant-rgb: 61 56 51;
+    --surface-rgb: 33 31 29;
+    --surface-lowest-rgb: 18 17 16;
+    --surface-low-rgb: 28 26 24;
+    --surface-container-rgb: 36 34 32;
+    --surface-high-rgb: 44 41 38;
+    --surface-highest-rgb: 53 49 44;
+    --on-surface-rgb: 234 231 220;
+    --on-surface-variant-rgb: 216 195 165;
+    --background-rgb: 22 21 20;
+    --primary-rgb: 232 90 79;
+    --secondary-rgb: 216 195 165;
+    --secondary-container-rgb: 47 42 36;
+    --tertiary-rgb: 216 195 165;
+    --error-rgb: 232 90 79;
+
+    /* Semantic Theme Tokens */
+    --background: #161514;
+    --background-subtle: #11100F;
+    --surface: #211F1D;
+    --surface-dim: #181716;
+    --surface-bright: #3D3934;
+    --surface-container-lowest: #121110;
+    --surface-container-low: #1C1A18;
+    --surface-container: #242220;
+    --surface-container-high: #2C2926;
+    --surface-container-highest: #35312C;
+    --surface-variant: #35312C;
+    --surface-elevated: #282522;
+    --surface-hover: #332F2A;
+    --surface-preview: rgba(33, 31, 29, 0.96);
+
+    --on-surface: #EAE7DC;
+    --on-surface-variant: #D8C3A5;
+    --text-primary: #EAE7DC;
+    --text-secondary: #D8C3A5;
+    --text-muted: #8E8D8A;
+    --text-disabled: #5C5852;
+
+    --border: rgba(216, 195, 165, 0.18);
+    --border-subtle: rgba(142, 141, 138, 0.22);
+    --border-accent: rgba(232, 90, 79, 0.35);
+    --border-preview: rgba(232, 90, 79, 0.3);
+    --outline: #8E8D8A;
+    --outline-variant: #3D3833;
+
+    /* Primary Accent: Deep Coral */
+    --primary: #E85A4F;
+    --primary-container: #E98074;
+    --primary-fixed: #E85A4F;
+    --primary-fixed-dim: #E98074;
+    --on-primary: #FFFFFF;
+    --on-primary-container: #161514;
+    --on-primary-fixed: #FFFFFF;
+    --on-primary-fixed-variant: #FFFFFF;
+    --inverse-primary: #E85A4F;
+
+    /* Secondary: Muted Sand */
+    --secondary: #D8C3A5;
+    --secondary-container: #2F2A24;
+    --secondary-fixed: #D8C3A5;
+    --secondary-fixed-dim: #B8A58B;
+    --on-secondary: #EAE7DC;
+    --on-secondary-container: #D8C3A5;
+    --on-secondary-fixed: #161514;
+    --on-secondary-fixed-variant: #262220;
+
+    /* Soft Accent: Coral */
+    --accent: #E98074;
+    --accent-hover: #E85A4F;
+    --accent-soft: rgba(233, 128, 116, 0.14);
+    --accent-text: #FFFFFF;
+
+    /* Tertiary: Warm Sand/Gray */
+    --tertiary: #D8C3A5;
+    --tertiary-container: #3D352B;
+    --tertiary-fixed: #EAE7DC;
+    --tertiary-fixed-dim: #D8C3A5;
+    --on-tertiary: #161514;
+    --on-tertiary-container: #EAE7DC;
+
+    /* Error */
+    --error: #E85A4F;
+    --error-container: #4D120E;
+    --on-error: #FFFFFF;
+    --on-error-container: #FFDAD6;
+
+    --header-bg: rgba(22, 21, 20, 0.94);
+    --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow-preview: 0 16px 36px rgba(0, 0, 0, 0.7);
+    --scrollbar-track: #161514;
+    --scrollbar-thumb: #2C2926;
+    --scrollbar-thumb-hover: #3D3833;
   }
 
   html {
@@ -81,6 +260,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    /* Ensure the root viewport is the sole vertical scroll container while clipping horizontal overflow */
+    overflow-x: clip;
+    overflow-y: auto;
+    touch-action: manipulation;
     transition: background-color 250ms cubic-bezier(0.16, 1, 0.3, 1),
                 color 250ms cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -101,18 +284,25 @@
     background-color: var(--background);
     color: var(--text-primary);
     font-family: var(--font-primary);
-    overflow-x: hidden;
+    /* Keep body overflow-y visible so that body does not create a nested scroll container */
+    overflow-x: clip;
+    overflow-y: visible;
     min-height: 100vh;
+    touch-action: manipulation;
   }
 
-  /* Smooth transition across color properties without touching transform animations */
-  body, header, nav, footer, section, div, button, a, span, p, h1, h2, h3, h4, h5, h6, ul, li {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-    transition-duration: 250ms;
+  /* Smooth transition across major structural containers without causing continuous repaint during scroll */
+  body, header, nav, footer, aside {
+    transition-property: background-color, border-color, color;
+    transition-duration: 200ms;
     transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Custom subtle scrollbars adapting to active theme */
+  /* Cross-browser scrollbars adapting to active theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -129,7 +319,13 @@
   }
 }
 
-/* Light Theme Mappings to seamlessly transform all page components */
+/* ========================================================
+   SEAMLESS LEGACY SELECTOR BRIDGING
+   Ensures any legacy hardcoded classes gracefully adapt to
+   the new Warm Ivory & Coral Design System in both themes.
+   ======================================================== */
+
+/* Light Theme Mappings */
 [data-theme="light"] .bg-\[\#0F171B\],
 [data-theme="light"] .bg-\[\#0c1418\],
 [data-theme="light"] .bg-surface {
@@ -153,7 +349,7 @@
 }
 
 [data-theme="light"] .bg-gradient-to-b.from-\[\#1C2A30\].to-\[\#172329\] {
-  background-image: linear-gradient(to bottom, #FAF9F5, #FFFFFF) !important;
+  background-image: linear-gradient(to bottom, #FAF8F3, #F8F6F0) !important;
 }
 
 [data-theme="light"] .bg-\[\#0F171B\]\/90,
@@ -194,20 +390,21 @@
 }
 
 [data-theme="light"] .text-\[\#8FC5A7\],
+[data-theme="light"] .text-\[\#AAE1C2\],
 [data-theme="light"] .text-primary {
-  color: var(--accent) !important;
+  color: var(--primary) !important;
 }
 
-[data-theme="light"] .bg-\[\#8FC5A7\] {
-  background-color: var(--accent) !important;
-  color: var(--accent-text) !important;
+[data-theme="light"] .bg-\[\#8FC5A7\],
+[data-theme="light"] .bg-\[\#AAE1C2\] {
+  background-color: var(--primary) !important;
+  color: var(--on-primary) !important;
 }
 
 [data-theme="light"] .bg-\[\#8FC5A7\] .text-\[\#0F171B\],
 [data-theme="light"] .bg-\[\#8FC5A7\].text-\[\#0F171B\] {
-  color: var(--accent-text) !important;
+  color: #FFFFFF !important;
 }
-
 
 [data-theme="light"] .shadow-2xl,
 [data-theme="light"] .shadow-xl {
@@ -218,7 +415,76 @@
   --tw-selection-bg: var(--accent);
 }
 [data-theme="light"] .selection\:text-\[\#0F171B\] {
-  --tw-selection-text: var(--accent-text);
+  --tw-selection-text: #FFFFFF;
+}
+
+/* Dark Theme Legacy Selectors */
+[data-theme="dark"] .bg-\[\#0F171B\],
+[data-theme="dark"] .bg-\[\#0c1418\] {
+  background-color: var(--background) !important;
+}
+
+[data-theme="dark"] .bg-\[\#070F13\],
+[data-theme="dark"] .bg-\[\#070f13\] {
+  background-color: var(--background-subtle) !important;
+}
+
+[data-theme="dark"] .bg-\[\#172329\],
+[data-theme="dark"] .bg-\[\#192125\] {
+  background-color: var(--surface) !important;
+}
+
+[data-theme="dark"] .bg-\[\#1C2A30\],
+[data-theme="dark"] .bg-\[\#151d21\],
+[data-theme="dark"] .bg-\[\#232b2f\] {
+  background-color: var(--surface-elevated) !important;
+}
+
+[data-theme="dark"] .border-\[\#29383D\],
+[data-theme="dark"] .border-\[\#232b2f\] {
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .border-\[\#29383D\]\/60,
+[data-theme="dark"] .border-\[\#29383D\]\/40,
+[data-theme="dark"] .border-\[\#29383D\]\/30,
+[data-theme="dark"] .border-\[\#29383D\]\/70 {
+  border-color: var(--border-subtle) !important;
+}
+
+[data-theme="dark"] .text-\[\#F1F0E8\],
+[data-theme="dark"] .text-\[\#F4F3EE\],
+[data-theme="dark"] .text-\[\#dbe4e9\] {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .text-\[\#A6ADA9\],
+[data-theme="dark"] .text-\[\#C0C7C3\],
+[data-theme="dark"] .text-\[\#c0c9c1\] {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .text-\[\#747F7B\],
+[data-theme="dark"] .text-\[\#8E9A94\] {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .text-\[\#8FC5A7\],
+[data-theme="dark"] .text-\[\#AAE1C2\] {
+  color: var(--accent) !important;
+}
+
+[data-theme="dark"] .bg-\[\#8FC5A7\],
+[data-theme="dark"] .bg-\[\#AAE1C2\] {
+  background-color: var(--primary) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .selection\:bg-\[\#8FC5A7\] {
+  --tw-selection-bg: var(--accent);
+}
+[data-theme="dark"] .selection\:text-\[\#0F171B\] {
+  --tw-selection-text: #FFFFFF;
 }
 
 .material-symbols-outlined {
@@ -254,6 +520,149 @@
   font-family: var(--font-serif);
 }
 
+.font-editorial {
+  font-family: var(--font-editorial);
+}
+
 .font-mono {
   font-family: var(--font-mono);
 }
+
+.font-code {
+  font-family: var(--font-code);
+}
+
+/* Nivora AI Chatbot Floating Mascot & Ground Shadow Animation */
+@keyframes nivora-chatbot-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes nivora-chatbot-ground-shadow {
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.35;
+    filter: blur(3.5px);
+  }
+  50% {
+    transform: translateX(-50%) scale(0.76);
+    opacity: 0.16;
+    filter: blur(6.5px);
+  }
+}
+
+.nivora-chatbot-floating {
+  animation: nivora-chatbot-float 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.group:hover .nivora-chatbot-floating,
+.nivora-chatbot-floating:hover,
+.nivora-chatbot-floating:focus-within {
+  animation-play-state: paused;
+}
+
+.nivora-chatbot-shadow-pulse {
+  animation: nivora-chatbot-ground-shadow 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform, opacity, filter;
+}
+
+.group:hover .nivora-chatbot-shadow-pulse,
+.nivora-chatbot-shadow-pulse:hover {
+  animation-play-state: paused;
+}
+
+/* Backward compatibility aliases */
+@keyframes nivora-companion-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes nivora-companion-shadow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(0.76);
+    opacity: 0.16;
+  }
+}
+
+.nivora-companion-floating {
+  animation: nivora-chatbot-float 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+}
+
+.nivora-companion-shadow-pulse {
+  animation: nivora-chatbot-ground-shadow 2.8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform, opacity, filter;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nivora-chatbot-floating,
+  .nivora-chatbot-shadow-pulse,
+  .nivora-companion-floating,
+  .nivora-companion-shadow-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Mobile & Android Native App Optimizations */
+html, body {
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Allow native touchpad momentum and natural bounce on desktop & laptop pointers */
+@media (pointer: fine) {
+  html, body {
+    overscroll-behavior-y: auto;
+    overscroll-behavior-x: auto;
+  }
+}
+
+/* Prevent accidental pull-to-refresh on coarse touchscreens (Android/iOS webview) */
+@media (pointer: coarse) {
+  html, body {
+    overscroll-behavior-y: none;
+  }
+}
+
+/* Ensure horizontal scroll containers allow vertical gestures to bubble up naturally without triggering browser back navigation */
+.overflow-x-auto,
+[class*="overflow-x-auto"] {
+  touch-action: pan-x pan-y;
+  overscroll-behavior-x: contain;
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Smooth touch momentum scrolling on mobile */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+

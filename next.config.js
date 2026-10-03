@@ -16,10 +16,7 @@ const nextConfig = {
       }
     ],
   },
-  experimental: {
-    cpus: 1,
-    workerThreads: false,
-  },
+  outputFileTracing: false,
 };
 
 module.exports = nextConfig;

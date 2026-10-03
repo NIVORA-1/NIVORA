@@ -113,7 +113,7 @@ export default function RebootPage() {
       {/* Section 1: KPI Telemetry Bento (4 Cards) */}
       <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
         {/* KPI 1: Reels / Shorts Count */}
-        <div className="relative overflow-hidden p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
+        <div className="relative overflow-clip p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-on-surface-variant">
             <span className="font-label-mono-wide text-label-mono-wide uppercase tracking-wider">
               Short-Form Load
@@ -143,7 +143,7 @@ export default function RebootPage() {
         </div>
 
         {/* KPI 2: Doomscroll Duration */}
-        <div className="relative overflow-hidden p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
+        <div className="relative overflow-clip p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-on-surface-variant">
             <span className="font-label-mono-wide text-label-mono-wide uppercase tracking-wider">
               Passive Drift
@@ -173,7 +173,7 @@ export default function RebootPage() {
         </div>
 
         {/* KPI 3: Daily Focus Score */}
-        <div className="relative overflow-hidden p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
+        <div className="relative overflow-clip p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-on-surface-variant">
             <span className="font-label-mono-wide text-label-mono-wide uppercase tracking-wider">
               Cognitive Index
@@ -203,7 +203,7 @@ export default function RebootPage() {
         </div>
 
         {/* KPI 4: Deep Work Logged */}
-        <div className="relative overflow-hidden p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
+        <div className="relative overflow-clip p-space-lg rounded-xl bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container transition-colors shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between text-on-surface-variant">
             <span className="font-label-mono-wide text-label-mono-wide uppercase tracking-wider">
               Guarded Deep Work

@@ -5,21 +5,92 @@ export interface Track {
   id: string;
   title: string;
   artist: string;
-  artistId: string;
-  album: string;
-  albumId: string;
+  artistId?: string;
+  album?: string;
+  albumId?: string;
   artwork: string;
+  coverUrl?: string;
   duration: number; // in seconds
   category: MusicCategory;
-  mood: string;
+  mood?: string;
+  genre?: string;
   freq?: number; // binaural delta in Hz (e.g. 40 for Gamma, 10 for Alpha)
   baseTone?: number; // carrier frequency (e.g. 216Hz)
   soundType: SoundType;
-  whyThisTrack: string;
+  videoId?: string;
+  channelTitle?: string;
+  channelId?: string;
+  durationFormatted?: string;
+  whyThisTrack?: string;
   description?: string;
   tags?: string[];
+  audioUrl?: string;
   audioSrc?: string;
   lyricsOrNotes?: string;
+  isUnavailable?: boolean;
+}
+
+export function parseFormattedDurationToSeconds(durationStr?: string): number {
+  if (!durationStr) return 210;
+  if (!durationStr.includes(':')) {
+    const parsed = parseInt(durationStr, 10);
+    return isNaN(parsed) ? 210 : parsed;
+  }
+  const parts = durationStr.split(':').map((p) => parseInt(p, 10) || 0);
+  if (parts.length === 3) {
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+  if (parts.length === 2) {
+    return parts[0] * 60 + parts[1];
+  }
+  return 210;
+}
+
+export function youtubeItemToTrack(item: any, category: MusicCategory = 'focus'): Track {
+  const videoId = item.videoId || item.id;
+  const durationSec = typeof item.durationSec === 'number'
+    ? item.durationSec
+    : parseFormattedDurationToSeconds(item.duration);
+
+  return {
+    id: videoId,
+    videoId,
+    title: item.title || 'Untitled Video',
+    artist: item.channelTitle || item.artist || 'YouTube Artist',
+    channelTitle: item.channelTitle || item.artist || 'YouTube Artist',
+    channelId: item.channelId,
+    album: 'YouTube Music',
+    artwork: item.thumbnail || item.artwork || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    coverUrl: item.thumbnail || item.coverUrl || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    duration: durationSec,
+    durationFormatted: item.duration || '3:30',
+    category,
+    soundType: 'focus',
+    description: item.description || '',
+    tags: ['youtube', category, 'study'],
+  };
+}
+
+export function dbRecordToTrack(record: any, category: MusicCategory = 'focus'): Track {
+  const videoId = record.youtube_video_id || record.videoId || record.id;
+  const durationSec = typeof record.duration === 'string' && record.duration.includes(':')
+    ? parseFormattedDurationToSeconds(record.duration)
+    : (typeof record.durationSec === 'number' ? record.durationSec : 210);
+
+  return {
+    id: videoId,
+    videoId,
+    title: record.title || 'Untitled Track',
+    artist: record.channel_title || record.channelTitle || 'YouTube Artist',
+    channelTitle: record.channel_title || record.channelTitle || 'YouTube Artist',
+    album: 'Saved Music',
+    artwork: record.thumbnail_url || record.thumbnailUrl || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    coverUrl: record.thumbnail_url || record.thumbnailUrl || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    duration: durationSec,
+    durationFormatted: record.duration || '3:30',
+    category,
+    soundType: 'focus',
+  };
 }
 
 /**
@@ -33,7 +104,7 @@ export function mapDbTrackToTrack(dbTrack: any): Track {
       ? dbTrack.duration
       : 180;
 
-  const audioSrc = dbTrack.audioUrl || dbTrack.audioSrc || '';
+  const audioUrl = dbTrack.audioUrl || dbTrack.audioSrc || '';
 
   const category = (dbTrack.category as MusicCategory) || 'focus';
   const categoryArtworkMap: Record<string, string> = {
@@ -46,7 +117,7 @@ export function mapDbTrackToTrack(dbTrack: any): Track {
     campus: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&auto=format&fit=crop&q=80',
   };
 
-  const artwork = dbTrack.artworkUrl || dbTrack.artwork || categoryArtworkMap[category] || categoryArtworkMap.focus;
+  const artwork = dbTrack.coverUrl || dbTrack.artworkUrl || dbTrack.artwork || categoryArtworkMap[category] || categoryArtworkMap.focus;
 
   return {
     id: dbTrack.id,
@@ -56,20 +127,23 @@ export function mapDbTrackToTrack(dbTrack: any): Track {
     album: dbTrack.album || 'Nivora Music',
     albumId: dbTrack.albumId || 'album-phonk-sessions',
     artwork,
+    coverUrl: artwork,
     duration,
     category,
+    genre: dbTrack.genre || category,
     mood: dbTrack.mood || `${category.charAt(0).toUpperCase() + category.slice(1)} Flow`,
     soundType: (dbTrack.soundType as SoundType) || 'focus',
     whyThisTrack:
       dbTrack.whyThisTrack ||
-      `Imported study track: ${dbTrack.title || dbTrack.fileName || 'Audio Track'}`,
+      `Study track: ${dbTrack.title || dbTrack.fileName || 'Audio Track'}`,
     description:
       dbTrack.description ||
-      `Imported audio track ${dbTrack.fileName || ''} (${dbTrack.fileSize || ''})`,
-    audioSrc,
+      `Audio track ${dbTrack.fileName || ''} (${dbTrack.fileSize || ''})`,
+    audioUrl,
+    audioSrc: audioUrl,
     tags: Array.isArray(dbTrack.tags)
       ? dbTrack.tags
-      : ['imported', dbTrack.category || 'focus', 'library', (dbTrack.title || '').toLowerCase()],
+      : ['stream', dbTrack.category || 'focus', 'library', (dbTrack.title || '').toLowerCase()],
   };
 }
 
@@ -135,111 +209,127 @@ export interface StudyContextMix {
 export const TRACKS: Track[] = [
   {
     id: 'track-phonk-1',
-    title: 'Aggressive Drift Night (Phonk)',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Redwood Trail Sprint',
+    artist: 'Jason Shaw (Audionautix)',
+    artistId: 'artist-audionautix',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80',
-    duration: 103,
+    coverUrl: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop&q=80',
+    duration: 118,
     category: 'focus',
     mood: 'Peak Intensity Flow',
     freq: 45,
     baseTone: 180,
     soundType: 'focus',
-    whyThisTrack: 'High-octane rhythmic momentum and aggressive bass drive designed for intense coding sprints, competitive programming, and peak mental velocity.',
-    description: 'Aggressive drift phonk soundscape mastered from local project audio for high-gear focus and low-latency cognitive pacing.',
-    tags: ['phonk', 'drift', 'focus', 'aggressive drift night', 'coding sprint', 'high intensity', 'nivora sounds', 'local mp3', 'bass', 'electronic'],
-    audioSrc: '/audio/fonk/alex-morgan-phonk-aggressive-drift-night-573644.mp3',
-    lyricsOrNotes: 'Source: Local Project Master Audio (music/fonk/alex-morgan-phonk-aggressive-drift-night-573644.mp3)\nFormat: 320kbps MP3 Audio Stream\nOptimized for: Coding Sprints, Late-night debugging, Algorithmic velocity.',
+    whyThisTrack: 'High-octane rhythmic momentum and driving acoustic pacing designed for intense coding sprints, competitive programming, and peak mental velocity.',
+    description: 'High-velocity study soundscape streamed from external HTTPS audio repository for high-gear focus and low-latency cognitive pacing.',
+    tags: ['focus', 'sprint', 'acoustic', 'velocity', 'audionautix', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Audionautix-com-ccby-redwoodtrail.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/1/1e/Audionautix-com-ccby-redwoodtrail.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 3.0 (CC BY 3.0)\nComposer: Jason Shaw (Audionautix)\nHost: Wikimedia Commons CDN (HTTPS Audio Stream)\nOptimized for: Coding Sprints, Late-night debugging, Algorithmic velocity.',
   },
   {
     id: 'track-phonk-2',
-    title: 'Dark Phonk',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Say It Anyway (Focus Drive)',
+    artist: 'PC-ONE',
+    artistId: 'artist-pcone',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80',
-    duration: 158,
+    coverUrl: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&auto=format&fit=crop&q=80',
+    duration: 325,
     category: 'focus',
     mood: 'Dark Momentum',
     freq: 42,
     baseTone: 160,
     soundType: 'focus',
-    whyThisTrack: 'Heavy sub-bass textures and atmospheric drift chords for sustained focus through complex system architectures.',
-    description: 'Dark atmospheric phonk soundscape crafted for uninterrupted deep-state coding and late-night builds.',
-    tags: ['phonk', 'dark phonk', 'focus', 'sprint', 'audiocopper', 'nivora sounds', 'local mp3', 'drift'],
-    audioSrc: '/audio/fonk/audiocopper-dark-571483.mp3',
-    lyricsOrNotes: 'Source: Local Project Master Audio (music/fonk/audiocopper-dark-571483.mp3)\nFormat: 320kbps MP3 Audio Stream',
+    whyThisTrack: 'Steady acoustic resonance and atmospheric chords for sustained focus through complex system architectures.',
+    description: 'Atmospheric focus soundscape crafted for uninterrupted deep-state coding and late-night builds.',
+    tags: ['focus', 'momentum', 'coding', 'pc-one', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/PC-ONE_-_09_-_Say_It_Anyway_Instrumental_Acoustic.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/PC-ONE_-_09_-_Say_It_Anyway_Instrumental_Acoustic.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 4.0 (CC BY 4.0)\nArtist: PC-ONE\nHost: Wikimedia Commons CDN (HTTPS Audio Stream)',
   },
   {
     id: 'track-phonk-3',
-    title: 'Brazilian Phonk Flow',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Chill Wave Momentum',
+    artist: 'Kevin MacLeod',
+    artistId: 'artist-macleod',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80',
-    duration: 44,
+    coverUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80',
+    duration: 240,
     category: 'focus',
     mood: 'Rapid Rhythm',
     soundType: 'focus',
-    whyThisTrack: 'Fast-tempo syncopated cowbells and bass hits for rapid mental activation and quick problem shifts.',
-    description: 'High-tempo Brazilian phonk cadence for short bursts of high-concentration problem solving.',
-    tags: ['phonk', 'brazilian phonk', 'focus', 'rapid', 'sprint', 'nivora sounds', 'local mp3'],
-    audioSrc: '/audio/fonk/mondamusic-brazilian-phonk-phonk-542543.mp3',
+    whyThisTrack: 'Smooth syncopated groove for rapid mental activation and seamless problem shifts.',
+    description: 'High-tempo cadence for sustained concentration and creative problem solving.',
+    tags: ['focus', 'rapid', 'wave', 'macleod', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Chill_Wave_%28ISRC_USUAN1600048%29.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Chill_Wave_%28ISRC_USUAN1600048%29.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 3.0 (CC BY 3.0)\nComposer: Kevin MacLeod (Incompetech)',
   },
   {
     id: 'track-phonk-4',
-    title: 'Football Phonk Drive',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Jazz Brunch Study',
+    artist: 'Kevin MacLeod',
+    artistId: 'artist-macleod',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80',
-    duration: 59,
+    coverUrl: 'https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format&fit=crop&q=80',
+    duration: 323,
     category: 'focus',
     mood: 'Dynamic Drive',
     soundType: 'focus',
-    whyThisTrack: 'Punchy 808s and energetic brass synths for powering through difficult exam revisions and sprints.',
-    description: 'Energetic rhythm-driven phonk for peak performance and dynamic workflow.',
-    tags: ['phonk', 'football phonk', 'focus', 'drive', 'sprint', 'nivora sounds', 'local mp3'],
-    audioSrc: '/audio/fonk/sigmamusicart-football-football-music-551346.mp3',
+    whyThisTrack: 'Punchy acoustic bass and energetic synths for powering through difficult exam revisions and sprints.',
+    description: 'Energetic rhythm-driven soundscape for peak performance and dynamic workflow.',
+    tags: ['focus', 'jazz', 'drive', 'macleod', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Jazz_Brunch_%28ISRC_USUAN1700074%29.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Jazz_Brunch_%28ISRC_USUAN1700074%29.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 3.0 (CC BY 3.0)\nComposer: Kevin MacLeod (Incompetech)',
   },
   {
     id: 'track-phonk-5',
-    title: 'Solarflex Phonk',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Backed Vibes Clean',
+    artist: 'Kevin MacLeod',
+    artistId: 'artist-macleod',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
-    duration: 34,
+    coverUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&auto=format&fit=crop&q=80',
+    duration: 220,
     category: 'focus',
     mood: 'Instant Activation',
     soundType: 'focus',
-    whyThisTrack: 'Crisp synth leads and driving percussion for quick resets and rapid focus realignment.',
-    description: 'Compact high-energy phonk burst designed for immediate cognitive reset.',
-    tags: ['phonk', 'solarflex', 'focus', 'reset', 'sprint', 'nivora sounds', 'local mp3'],
-    audioSrc: '/audio/fonk/solarflex-phonk-577924.mp3',
+    whyThisTrack: 'Crisp melodic leads and driving percussion for quick resets and rapid focus realignment.',
+    description: 'High-energy focus burst designed for immediate cognitive reset and sustained coding cadence.',
+    tags: ['focus', 'reset', 'vibes', 'macleod', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Backed_Vibes_%28clean%29_%28ISRC_USUAN1100479%29.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Backed_Vibes_%28clean%29_%28ISRC_USUAN1100479%29.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 3.0 (CC BY 3.0)\nComposer: Kevin MacLeod (Incompetech)',
   },
   {
     id: 'track-phonk-6',
-    title: 'The Mountain Phonk',
-    artist: 'Nivora Sounds',
-    artistId: 'artist-nivora-sounds',
-    album: 'High-Velocity Drift Sessions',
+    title: 'Cool Vibes Deep Flow',
+    artist: 'Kevin MacLeod',
+    artistId: 'artist-macleod',
+    album: 'High-Velocity Focus Sessions',
     albumId: 'album-phonk-sessions',
     artwork: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop&q=80',
-    duration: 100,
+    coverUrl: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&auto=format&fit=crop&q=80',
+    duration: 255,
     category: 'focus',
     mood: 'Epic Cadence',
     soundType: 'focus',
-    whyThisTrack: 'Cinematic build-ups and deep rhythmic flow for overcoming massive project hurdles and hackathons.',
-    description: 'Epic cinematic phonk with deep bass and melodic atmospheric tension.',
-    tags: ['phonk', 'the mountain', 'focus', 'hackathon', 'sprint', 'nivora sounds', 'local mp3'],
-    audioSrc: '/audio/fonk/the_mountain-phonk-567414.mp3',
+    whyThisTrack: 'Smooth progression and deep rhythmic flow for overcoming massive project hurdles and hackathons.',
+    description: 'Smooth focus track with rhythmic presence and melodic atmospheric clarity.',
+    tags: ['focus', 'hackathon', 'flow', 'macleod', 'cc-by'],
+    audioUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Cool_Vibes_%28ISRC_USUAN1100863%29.mp3',
+    audioSrc: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Cool_Vibes_%28ISRC_USUAN1100863%29.mp3',
+    lyricsOrNotes: 'License: Creative Commons Attribution 3.0 (CC BY 3.0)\nComposer: Kevin MacLeod (Incompetech)',
   },
   {
     id: 'track-1',
@@ -883,7 +973,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Minimal distractions with 40Hz gamma synchronization.',
     durationMins: 45,
     defaultTrackId: 'track-1',
-    color: '#8FC5A7',
+    color: '#E85A4F',
     icon: 'psychology',
   },
   {
@@ -893,7 +983,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Rhythmic lo-fi beats and analog warmth for dev cadences.',
     durationMins: 60,
     defaultTrackId: 'track-4',
-    color: '#9CD2B4',
+    color: '#E98074',
     icon: 'code',
   },
   {
@@ -903,7 +993,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Soft raindrops and late-night quiet library ambience.',
     durationMins: 90,
     defaultTrackId: 'track-2',
-    color: '#76A690',
+    color: '#8E8D8A',
     icon: 'dark_mode',
   },
   {
@@ -913,7 +1003,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Felt piano and gentle alpha waves that fade into background.',
     durationMins: 35,
     defaultTrackId: 'track-10',
-    color: '#A5D0B7',
+    color: '#D8C3A5',
     icon: 'menu_book',
   },
   {
@@ -923,7 +1013,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Cognitive retention frequencies for intense recall.',
     durationMins: 50,
     defaultTrackId: 'track-5',
-    color: '#EFD28E',
+    color: '#E85A4F',
     icon: 'school',
   },
   {
@@ -933,7 +1023,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Relaxed acoustic field recordings and nature clarity.',
     durationMins: 25,
     defaultTrackId: 'track-6',
-    color: '#B7EFCF',
+    color: '#E98074',
     icon: 'directions_walk',
   },
   {
@@ -943,7 +1033,7 @@ export const STUDY_CONTEXT_MIXES: StudyContextMix[] = [
     description: 'Theta wave restoration after intensive study.',
     durationMins: 20,
     defaultTrackId: 'track-8',
-    color: '#B6ECCF',
+    color: '#D8C3A5',
     icon: 'self_improvement',
   },
 ];

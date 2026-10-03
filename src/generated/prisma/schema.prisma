@@ -10,22 +10,47 @@ datasource db {
 }
 
 model User {
-  id             String          @id @default(cuid())
-  email          String          @unique
-  passwordHash   String
-  name           String
-  avatar         String?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  profile        StudentProfile?
-  plannerTasks   PlannerTask[]
-  rebootSessions RebootSession[]
-  skills         Skill[]
-  projects       Project[]
-  careerDossier  CareerDossier?
-  notifications  Notification[]
-  achievements   Achievement[]
-  passwordResets PasswordReset[]
+  id                  String                     @id @default(cuid())
+  email               String                     @unique
+  passwordHash        String
+  name                String
+  avatar              String?
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+  profile             StudentProfile?
+  plannerTasks        PlannerTask[]
+  rebootSessions      RebootSession[]
+  skills              Skill[]
+  projects            Project[]
+  careerDossier       CareerDossier?
+  notifications       Notification[]
+  achievements        Achievement[]
+  passwordResets      PasswordReset[]
+  clubMemberships     ClubMembership[]
+  eventRegistrations  EventRegistration[]
+  ledClubs            Club[]                     @relation("ClubLeader")
+  createdEvents       Event[]                    @relation("EventCreator")
+  clubAnnouncements   ClubAnnouncement[]
+  topicProgress       TopicProgress[]
+  savedResources      SavedResource[]
+  learningActivities  LearningActivity[]
+  healthProfile       HealthProfile?
+  workoutPlans        WorkoutPlan[]
+  workoutSessions     WorkoutSession[]
+  waterLogs           WaterLog[]
+  sleepLogs           SleepLog[]
+  mealLogs            MealLog[]
+  healthGoals         HealthGoal[]
+  dailyCheckIns       DailyCheckIn[]
+  sentConnections     StudentConnection[]        @relation("SentConnections")
+  receivedConnections StudentConnection[]        @relation("ReceivedConnections")
+  classSchedules      ClassSchedule[]
+  timetableUploads    TimetableUpload[]
+  classroomConnection GoogleClassroomConnection?
+  classroomCourses    GoogleClassroomCourse[]
+  assignments         Assignment[]
+  exams               Exam[]
+  attendance          Attendance[]
 }
 
 model StudentProfile {
@@ -33,6 +58,9 @@ model StudentProfile {
   userId              String   @unique
   user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   college             String   @default("Indian Institute of Technology")
+  collegeId           String?  @map("college_id")
+  branchId            String?  @map("branch_id")
+  regulation          String?  @default("R25")
   degree              String   @default("B.Tech")
   stream              String   @default("Computer Science & Engineering")
   streamCode          String   @default("CSE") // CSE, BBA, MECH, LAW
@@ -64,103 +92,214 @@ model StudentProfile {
 }
 
 model Subject {
-  id                String             @id @default(cuid())
-  code              String             @unique
-  name              String
-  streamCode        String             @default("CSE")
-  credits           Float              @default(4.0)
-  semester          Int                @default(5)
-  instructor        String
-  room              String
-  attendanceRate    Float              @default(85.0)
-  safeMissesLeft    Int                @default(4)
-  projectedGrade    String             @default("A")
-  activeModules     Int                @default(12)
-  totalModules      Int                @default(16)
-  color             String             @default("#8fc5a7")
-  topics            Topic[]
-  resources         Resource[]
-  assignments       Assignment[]
-  classes           ClassSchedule[]
-  exams             Exam[]
-  attendanceRecords AttendanceRecord[]
+  id                 String             @id @default(cuid())
+  code               String             @unique
+  name               String
+  streamCode         String             @default("CSE")
+  credits            Float              @default(4.0)
+  semester           Int                @default(5)
+  instructor         String
+  room               String
+  attendanceRate     Float              @default(85.0)
+  safeMissesLeft     Int                @default(4)
+  projectedGrade     String             @default("A")
+  activeModules      Int                @default(12)
+  totalModules       Int                @default(16)
+  color              String             @default("#8fc5a7")
+  topics             Topic[]
+  resources          Resource[]
+  assignments        Assignment[]
+  classes            ClassSchedule[]
+  exams              Exam[]
+  attendanceRecords  AttendanceRecord[]
+  attendance         Attendance[]
+  topicProgress      TopicProgress[]
+  learningActivities LearningActivity[]
 }
 
 model Topic {
-  id             String  @id @default(cuid())
+  id             String             @id @default(cuid())
   subjectId      String
-  subject        Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  unitNumber     Int
-  unitName       String
+  subject        Subject            @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  unitNumber     Int                @default(1)
+  unitName       String             @default("Unit 1")
   title          String
   description    String?
-  order          Int     @default(1)
-  masteryPercent Int     @default(70)
-  status         String  @default("in_progress") // pending, in_progress, completed
-  isWeak         Boolean @default(false)
+  order          Int                @default(1)
+  masteryPercent Int                @default(0)
+  status         String             @default("pending") // pending, in_progress, completed
+  isWeak         Boolean            @default(false)
+  resources      Resource[]
+  progress       TopicProgress[]
+  activities     LearningActivity[]
+
+  @@index([subjectId])
 }
 
 model Resource {
-  id          String   @id @default(cuid())
-  subjectId   String
-  subject     Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  title       String
-  description String?
-  type        String   @default("pdf") // pdf, slides, notes, pyq, cheatsheet
-  url         String   @default("#")
-  fileSize    String   @default("4.2 MB")
-  author      String   @default("Faculty Auth")
-  downloads   Int      @default(142)
-  tags        String   @default("Unit 1, Exam, Reference")
-  createdAt   DateTime @default(now())
+  id           String             @id @default(cuid())
+  subjectId    String
+  subject      Subject            @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topicId      String?
+  topic        Topic?             @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  title        String
+  description  String?
+  type         String             @default("pdf") // video, article, pdf, notes, documentation
+  url          String             @default("#")
+  thumbnailUrl String?
+  channel      String?
+  duration     String?
+  fileSize     String?            @default("4.2 MB")
+  author       String             @default("Faculty Auth")
+  downloads    Int                @default(0)
+  tags         String             @default("Reference")
+  createdAt    DateTime           @default(now())
+  savedBy      SavedResource[]
+  activities   LearningActivity[]
+
+  @@index([subjectId])
+  @@index([topicId])
+  @@index([type])
 }
 
 model Assignment {
   id              String    @id @default(cuid())
-  subjectId       String
-  subject         Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId       String?
+  subject         Subject?  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   title           String
-  code            String
-  description     String
-  deadline        DateTime
+  code            String    @default("CLASSROOM")
+  description     String?
+  deadline        DateTime?
   estimatedMins   Int       @default(45)
   weightage       Float     @default(15.0)
-  status          String    @default("pending") // pending, submitted, graded
+  status          String    @default("pending") // pending, in_progress, completed, submitted, graded
   score           Float?
   maxScore        Float     @default(100.0)
   testCasesPassed Int       @default(0)
   totalTestCases  Int       @default(10)
   submissionUrl   String?
   submittedAt     DateTime?
+
+  // External source fields (e.g. Google Classroom)
+  source           String    @default("manual") // manual, google_classroom
+  externalId       String?
+  externalCourseId String?
+  externalUrl      String?
+  dueDate          String?
+  dueTime          String?
+  priority         String    @default("NORMAL") // CRITICAL, HIGH, MEDIUM, NORMAL
+  workType         String?
+  lastSyncedAt     DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @default(now()) @updatedAt
+
+  @@index([userId, status])
+  @@index([subjectId])
+}
+
+model GoogleClassroomConnection {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  googleAccountId String?
+  googleEmail     String?
+  accessToken     String
+  refreshToken    String?
+  expiresAt       DateTime?
+  scopes          String[]  @default([])
+  connectedAt     DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastSyncedAt    DateTime?
+  status          String    @default("connected") // connected, expired, disconnected, error
+
+  @@map("google_classroom_connections")
+}
+
+model GoogleClassroomCourse {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  googleCourseId    String
+  courseName        String
+  courseSection     String?
+  courseDescription String?
+  courseState       String   @default("ACTIVE")
+  nivoraSubjectId   String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([userId, googleCourseId])
+  @@index([userId])
+  @@map("google_classroom_courses")
 }
 
 model ClassSchedule {
-  id         String  @id @default(cuid())
-  subjectId  String
-  subject    Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  dayOfWeek  Int // 1 = Mon, 2 = Tue, etc.
-  startTime  String // "10:00 AM"
-  endTime    String // "11:30 AM"
-  room       String
-  instructor String
-  meetingUrl String?
-  type       String  @default("lecture") // lecture, lab, tutorial
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId         String?
+  subject           Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  academicSubjectId String?  @db.Uuid
+  dayOfWeek         Int // 1 = Monday, 7 = Sunday
+  dayName           String   @default("Monday") // Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+  startTime         String // "09:00 AM"
+  endTime           String // "10:00 AM"
+  subjectName       String
+  subjectCode       String?
+  instructor        String   @default("TBD")
+  room              String   @default("TBD")
+  type              String   @default("Lecture") // Lecture, Lab, Tutorial
+  section           String?
+  meetingUrl        String?
+  notes             String?
+  needsReview       Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([userId, dayOfWeek])
+}
+
+model TimetableUpload {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageUrl     String?
+  fileName     String?
+  fileSize     Int?
+  entriesCount Int      @default(0)
+  status       String   @default("processed")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Exam {
   id              String   @id @default(cuid())
-  subjectId       String
-  subject         Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId       String?
+  subject         Subject? @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   title           String
   date            DateTime
   startTime       String   @default("09:30 AM")
+  endTime         String?  @default("12:30 PM")
   durationHours   Float    @default(3.0)
-  room            String   @default("Hall C, East Academic Block")
-  proctor         String   @default("Dr. A. Sharma")
-  weightage       Int      @default(30)
-  seatNumber      String   @default("SEAT C-42")
-  syllabusMastery Int      @default(78)
+  room            String?
+  proctor         String?
+  weightage       Int?     @default(30)
+  seatNumber      String?
+  syllabusMastery Int?     @default(78)
   status          String   @default("upcoming")
+  examType        String   @default("Mid-Term")
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([subjectId])
 }
 
 model AttendanceRecord {
@@ -170,6 +309,31 @@ model AttendanceRecord {
   date      DateTime @default(now())
   status    String   @default("present") // present, absent, excused
   notes     String?
+}
+
+model Attendance {
+  id                   String   @id @default(cuid())
+  userId               String   @map("user_id")
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId            String?  @map("subject_id")
+  subject              Subject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  subjectCode          String   @map("subject_code")
+  subjectName          String   @map("subject_name")
+  attendedClasses      Int      @default(0) @map("attended_classes")
+  totalClasses         Int      @default(0) @map("total_classes")
+  absentClasses        Int      @default(0) @map("absent_classes")
+  attendancePercentage Float    @default(0) @map("attendance_percentage")
+  lastUpdated          DateTime @default(now()) @updatedAt @map("last_updated")
+  source               String   @default("manual") // 'college_erp', 'myconnect', 'manual'
+  sourceRecordId       String?  @map("source_record_id")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([userId, subjectCode])
+  @@index([userId])
+  @@index([subjectId])
+  @@map("attendance")
 }
 
 model PlannerTask {
@@ -208,7 +372,7 @@ model MusicTrack {
   category      String   @default("focus") // focus, lofi, ambient, classical, nature, binaural, campus
   duration      String   @default("03:00")
   durationSec   Int      @default(180)
-  audioUrl      String   @default("/audio/ambient.mp3")
+  audioUrl      String   @default("")
   artworkUrl    String?
   fileName      String?
   fileSize      String?
@@ -326,4 +490,433 @@ model PasswordReset {
   createdAt  DateTime  @default(now())
 
   @@index([userId])
+}
+
+model Club {
+  id            String             @id @default(cuid())
+  name          String             @unique
+  slug          String             @unique
+  description   String
+  category      String             @default("Technical")
+  logo          String?
+  bannerImage   String?
+  leaderId      String?
+  leader        User?              @relation("ClubLeader", fields: [leaderId], references: [id], onDelete: SetNull)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  memberships   ClubMembership[]
+  events        Event[]
+  announcements ClubAnnouncement[]
+
+  @@index([category])
+}
+
+model ClubMembership {
+  id       String   @id @default(cuid())
+  userId   String
+  clubId   String
+  role     String   @default("MEMBER") // MEMBER, ADMIN, LEAD
+  joinedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  club     Club     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clubId])
+  @@index([userId])
+  @@index([clubId])
+}
+
+model Event {
+  id                   String              @id @default(cuid())
+  title                String
+  description          String
+  category             String              @default("Technical") // Hackathon, Technical Keynote, Workshop, Cultural
+  date                 String // Formatted date string (e.g. "Oct 12 - 14, 2025")
+  eventDate            DateTime // Machine DateTime for upcoming/past sorting
+  startTime            String              @default("09:00 AM")
+  endTime              String              @default("05:00 PM")
+  venue                String              @default("Auditorium Hall A")
+  organizerName        String
+  clubId               String?
+  club                 Club?               @relation(fields: [clubId], references: [id], onDelete: SetNull)
+  capacity             Int? // null means unlimited
+  registrationDeadline DateTime?
+  prizePool            String?
+  isCancelled          Boolean             @default(false)
+  createdById          String?
+  creator              User?               @relation("EventCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  registrations        EventRegistration[]
+
+  @@index([eventDate])
+  @@index([clubId])
+  @@index([category])
+}
+
+model EventRegistration {
+  id           String   @id @default(cuid())
+  userId       String
+  eventId      String
+  status       String   @default("REGISTERED") // REGISTERED, CANCELLED
+  registeredAt DateTime @default(now())
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+}
+
+model ClubAnnouncement {
+  id        String   @id @default(cuid())
+  clubId    String
+  authorId  String
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  club      Club     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([clubId])
+}
+
+model TopicProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  topicId     String
+  subjectId   String
+  isCompleted Boolean   @default(false)
+  completedAt DateTime?
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic       Topic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  subject     Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([userId])
+  @@index([subjectId])
+}
+
+model SavedResource {
+  id         String   @id @default(cuid())
+  userId     String
+  resourceId String
+  savedAt    DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, resourceId])
+  @@index([userId])
+}
+
+model LearningActivity {
+  id          String    @id @default(cuid())
+  userId      String
+  subjectId   String
+  topicId     String?
+  resourceId  String?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     Subject   @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  topic       Topic?    @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  resource    Resource? @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+
+  @@index([userId, startedAt])
+}
+
+// ==========================================
+// HEALTH MANAGER MODELS
+// ==========================================
+
+model HealthProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  waterGoalMl       Int      @default(2500)
+  sleepGoalHours    Float    @default(8.0)
+  weeklyWorkoutGoal Int      @default(4)
+  dailyCalorieGoal  Int?     @default(2200)
+  heightCm          Float?
+  weightKg          Float?
+  activityLevel     String   @default("Moderate") // Sedentary, Light, Moderate, Very Active
+  fitnessGoal       String   @default("Strength & General Vitality")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model WorkoutPlan {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  goal        String           @default("Hypertrophy & Strength")
+  isActive    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  days        WorkoutPlanDay[]
+
+  @@index([userId])
+}
+
+model WorkoutPlanDay {
+  id                String         @id @default(cuid())
+  planId            String
+  plan              WorkoutPlan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  dayOfWeek         String // "Monday", "Tuesday", etc.
+  name              String // e.g. "Chest & Triceps"
+  muscleGroups      String[]       @default([]) // e.g. ["Chest", "Triceps"]
+  isRestDay         Boolean        @default(false)
+  estimatedDuration Int            @default(45) // minutes
+  exercises         PlanExercise[]
+
+  @@index([planId])
+}
+
+model PlanExercise {
+  id             String         @id @default(cuid())
+  planDayId      String
+  planDay        WorkoutPlanDay @relation(fields: [planDayId], references: [id], onDelete: Cascade)
+  exerciseName   String
+  muscleGroup    String
+  targetSets     Int            @default(3)
+  targetReps     String         @default("8-12")
+  targetWeightKg Float?
+  restSeconds    Int            @default(90)
+  order          Int            @default(1)
+  notes          String?
+
+  @@index([planDayId])
+}
+
+model WorkoutSession {
+  id              String                   @id @default(cuid())
+  userId          String
+  user            User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId          String?
+  planName        String?
+  title           String // e.g. "Upper Body Power"
+  startedAt       DateTime                 @default(now())
+  endedAt         DateTime?
+  durationMinutes Int                      @default(0)
+  totalVolumeKg   Float                    @default(0)
+  totalSets       Int                      @default(0)
+  totalReps       Int                      @default(0)
+  status          String                   @default("completed") // "completed", "in_progress", "discarded"
+  notes           String?
+  exercises       WorkoutSessionExercise[]
+
+  @@index([userId, startedAt])
+}
+
+model WorkoutSessionExercise {
+  id           String         @id @default(cuid())
+  sessionId    String
+  session      WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exerciseName String
+  muscleGroup  String
+  order        Int            @default(1)
+  sets         WorkoutSet[]
+
+  @@index([sessionId])
+}
+
+model WorkoutSet {
+  id                String                 @id @default(cuid())
+  sessionExerciseId String
+  sessionExercise   WorkoutSessionExercise @relation(fields: [sessionExerciseId], references: [id], onDelete: Cascade)
+  setNumber         Int
+  reps              Int
+  weightKg          Float                  @default(0)
+  isCompleted       Boolean                @default(true)
+
+  @@index([sessionExerciseId])
+}
+
+model WaterLog {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date     String // "YYYY-MM-DD"
+  amountMl Int
+  loggedAt DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model SleepLog {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            String // "YYYY-MM-DD"
+  bedtime         DateTime
+  wakeTime        DateTime
+  durationMinutes Int
+  quality         Int      @default(4) // 1-5 rating
+  notes           String?
+  loggedAt        DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model MealLog {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         String // "YYYY-MM-DD"
+  mealType     String // "Breakfast", "Lunch", "Dinner", "Snack"
+  name         String
+  calories     Int?
+  proteinGrams Float?
+  carbsGrams   Float?
+  fatGrams     Float?
+  notes        String?
+  loggedAt     DateTime @default(now())
+
+  @@index([userId, date])
+}
+
+model HealthGoal {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  target          Float
+  unit            String // "workouts", "ml", "hours", "steps", "kcal"
+  frequency       String // "daily", "weekly"
+  category        String    @default("fitness") // fitness, hydration, sleep, nutrition, activity
+  currentProgress Float     @default(0)
+  startDate       DateTime  @default(now())
+  endDate         DateTime?
+  isCompleted     Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model DailyCheckIn {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date             String // "YYYY-MM-DD"
+  energyLevel      Int      @default(3) // 1 to 5
+  workoutCompleted Boolean  @default(false)
+  waterIntakeMl    Int      @default(0)
+  sleepHours       Float?
+  mealsCount       Int      @default(0)
+  mood             String? // Great, Good, Neutral, Tired, Stressed
+  notes            String?
+  createdAt        DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, date])
+}
+
+// ==========================================
+// STUDENT CONNECT & NETWORKING
+// ==========================================
+
+model StudentConnection {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     String   @default("PENDING") // PENDING, ACCEPTED, REJECTED
+  note       String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sender   User @relation("SentConnections", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedConnections", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([status])
+}
+
+// ==========================================
+// ACADEMIC CATALOG & AUTOMATIC SUBJECT ENGINE
+// ==========================================
+
+model AcademicUniversity {
+  id        String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String                    @unique
+  createdAt DateTime?                 @default(now()) @map("created_at") @db.Timestamptz
+  colleges  AcademicCollege[]
+  syllabi   AcademicSyllabusVersion[]
+
+  @@map("universities")
+}
+
+model AcademicCollege {
+  id                String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  externalCollegeId String?                 @unique @map("external_college_id")
+  name              String
+  universityId      String                  @map("university_id") @db.Uuid
+  state             String?
+  district          String?
+  website           String?
+  createdAt         DateTime?               @default(now()) @map("created_at") @db.Timestamptz
+  university        AcademicUniversity      @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  branches          AcademicCollegeBranch[]
+
+  @@map("colleges")
+}
+
+model AcademicBranch {
+  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String                    @unique
+  normalizedName String                    @map("normalized_name")
+  createdAt      DateTime?                 @default(now()) @map("created_at") @db.Timestamptz
+  colleges       AcademicCollegeBranch[]
+  syllabi        AcademicSyllabusVersion[]
+
+  @@map("branches")
+}
+
+model AcademicCollegeBranch {
+  collegeId String          @map("college_id") @db.Uuid
+  branchId  String          @map("branch_id") @db.Uuid
+  createdAt DateTime?       @default(now()) @map("created_at") @db.Timestamptz
+  college   AcademicCollege @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  branch    AcademicBranch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@id([collegeId, branchId])
+  @@map("college_branches")
+}
+
+model AcademicSyllabusVersion {
+  id           String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  universityId String             @map("university_id") @db.Uuid
+  branchId     String             @map("branch_id") @db.Uuid
+  regulation   String
+  academicYear String             @map("academic_year")
+  sourceUrl    String?            @map("source_url")
+  createdAt    DateTime?          @default(now()) @map("created_at") @db.Timestamptz
+  university   AcademicUniversity @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  branch       AcademicBranch     @relation(fields: [branchId], references: [id], onDelete: Cascade)
+  subjects     AcademicSubject[]
+
+  @@unique([universityId, branchId, regulation, academicYear])
+  @@map("syllabus_versions")
+}
+
+model AcademicSubject {
+  id             String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  syllabusId     String                  @map("syllabus_id") @db.Uuid
+  semester       Int
+  code           String?
+  name           String
+  subjectType    String                  @default("core") @map("subject_type")
+  credits        Decimal?                @default(0) @db.Decimal(4, 1)
+  lectureHours   Decimal?                @default(0) @map("lecture_hours") @db.Decimal(4, 1)
+  tutorialHours  Decimal?                @default(0) @map("tutorial_hours") @db.Decimal(4, 1)
+  practicalHours Decimal?                @default(0) @map("practical_hours") @db.Decimal(4, 1)
+  createdAt      DateTime?               @default(now()) @map("created_at") @db.Timestamptz
+  syllabus       AcademicSyllabusVersion @relation(fields: [syllabusId], references: [id], onDelete: Cascade)
+
+  @@unique([syllabusId, semester, name])
+  @@map("subjects")
 }

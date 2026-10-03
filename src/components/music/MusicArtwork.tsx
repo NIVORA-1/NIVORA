@@ -18,83 +18,83 @@ function getCategoryTheme(category?: string, seed = '') {
   
   if (cat.includes('binaural') || cat.includes('gamma') || cat.includes('alpha')) {
     return {
-      bg: 'from-[#0A261D] via-[#11382C] to-[#0A1D17]',
-      accent: '#8FC5A7',
-      subAccent: '#589876',
+      bg: 'from-[#211F1D] via-[#2D2421] to-[#1A1816]',
+      accent: '#E85A4F',
+      subAccent: '#E98074',
       icon: 'graphic_eq',
       label: 'BINAURAL',
     };
   }
   if (cat.includes('classical') || cat.includes('piano') || cat.includes('chamber')) {
     return {
-      bg: 'from-[#2A2017] via-[#3D2F22] to-[#1E1610]',
-      accent: '#E5C07B',
-      subAccent: '#A68246',
+      bg: 'from-[#28221D] via-[#352B24] to-[#1C1814]',
+      accent: '#D8C3A5',
+      subAccent: '#C4AD8E',
       icon: 'piano',
       label: 'CLASSICAL',
     };
   }
   if (cat.includes('lofi') || cat.includes('lo-fi') || cat.includes('compiler')) {
     return {
-      bg: 'from-[#26182B] via-[#3B2544] to-[#1B1120]',
-      accent: '#D4A5E8',
-      subAccent: '#8A5FA3',
+      bg: 'from-[#261E1E] via-[#382624] to-[#1C1515]',
+      accent: '#E98074',
+      subAccent: '#D87063',
       icon: 'radio',
       label: 'LO-FI',
     };
   }
   if (cat.includes('nature') || cat.includes('rain') || cat.includes('stream')) {
     return {
-      bg: 'from-[#0C241D] via-[#173D32] to-[#0A1A15]',
-      accent: '#9CD2B4',
-      subAccent: '#4D8A6F',
+      bg: 'from-[#211F1C] via-[#2F2C26] to-[#181614]',
+      accent: '#D8C3A5',
+      subAccent: '#8E8D8A',
       icon: 'water_drop',
       label: 'NATURE',
     };
   }
   if (cat.includes('ambient') || cat.includes('drone') || cat.includes('flow')) {
     return {
-      bg: 'from-[#141E2B] via-[#1E3046] to-[#0E1520]',
-      accent: '#89B4D4',
-      subAccent: '#487299',
+      bg: 'from-[#1F1D1C] via-[#2A2422] to-[#161413]',
+      accent: '#E98074',
+      subAccent: '#B8A58B',
       icon: 'air',
       label: 'AMBIENT',
     };
   }
   if (cat.includes('campus') || cat.includes('quad') || cat.includes('walk')) {
     return {
-      bg: 'from-[#1B271F] via-[#2A3F33] to-[#121C16]',
-      accent: '#AAE1C2',
-      subAccent: '#5C9677',
+      bg: 'from-[#26211E] via-[#382A24] to-[#1A1614]',
+      accent: '#E85A4F',
+      subAccent: '#D8C3A5',
       icon: 'location_city',
       label: 'CAMPUS',
     };
   }
   
-  // Default Nivora Sage theme
+  // Default Nivora Warm Ivory / Coral theme
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
   }
   const themes = [
     {
-      bg: 'from-[#0E1E1A] via-[#1A332C] to-[#0C1613]',
-      accent: '#8FC5A7',
-      subAccent: '#52896E',
+      bg: 'from-[#211F1D] via-[#2E2421] to-[#161514]',
+      accent: '#E85A4F',
+      subAccent: '#E98074',
       icon: 'headphones',
       label: 'FOCUS',
     },
     {
-      bg: 'from-[#1A1A26] via-[#28283E] to-[#12121D]',
-      accent: '#B0A8E3',
-      subAccent: '#685F9E',
+      bg: 'from-[#1E1C1A] via-[#2B2320] to-[#141312]',
+      accent: '#E98074',
+      subAccent: '#D8C3A5',
       icon: 'nightlight',
       label: 'DEEP WORK',
     },
     {
-      bg: 'from-[#241A16] via-[#3A2A22] to-[#18120F]',
-      accent: '#E6BC8A',
-      subAccent: '#946E45',
+      bg: 'from-[#26221F] via-[#332A23] to-[#181614]',
+      accent: '#D8C3A5',
+      subAccent: '#8E8D8A',
       icon: 'auto_stories',
       label: 'STUDY',
     },

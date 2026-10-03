@@ -28,15 +28,15 @@ export default function TourHeader({
   ];
 
   return (
-    <nav className="sticky top-0 z-30 w-full bg-[#0F171B]/95 backdrop-blur-xl border-b border-[#29383D]/60 px-4 sm:px-8 py-3.5 transition-all">
+    <nav className="sticky top-0 z-30 w-full bg-background/95 backdrop-blur-xl px-4 sm:px-8 py-3.5">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         {/* Official NIVORA Brand Logo */}
         <div className="flex items-center gap-3">
           <NivoraLogo size="responsive" href="/" priority />
 
           {/* Current Stream Pill */}
-          <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#172329] border border-[#29383D] text-[10px] font-mono text-[#8FC5A7] tracking-wider uppercase ml-2 font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#8FC5A7] animate-pulse" />
+          <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-surface-container border border-border text-[10px] font-sans text-primary tracking-wider uppercase ml-2 font-bold shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-coral" />
             {currentStream} ACTIVE
           </span>
         </div>
@@ -49,13 +49,13 @@ export default function TourHeader({
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.sectionId)}
-                className={`relative py-1 tracking-wide cursor-pointer ${
-                  isActive ? 'text-[#8FC5A7]' : 'text-[#A6ADA9]'
+                className={`relative py-1 tracking-wide cursor-pointer transition-colors ${
+                  isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
                 {item.label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-[#8FC5A7] rounded-full" />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-primary rounded-full" />
                 )}
               </button>
             );
@@ -69,7 +69,7 @@ export default function TourHeader({
           {onToggleFullscreen && (
             <button
               onClick={onToggleFullscreen}
-              className="p-1.5 rounded-lg text-[#747F7B] cursor-pointer"
+              className="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
               title={isFullscreen ? 'Exit Immersive View' : 'Enter Immersive View'}
             >
               <span className="material-symbols-outlined text-[18px]">
@@ -80,14 +80,14 @@ export default function TourHeader({
 
           <Link
             href="/login"
-            className="text-xs font-semibold text-[#A6ADA9] px-2 py-1"
+            className="text-xs font-semibold text-on-surface-variant hover:text-on-surface px-2 py-1 transition-colors"
           >
             Login
           </Link>
 
           <Link
-            href="/login"
-            className="px-3.5 py-1.5 rounded-full bg-[#8FC5A7] text-[#0F171B] text-xs font-bold tracking-wide shadow-sm flex items-center gap-1"
+            href="/signup"
+            className="px-3.5 py-1.5 rounded-full bg-primary text-white hover:bg-coral transition-colors text-xs font-bold tracking-wide shadow-sm flex items-center gap-1"
           >
             <span>Get Started</span>
             <span className="material-symbols-outlined text-[14px]">
@@ -99,13 +99,13 @@ export default function TourHeader({
           {user && (
             <Link
               href="/settings"
-              className="relative hidden xs:block w-7 h-7 rounded-full overflow-hidden ring-1 ring-[#8FC5A7]/70 ml-1"
+              className="relative hidden xs:block w-7 h-7 rounded-full overflow-hidden ring-1 ring-primary/70 ml-1"
               title="Profile Settings"
             >
               <img
                 src={
                   user.avatar ||
-                  `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'Student')}&backgroundColor=172329&textColor=8fc5a7`
+                  `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name || 'Student')}&backgroundColor=242220&textColor=e85a4f`
                 }
                 alt="Avatar"
                 className="w-full h-full object-cover"

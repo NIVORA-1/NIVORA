@@ -20,10 +20,32 @@ function LoginForm() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Check if redirected after successful password reset
+  // Check if redirected after successful password reset or OAuth errors
   useEffect(() => {
     if (searchParams.get('reset') === 'success') {
       setSuccessMessage('Password updated successfully. You can now sign in.');
+    }
+
+    const oauthError = searchParams.get('error');
+    const providerParam = searchParams.get('provider') || 'OAuth';
+    const messageParam = searchParams.get('message');
+
+    if (oauthError) {
+      if (oauthError === 'link_expired') {
+        setError(messageParam || 'Your email verification link has expired or has already been used. Please request a new verification email.');
+      } else if (oauthError === 'oauth_cancelled') {
+        setError('Sign in was cancelled.');
+      } else if (oauthError === 'oauth_not_configured') {
+        setError(`${providerParam} authentication is not yet configured in server environment.`);
+      } else if (oauthError === 'oauth_missing_email') {
+        setError(`Unable to retrieve a verified email address from ${providerParam}.`);
+      } else if (oauthError === 'oauth_state_mismatch') {
+        setError('Security validation failed. Please try signing in again.');
+      } else if (messageParam) {
+        setError(messageParam);
+      } else {
+        setError(`Unable to complete sign in with ${providerParam}. Please try again or use your password.`);
+      }
     }
   }, [searchParams]);
 
@@ -42,6 +64,10 @@ function LoginForm() {
       const data = await res.json();
 
       if (!res.ok) {
+        if (res.status === 403 || data.needsVerification) {
+          router.push(`/verify-email?email=${encodeURIComponent(data.email || email)}&unconfirmed=true`);
+          return;
+        }
         setError(data.error || 'Invalid email or password.');
         setIsLoading(false);
         return;
@@ -63,18 +89,18 @@ function LoginForm() {
     <div className="space-y-6">
       {/* Header */}
       <div className="space-y-1.5">
-        <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-[#e8eff2]">
+        <h2 className="text-2xl sm:text-[28px] font-bold font-sans tracking-tight text-on-surface">
           Welcome back.
         </h2>
-        <p className="text-sm text-[#7f909a]">
+        <p className="text-sm text-on-surface-variant">
           Continue your journey with NIVORA.
         </p>
       </div>
 
       {/* Success Banner */}
       {successMessage && (
-        <div className="p-3.5 rounded-xl bg-[#8fc5a7]/15 border border-[#8fc5a7]/30 text-xs text-[#b7efcf] flex items-center gap-2.5 animate-in fade-in">
-          <svg className="w-4 h-4 text-[#8fc5a7] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="p-3.5 rounded-xl bg-coral/15 border border-coral/30 text-xs text-on-surface flex items-center gap-2.5 animate-in fade-in">
+          <svg className="w-4 h-4 text-coral shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
           </svg>
           <span>{successMessage}</span>
@@ -83,53 +109,74 @@ function LoginForm() {
 
       {/* Error Banner */}
       {error && (
-        <div className="p-3.5 rounded-xl bg-[#ffb4ab]/10 border border-[#ffb4ab]/25 text-xs text-[#ffb4ab] flex items-center gap-2.5 animate-in fade-in">
-          <svg className="w-4 h-4 shrink-0 text-[#ffb4ab]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="p-3.5 rounded-xl bg-error/15 border border-error/30 text-xs text-error flex items-center gap-2.5 animate-in fade-in">
+          <svg className="w-4 h-4 shrink-0 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
           <span>{error}</span>
         </div>
       )}
 
-      {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Primary Social OAuth Buttons (Google + GitHub) */}
+      <SocialLoginButtons disabled={isLoading} onError={(msg) => setError(msg)} />
+
+      {/* Divider */}
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-outline-variant/40" />
+        </div>
+        <div className="relative flex justify-center text-[10px] font-mono tracking-widest uppercase">
+          <span className="bg-surface-container px-3 text-on-surface-variant">OR CONTINUE WITH EMAIL</span>
+        </div>
+      </div>
+
+      {/* Email / Password Form */}
+      <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
         {/* Email Address */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-[#c0c9c1]">
+          <label className="block text-xs font-medium text-on-surface-variant">
             Email address
           </label>
           <input
             type="email"
+            name="email"
             required
-            autoComplete="email"
+            autoComplete="new-email"
+            autoCorrect="off"
+            autoCapitalize="none"
+            spellCheck={false}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
             disabled={isLoading}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#142026] border border-[#22353f] hover:border-[#2f4957] text-sm text-[#e8eff2] placeholder-[#576872] focus:border-[#8fc5a7] focus:ring-1 focus:ring-[#8fc5a7] focus:outline-none transition-all disabled:opacity-50"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-surface border border-outline-variant/60 hover:border-outline-variant text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-coral focus:ring-1 focus:ring-coral focus:outline-none transition-all disabled:opacity-50"
           />
         </div>
 
         {/* Password */}
         <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-[#c0c9c1]">
+          <label className="block text-xs font-medium text-on-surface-variant">
             Password
           </label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
+              name="password"
               required
-              autoComplete="current-password"
+              autoComplete="new-password"
+              autoCorrect="off"
+              autoCapitalize="none"
+              spellCheck={false}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               disabled={isLoading}
-              className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-[#142026] border border-[#22353f] hover:border-[#2f4957] text-sm text-[#e8eff2] placeholder-[#576872] focus:border-[#8fc5a7] focus:ring-1 focus:ring-[#8fc5a7] focus:outline-none transition-all disabled:opacity-50"
+              className="w-full px-3.5 py-2.5 pr-10 rounded-xl bg-surface border border-outline-variant/60 hover:border-outline-variant text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-coral focus:ring-1 focus:ring-coral focus:outline-none transition-all disabled:opacity-50"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#687a84] hover:text-[#c0c9c1] transition-colors p-1"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors p-1"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -148,18 +195,18 @@ function LoginForm() {
 
         {/* Remember me & Forgot password row */}
         <div className="flex items-center justify-between pt-0.5 text-xs">
-          <label className="inline-flex items-center gap-2 cursor-pointer select-none text-[#9aa8b0] hover:text-[#dbe4e9] transition-colors">
+          <label className="inline-flex items-center gap-2 cursor-pointer select-none text-on-surface-variant hover:text-on-surface transition-colors">
             <input
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="w-4 h-4 rounded bg-[#142026] border-[#253944] text-[#8fc5a7] focus:ring-0 focus:ring-offset-0 cursor-pointer accent-[#8fc5a7]"
+              className="w-4 h-4 rounded bg-surface border-outline-variant text-deep-coral focus:ring-0 focus:ring-offset-0 cursor-pointer accent-deep-coral"
             />
             <span>Remember me</span>
           </label>
           <Link
             href="/forgot-password"
-            className="text-xs text-[#8fc5a7] hover:underline underline-offset-2 transition-colors font-medium"
+            className="text-xs text-deep-coral hover:underline underline-offset-2 transition-colors font-medium"
           >
             Forgot password?
           </Link>
@@ -169,11 +216,11 @@ function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full py-3 rounded-xl bg-[#8fc5a7] hover:bg-[#a3d9bc] text-[#0a1610] font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+          className="w-full py-3 rounded-xl bg-deep-coral hover:bg-coral text-white font-sans font-semibold text-sm transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
         >
           {isLoading ? (
             <>
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#0a1610]" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
@@ -185,25 +232,12 @@ function LoginForm() {
         </button>
       </form>
 
-      {/* Divider */}
-      <div className="relative my-4">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-[#1e2f37]" />
-        </div>
-        <div className="relative flex justify-center text-[10px] font-mono tracking-widest uppercase">
-          <span className="bg-[#101a1f] px-3 text-[#64747e]">OR CONTINUE WITH</span>
-        </div>
-      </div>
-
-      {/* Social Login Buttons */}
-      <SocialLoginButtons disabled={isLoading} />
-
       {/* Create Account Link */}
-      <div className="pt-2 text-center text-xs text-[#7f909a]">
+      <div className="pt-2 text-center text-xs text-on-surface-variant">
         New to NIVORA?{' '}
         <Link
           href="/signup"
-          className="font-medium text-[#8fc5a7] hover:underline underline-offset-2 transition-colors"
+          className="font-medium text-deep-coral hover:underline underline-offset-2 transition-colors"
         >
           Create your account
         </Link>
@@ -220,7 +254,7 @@ export default function LoginPage() {
       description="Learn. Plan. Focus. Grow. Connect."
       diagramType="login"
     >
-      <Suspense fallback={<div className="text-xs text-[#8fc5a7] py-8 text-center">Loading NIVORA sign in...</div>}>
+      <Suspense fallback={<div className="text-xs text-deep-coral py-8 text-center">Loading NIVORA sign in...</div>}>
         <LoginForm />
       </Suspense>
     </AuthLayout>

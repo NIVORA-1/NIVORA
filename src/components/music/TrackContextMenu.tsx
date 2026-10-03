@@ -192,7 +192,7 @@ export default function TrackContextMenu({
                     key={pl.id}
                     disabled={alreadyIn}
                     onClick={() => {
-                      addTrackToPlaylist(pl.id, track.id);
+                      addTrackToPlaylist(pl.id, track);
                       onClose();
                     }}
                     className={`w-full flex items-center justify-between px-2 py-1.5 rounded-lg text-left truncate transition-colors ${
@@ -216,11 +216,13 @@ export default function TrackContextMenu({
 
         <div className="h-px bg-outline-variant/20 my-1" />
 
-        {onNavigateArtist && (
+        {onNavigateArtist && track.artistId && (
           <button
             onClick={() => {
-              onNavigateArtist(track.artistId);
-              onClose();
+              if (track.artistId) {
+                onNavigateArtist(track.artistId);
+                onClose();
+              }
             }}
             className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors text-left"
           >
@@ -231,11 +233,13 @@ export default function TrackContextMenu({
           </button>
         )}
 
-        {onNavigateAlbum && (
+        {onNavigateAlbum && track.albumId && (
           <button
             onClick={() => {
-              onNavigateAlbum(track.albumId);
-              onClose();
+              if (track.albumId) {
+                onNavigateAlbum(track.albumId);
+                onClose();
+              }
             }}
             className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors text-left"
           >

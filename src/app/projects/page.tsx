@@ -303,7 +303,7 @@ export default function ProjectsPage() {
       ) : (
         <>
           {/* Flagship Spotlight Card */}
-          <div className="relative rounded-2xl bg-surface-container-low p-card-padding border border-outline-variant/30 shadow-md overflow-hidden flex flex-col justify-between">
+          <div className="relative rounded-2xl bg-surface-container-low p-card-padding border border-outline-variant/30 shadow-md overflow-clip flex flex-col justify-between">
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
 
             <div className="relative z-10 space-y-space-md">

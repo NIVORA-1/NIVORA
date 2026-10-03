@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { getStreamConfig } from '@/lib/personalization';
+import { isValidUniversity } from '@/lib/universities';
 
 export const dynamic = 'force-dynamic';
 
@@ -41,6 +42,9 @@ export async function POST(request: Request) {
       isFinal = false,
       name,
       college,
+      collegeId,
+      branchId,
+      regulation = 'R25',
       degree,
       stream,
       streamCode,
@@ -57,8 +61,60 @@ export async function POST(request: Request) {
       interests,
     } = body;
 
+    // Server-side validation for Step 01 / Identity requirements
+    const isStepAdvanceBeyond1 = typeof step === 'number' && step >= 2;
+    if (isStepAdvanceBeyond1 || isFinal || (step === 1 && (name !== undefined || college !== undefined || collegeId !== undefined))) {
+      const candidateName = typeof name === 'string' ? name.trim() : (user.name || '').trim();
+      const candidateCollege = typeof college === 'string' ? college.trim() : (user.profile?.college || '').trim();
+
+      const fieldErrors: Record<string, string> = {};
+
+      if (!candidateName) {
+        fieldErrors.name = 'Full name is required.';
+      }
+
+      if (!candidateCollege && !collegeId) {
+        fieldErrors.college = 'Please select your college or university.';
+      } else if (!collegeId && candidateCollege) {
+        // Check if valid in colleges table or universities list
+        let isValidCollege = false;
+        try {
+          const matchCollege: any[] = await prisma.$queryRawUnsafe(`
+            SELECT id FROM colleges WHERE id = '${candidateCollege}'::uuid OR name ILIKE $1 LIMIT 1;
+          `, `%${candidateCollege}%`);
+          if (matchCollege.length > 0) isValidCollege = true;
+        } catch {
+          // not a uuid
+        }
+        if (!isValidCollege && !isValidUniversity(candidateCollege)) {
+          fieldErrors.college = 'Please select a valid college or university from the list.';
+        }
+      }
+
+      // If attempting to advance to Step 2+ or finalize while invalid, reject with 400
+      if ((isStepAdvanceBeyond1 || isFinal) && Object.keys(fieldErrors).length > 0) {
+        return NextResponse.json(
+          {
+            error: fieldErrors.name || fieldErrors.college || 'Validation failed',
+            fieldErrors,
+          },
+          { status: 400 }
+        );
+      }
+    }
+
     // Build partial profile update object
     const profileUpdate: Record<string, any> = {};
+
+    if (collegeId) {
+      profileUpdate.collegeId = collegeId;
+    }
+    if (branchId) {
+      profileUpdate.branchId = branchId;
+    }
+    if (regulation) {
+      profileUpdate.regulation = regulation;
+    }
 
     if (typeof step === 'number') {
       profileUpdate.onboardingStep = step;
@@ -69,7 +125,9 @@ export async function POST(request: Request) {
       profileUpdate.onboardingStep = 5;
     }
 
-    if (college !== undefined) profileUpdate.college = college;
+    if (college !== undefined) {
+      profileUpdate.college = typeof college === 'string' ? college.trim() : college;
+    }
     if (degree !== undefined) profileUpdate.degree = degree;
     if (stream !== undefined) profileUpdate.stream = stream;
     if (streamCode !== undefined) profileUpdate.streamCode = streamCode;
@@ -113,7 +171,7 @@ export async function POST(request: Request) {
     }
 
     // Update user record if name was provided
-    if (name && name.trim() && name.trim() !== user.name) {
+    if (typeof name === 'string' && name.trim() && name.trim() !== user.name) {
       await prisma.user.update({
         where: { id: user.id },
         data: { name: name.trim() },
@@ -125,7 +183,10 @@ export async function POST(request: Request) {
       where: { userId: user.id },
       create: {
         userId: user.id,
-        college: college || 'University Campus',
+        college: (typeof college === 'string' ? college.trim() : college) || 'University Campus',
+        collegeId: collegeId || null,
+        branchId: branchId || null,
+        regulation: regulation || 'R25',
         degree: degree || 'B.Tech',
         stream: stream || 'Computer Science & Engineering',
         streamCode: streamCode || 'CSE',

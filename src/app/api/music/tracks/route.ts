@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import prisma from '@/lib/prisma';
-import { storeAudioFile, deleteAudioFile } from '@/lib/audioStorage';
+import { validateAudioUrl, validateCoverUrl } from '@/lib/audioUrlValidator';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,16 +12,29 @@ function formatDuration(seconds: number): string {
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(1)} KB`;
+function parseDurationSeconds(durationInput: any): number {
+  if (typeof durationInput === 'number' && !isNaN(durationInput) && durationInput > 0) {
+    return Math.round(durationInput);
   }
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  if (typeof durationInput === 'string') {
+    const trimmed = durationInput.trim();
+    if (trimmed.includes(':')) {
+      const [minStr, secStr] = trimmed.split(':');
+      const min = parseInt(minStr, 10) || 0;
+      const sec = parseInt(secStr, 10) || 0;
+      return min * 60 + sec;
+    }
+    const parsedNum = parseFloat(trimmed);
+    if (!isNaN(parsedNum) && parsedNum > 0) {
+      return Math.round(parsedNum);
+    }
+  }
+  return 180; // default 3 mins
 }
 
 /**
  * GET /api/music/tracks
- * Returns all custom & imported music tracks from PostgreSQL database
+ * Returns all custom & library music tracks with external HTTPS audio URLs
  */
 export async function GET(request: NextRequest) {
   try {
@@ -50,6 +63,7 @@ export async function GET(request: NextRequest) {
     const dbTracks = rawTracks.map((t) => ({
       ...t,
       fileSizeBytes: t.fileSizeBytes ? t.fileSizeBytes.toString() : null,
+      coverUrl: t.artworkUrl,
     }));
 
     // Read seeded library.json if available
@@ -61,27 +75,28 @@ export async function GET(request: NextRequest) {
         const raw = fs.readFileSync(libraryPath, 'utf8');
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          const mapped = parsed.map((item) => ({
-            id: item.id,
-            title: item.title,
-            artist: item.artist,
-            album: item.category ? `${item.category} Sessions` : 'Nivora Music',
-            genre: item.category || 'Focus',
-            category: (item.category || 'focus').toLowerCase(),
-            duration: formatDuration(item.duration || 180),
-            durationSec: item.duration || 180,
-            audioUrl: item.audio,
-            artworkUrl: item.artwork || null,
-            fileName: path.basename(item.audio),
-            fileSize: item.fileSizeBytes ? formatFileSize(item.fileSizeBytes) : '3.5 MB',
-            fileSizeBytes: item.fileSizeBytes ? item.fileSizeBytes.toString() : null,
-            source: item.source,
-            sourceUrl: item.sourceUrl,
-            license: item.license,
-            licenseUrl: item.licenseUrl,
-            downloadedAt: item.downloadedAt,
-            createdAt: item.downloadedAt || new Date().toISOString(),
-          }));
+          const mapped = parsed.map((item) => {
+            const audioUrl = item.audioUrl || (item.audio && item.audio.startsWith('http') ? item.audio : '');
+            const durationSec = item.durationSec || item.duration || 180;
+            return {
+              id: item.id,
+              title: item.title,
+              artist: item.artist,
+              album: item.album || (item.category ? `${item.category} Sessions` : 'Nivora Music'),
+              genre: item.genre || item.category || 'Focus',
+              category: (item.category || 'focus').toLowerCase(),
+              duration: formatDuration(durationSec),
+              durationSec,
+              audioUrl,
+              artworkUrl: item.artwork || item.coverUrl || null,
+              coverUrl: item.artwork || item.coverUrl || null,
+              source: item.source || 'External CDN Stream',
+              sourceUrl: item.sourceUrl,
+              license: item.license,
+              licenseUrl: item.licenseUrl,
+              createdAt: item.downloadedAt || new Date().toISOString(),
+            };
+          });
 
           libraryTracks = mapped;
         }
@@ -123,159 +138,141 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/music/tracks
- * Handles bulk upload of multiple audio files with metadata
+ * Creates one or more tracks using validated external HTTPS audio URLs
  */
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const metadataRaw = formData.get('metadata') as string | null;
+    const contentType = request.headers.get('content-type') || '';
 
-    if (!metadataRaw) {
-      return NextResponse.json({ error: 'Metadata payload is required' }, { status: 400 });
-    }
+    // 1. JSON Payload Handler (Target Architecture for External Audio URLs)
+    if (contentType.includes('application/json')) {
+      const body = await request.json();
+      const items: any[] = Array.isArray(body) ? body : body.tracks ? body.tracks : [body];
 
-    const parsedMetadata = JSON.parse(metadataRaw);
-    const metadataList: any[] = Array.isArray(parsedMetadata) ? parsedMetadata : [parsedMetadata];
-    if (metadataList.length === 0) {
-      return NextResponse.json({ error: 'No tracks to import' }, { status: 400 });
-    }
-
-    const results: any[] = [];
-    const errors: { fileName: string; error: string }[] = [];
-    let skippedCount = 0;
-
-    for (let i = 0; i < metadataList.length; i++) {
-      const meta = metadataList[i];
-      const audioFile = (formData.get(`file_${i}`) || formData.get('file')) as File | null;
-      const artworkFile = (formData.get(`artwork_${i}`) || formData.get('artwork')) as File | null;
-
-      if (!audioFile) {
-        errors.push({ fileName: meta.fileName || `Track ${i + 1}`, error: 'Audio file missing from payload' });
-        continue;
+      if (items.length === 0) {
+        return NextResponse.json({ success: false, error: 'No track data provided' }, { status: 400 });
       }
 
-      try {
-        // 1. Check duplicate detection
-        const existingTrack = await prisma.musicTrack.findFirst({
-          where: {
-            OR: [
-              meta.fileHash ? { fileHash: meta.fileHash } : {},
-              { fileName: audioFile.name },
-              {
-                title: meta.title,
-                artist: meta.artist,
-              },
-            ].filter((condition) => Object.keys(condition).length > 0),
-          },
-        });
+      const createdTracks = [];
+      const validationErrors: { title?: string; error: string }[] = [];
 
-        if (existingTrack) {
-          if (meta.duplicateResolution === 'skip') {
-            skippedCount++;
+      for (const item of items) {
+        const rawTitle = item.title ? String(item.title).trim() : '';
+        const rawAudioUrl = item.audioUrl ? String(item.audioUrl).trim() : '';
+
+        if (!rawTitle) {
+          validationErrors.push({ error: 'Track title is required.' });
+          continue;
+        }
+
+        // Validate Audio URL
+        const audioValidation = validateAudioUrl(rawAudioUrl);
+        if (!audioValidation.isValid || !audioValidation.cleanUrl) {
+          validationErrors.push({
+            title: rawTitle,
+            error: audioValidation.error || 'Invalid HTTPS audio URL.',
+          });
+          continue;
+        }
+
+        // Validate Cover URL if provided
+        const rawCoverUrl = item.coverUrl || item.artworkUrl || null;
+        let cleanCoverUrl: string | null = null;
+        if (rawCoverUrl) {
+          const coverValidation = validateCoverUrl(rawCoverUrl);
+          if (!coverValidation.isValid) {
+            validationErrors.push({
+              title: rawTitle,
+              error: coverValidation.error || 'Invalid cover image URL.',
+            });
             continue;
-          } else if (meta.duplicateResolution === 'replace') {
-            // Delete previous storage files if replacing
-            await deleteAudioFile(existingTrack.audioUrl, existingTrack.artworkUrl);
           }
+          cleanCoverUrl = coverValidation.cleanUrl || null;
         }
 
-        // 2. Read audio buffer
-        const arrayBuffer = await audioFile.arrayBuffer();
-        const fileBuffer = Buffer.from(arrayBuffer);
-
-        // Read optional embedded artwork buffer
-        let artworkBuffer: Buffer | null = null;
-        if (artworkFile) {
-          const artArray = await artworkFile.arrayBuffer();
-          artworkBuffer = Buffer.from(artArray);
-        }
-
-        const trackId = existingTrack && meta.duplicateResolution === 'replace'
-          ? existingTrack.id
-          : `track-import-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-
-        // 3. Store file into storage engine (Supabase or Local streaming)
-        const storageResult = await storeAudioFile({
-          trackId,
-          fileBuffer,
-          fileName: audioFile.name,
-          mimeType: audioFile.type || 'audio/mpeg',
-          artworkBuffer,
-        });
-
-        const durationSec = Math.round(meta.duration || 180);
+        const durationSec = parseDurationSeconds(item.duration || item.durationSec);
         const durationFormatted = formatDuration(durationSec);
-        const formattedSize = formatFileSize(audioFile.size);
+        const artist = item.artist ? String(item.artist).trim() : 'Nivora Sounds';
+        const album = item.album ? String(item.album).trim() : 'Nivora Music';
+        const genre = item.genre ? String(item.genre).trim() : 'Focus';
+        const category = (item.category ? String(item.category).trim() : 'focus').toLowerCase();
 
-        // 4. Save/Update record in PostgreSQL database
+        const trackId = item.id && typeof item.id === 'string' && item.id.trim()
+          ? item.id.trim()
+          : `track-ext-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+
         const savedTrack = await prisma.musicTrack.upsert({
           where: { id: trackId },
           update: {
-            title: meta.title || audioFile.name,
-            artist: meta.artist || 'Nivora Sounds',
-            album: meta.album || 'Nivora Music',
-            genre: meta.genre || 'Focus',
-            category: meta.category || 'focus',
+            title: rawTitle,
+            artist,
+            album,
+            genre,
+            category,
             duration: durationFormatted,
             durationSec,
-            audioUrl: storageResult.audioUrl,
-            artworkUrl: storageResult.artworkUrl || meta.artworkUrl || null,
-            fileName: audioFile.name,
-            fileSize: formattedSize,
-            fileSizeBytes: BigInt(audioFile.size),
-            fileHash: meta.fileHash || null,
-            mimeType: audioFile.type || 'audio/mpeg',
+            audioUrl: audioValidation.cleanUrl,
+            artworkUrl: cleanCoverUrl,
           },
           create: {
             id: trackId,
-            title: meta.title || audioFile.name,
-            subtitle: meta.artist || 'Nivora Sounds',
-            artist: meta.artist || 'Nivora Sounds',
-            album: meta.album || 'Nivora Music',
-            genre: meta.genre || 'Focus',
-            category: meta.category || 'focus',
+            title: rawTitle,
+            subtitle: artist,
+            artist,
+            album,
+            genre,
+            category,
             duration: durationFormatted,
             durationSec,
-            audioUrl: storageResult.audioUrl,
-            artworkUrl: storageResult.artworkUrl || meta.artworkUrl || null,
-            fileName: audioFile.name,
-            fileSize: formattedSize,
-            fileSizeBytes: BigInt(audioFile.size),
-            fileHash: meta.fileHash || null,
-            mimeType: audioFile.type || 'audio/mpeg',
+            audioUrl: audioValidation.cleanUrl,
+            artworkUrl: cleanCoverUrl,
           },
         });
 
-        results.push({
+        createdTracks.push({
           ...savedTrack,
-          fileSizeBytes: savedTrack.fileSizeBytes?.toString(),
-        });
-      } catch (trackError: any) {
-        console.error(`Failed to import track ${meta.fileName}:`, trackError);
-        errors.push({
-          fileName: meta.fileName || audioFile.name,
-          error: trackError.message || 'Storage write failed',
+          coverUrl: savedTrack.artworkUrl,
+          fileSizeBytes: savedTrack.fileSizeBytes ? savedTrack.fileSizeBytes.toString() : null,
         });
       }
+
+      if (createdTracks.length === 0 && validationErrors.length > 0) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: validationErrors[0].error,
+            validationErrors,
+          },
+          { status: 400 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        tracks: createdTracks,
+        track: createdTracks[0],
+        createdCount: createdTracks.length,
+        errors: validationErrors,
+      });
     }
 
-    return NextResponse.json({
-      success: true,
-      importedTracks: results,
-      importedCount: results.length,
-      skippedCount,
-      failedCount: errors.length,
-      errors,
-    });
+    // 2. Reject legacy multipart upload for local MP3 files per Step 6
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Binary audio upload is disabled. Please provide external HTTPS audio URLs as JSON: { title, artist, album, genre, audioUrl, coverUrl, duration }.',
+      },
+      { status: 400 }
+    );
   } catch (error: any) {
-    console.error('Bulk music import endpoint failed:', error);
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    console.error('Music track creation API error:', error);
+    return NextResponse.json({ success: false, error: error.message || 'Internal server error' }, { status: 500 });
   }
 }
 
 /**
  * DELETE /api/music/tracks
- * Deletes one or multiple tracks by ID
+ * Deletes one or multiple tracks by ID from database
  */
 export async function DELETE(request: NextRequest) {
   try {
@@ -286,24 +283,14 @@ export async function DELETE(request: NextRequest) {
     if (singleId) {
       idsToDelete = [singleId];
     } else {
-      const body = await request.json();
+      const body = await request.json().catch(() => ({}));
       idsToDelete = body.ids || [];
     }
 
     if (idsToDelete.length === 0) {
-      return NextResponse.json({ error: 'No track IDs provided' }, { status: 400 });
+      return NextResponse.json({ success: false, error: 'No track IDs provided' }, { status: 400 });
     }
 
-    // Find tracks to clean up their storage files
-    const tracksToDelete = await prisma.musicTrack.findMany({
-      where: { id: { in: idsToDelete } },
-    });
-
-    for (const t of tracksToDelete) {
-      await deleteAudioFile(t.audioUrl, t.artworkUrl);
-    }
-
-    // Delete database records
     const deleteResult = await prisma.musicTrack.deleteMany({
       where: { id: { in: idsToDelete } },
     });
@@ -314,7 +301,7 @@ export async function DELETE(request: NextRequest) {
     });
   } catch (error: any) {
     console.error('Delete tracks API failed:', error);
-    return NextResponse.json({ error: error.message || 'Failed to delete tracks' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Failed to delete tracks' }, { status: 500 });
   }
 }
 
@@ -325,10 +312,10 @@ export async function DELETE(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { ids, category, playlistId } = body;
+    const { ids, category } = body;
 
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
-      return NextResponse.json({ error: 'IDs array is required' }, { status: 400 });
+      return NextResponse.json({ success: false, error: 'IDs array is required' }, { status: 400 });
     }
 
     if (category) {
@@ -346,6 +333,6 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Update tracks API failed:', error);
-    return NextResponse.json({ error: error.message || 'Failed to update tracks' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message || 'Failed to update tracks' }, { status: 500 });
   }
 }

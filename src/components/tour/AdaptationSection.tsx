@@ -462,19 +462,19 @@ export function StudentContextDashboard({
   };
 
   return (
-    <div className="rounded-2xl bg-[#172329] border border-[#29383D] p-5 sm:p-7 shadow-2xl">
+    <div className="rounded-2xl bg-surface-container border border-border p-5 sm:p-7 shadow-2xl">
       {/* Workspace Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-[#29383D] gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-border gap-2">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#C98282]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#D5B978]" />
-          <span className="w-2.5 h-2.5 rounded-full bg-[#8FC5A7]" />
-          <span className="ml-3 font-mono text-[11px] text-[#A6ADA9]">
+          <span className="w-2.5 h-2.5 rounded-full bg-deep-coral" />
+          <span className="w-2.5 h-2.5 rounded-full bg-muted-sand" />
+          <span className="w-2.5 h-2.5 rounded-full bg-coral" />
+          <span className="ml-3 font-sans text-xs text-on-surface-variant font-semibold tracking-wide">
             COMMON STUDENT INTERFACE • DYNAMIC PROFILE CONTEXT
           </span>
         </div>
-        <div className="flex items-center gap-2 font-mono text-[10px] text-[#8FC5A7]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8FC5A7] animate-pulse" />
+        <div className="flex items-center gap-2 font-sans text-[11px] text-primary font-bold tracking-wider">
+          <span className="w-1.5 h-1.5 rounded-full bg-coral" />
           <span>ADAPTS TO ALL STREAMS</span>
         </div>
       </div>
@@ -482,13 +482,13 @@ export function StudentContextDashboard({
       {/* The 3 Common Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Column 1: Today's Focus (4 cols) */}
-        <div className="lg:col-span-4 rounded-xl bg-[#1C2A30] border border-[#29383D] p-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 rounded-xl bg-surface-container-low border border-border p-4 flex flex-col justify-between">
           <div className="space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#29383D]/60 w-full">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-[#A6ADA9] font-bold">
+            <div className="flex items-center justify-between pb-2 border-b border-border/60 w-full">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">
                 TODAY&apos;S FOCUS
               </span>
-              <span className="font-mono text-[9px] px-2 py-0.5 rounded bg-[#172329] text-[#8FC5A7] font-semibold">
+              <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-surface-container text-primary font-bold">
                 3 items
               </span>
             </div>
@@ -497,15 +497,15 @@ export function StudentContextDashboard({
               {taskList.map((task) => (
                 <div
                   key={task.id}
-                  className="p-2.5 rounded-lg bg-[#172329] border border-[#29383D] flex items-center justify-between gap-2"
+                  className="p-2.5 rounded-lg bg-surface-container border border-border flex items-center justify-between gap-2"
                 >
                   <div className="flex items-center gap-2 min-w-0 text-left flex-1">
                     <button
                       onClick={() => toggleTask(task.id)}
                       className={`w-4 h-4 rounded border flex items-center justify-center cursor-pointer transition-colors shrink-0 ${
                         task.completed
-                          ? 'bg-[#8FC5A7] border-[#8FC5A7] text-[#0F171B]'
-                          : 'border-[#29383D]'
+                          ? 'bg-primary border-primary text-white'
+                          : 'border-border'
                       }`}
                       aria-label={`Toggle ${task.title}`}
                     >
@@ -516,21 +516,21 @@ export function StudentContextDashboard({
                     <div className="min-w-0">
                       <div
                         className={`text-xs font-bold truncate ${
-                          task.completed ? 'text-[#747F7B] line-through' : 'text-[#F1F0E8]'
+                          task.completed ? 'text-on-surface-variant line-through' : 'text-on-surface'
                         }`}
                       >
-                        <span className="font-mono text-[10px] text-[#747F7B] mr-1.5 font-semibold">
+                        <span className="font-sans text-[11px] text-on-surface-variant mr-1.5 font-bold">
                           {task.num}
                         </span>
                         {task.title}
                       </div>
-                      <div className="text-[10px] text-[#747F7B] truncate font-normal">{task.sub}</div>
+                      <div className="text-[10px] text-on-surface-variant truncate font-normal">{task.sub}</div>
                     </div>
                   </div>
 
                   <Link
                     href={task.link}
-                    className="shrink-0 px-2.5 py-1 rounded bg-[#1C2A30] text-[#A6ADA9] font-sans text-[11px] font-bold inline-block"
+                    className="shrink-0 px-2.5 py-1 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-sans text-[11px] font-bold inline-block"
                   >
                     {task.action}
                   </Link>
@@ -539,116 +539,116 @@ export function StudentContextDashboard({
             </div>
           </div>
 
-          <div className="pt-3 mt-3 border-t border-[#29383D]/60 flex items-center justify-between text-[10px] font-mono text-[#747F7B]">
+          <div className="pt-3 mt-3 border-t border-border/60 flex items-center justify-between text-[11px] font-sans text-on-surface-variant font-medium">
             <span>PRIORITY QUEUE</span>
-            <Link href="/planner" className="text-[#8FC5A7]">
+            <Link href="/planner" className="text-primary hover:text-coral transition-colors font-bold">
               View Planner →
             </Link>
           </div>
         </div>
 
         {/* Column 2: Schedule & Timeline (4 cols) */}
-        <div className="lg:col-span-4 rounded-xl bg-[#1C2A30] border border-[#29383D] p-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 rounded-xl bg-surface-container-low border border-border p-4 flex flex-col justify-between">
           <div className="space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#29383D]/60 w-full">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-[#A6ADA9] font-bold">
+            <div className="flex items-center justify-between pb-2 border-b border-border/60 w-full">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">
                 SCHEDULE &amp; TIMELINE
               </span>
-              <span className="font-mono text-[9px] px-2 py-0.5 rounded bg-[#172329] text-[#8FC5A7] font-semibold">
+              <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-surface-container text-primary font-bold">
                 Today
               </span>
             </div>
 
-            <div className="space-y-3 relative pl-3 before:absolute before:left-1 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#29383D]">
+            <div className="space-y-3 relative pl-3 before:absolute before:left-1 before:top-2 before:bottom-2 before:w-0.5 before:bg-border">
               {activeSchedule.map((item, idx) => (
                 <div key={idx} className="relative pl-3 text-left">
                   <span
                     className={`absolute -left-[14px] top-1 w-2 h-2 rounded-full ${
-                      item.timeHighlight ? 'bg-[#8FC5A7]' : 'bg-[#747F7B]'
+                      item.timeHighlight ? 'bg-primary' : 'bg-warm-gray'
                     }`}
                   />
                   <span
-                    className={`font-mono text-[10px] ${
-                      item.timeHighlight ? 'text-[#8FC5A7] font-bold' : 'text-[#A6ADA9] font-medium'
+                    className={`font-sans text-[11px] ${
+                      item.timeHighlight ? 'text-primary font-bold' : 'text-on-surface-variant font-medium'
                     }`}
                   >
                     {item.time}
                   </span>
-                  <h4 className="text-xs font-bold text-[#F1F0E8] mt-0.5">
+                  <h4 className="text-xs font-bold text-on-surface mt-0.5">
                     {item.title}
                   </h4>
-                  <p className="text-[10px] text-[#747F7B] font-normal">{item.sub}</p>
+                  <p className="text-[10px] text-on-surface-variant font-normal">{item.sub}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="pt-3 mt-3 border-t border-[#29383D]/60 flex items-center justify-between text-[10px] font-mono text-[#747F7B]">
+          <div className="pt-3 mt-3 border-t border-border/60 flex items-center justify-between text-[11px] font-sans text-on-surface-variant font-medium">
             <span>DAILY CADENCE</span>
-            <Link href="/classes" className="text-[#8FC5A7] font-semibold">
+            <Link href="/classes" className="text-primary hover:text-coral transition-colors font-bold">
               Full Timetable →
             </Link>
           </div>
         </div>
 
         {/* Column 3: Active Student Context (4 cols) */}
-        <div className="lg:col-span-4 rounded-xl bg-[#1C2A30] border border-[#29383D] p-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 rounded-xl bg-surface-container-low border border-border p-4 flex flex-col justify-between">
           <div className="space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-[#29383D]/60 w-full">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-[#A6ADA9] font-bold">
+            <div className="flex items-center justify-between pb-2 border-b border-border/60 w-full">
+              <span className="font-sans text-[11px] uppercase tracking-wider text-on-surface-variant font-bold">
                 ACTIVE STUDENT CONTEXT
               </span>
-              <span className="font-mono text-[9px] px-2 py-0.5 rounded bg-[#8FC5A7]/10 text-[#8FC5A7] border border-[#8FC5A7]/30 font-semibold">
+              <span className="font-sans text-[10px] px-2 py-0.5 rounded bg-coral/10 text-coral border border-coral/30 font-bold">
                 ACTIVE
               </span>
             </div>
 
             <div className="space-y-2.5">
               <div className="text-left">
-                <div className="text-[10px] font-mono text-[#747F7B] uppercase tracking-wider font-semibold">
+                <div className="text-[10px] font-sans text-on-surface-variant uppercase tracking-wider font-bold">
                   CURRENT PRIORITY
                 </div>
-                <div className="text-xs font-bold text-[#F1F0E8] mt-0.5 flex items-center justify-between">
+                <div className="text-xs font-bold text-on-surface mt-0.5 flex items-center justify-between">
                   <span>{activeCtx.priorityTitle}</span>
-                  <span className="font-mono text-[#8FC5A7] text-[11px] font-bold">
+                  <span className="font-sans text-primary text-xs font-bold">
                     Progress: {activeCtx.progress}%
                   </span>
                 </div>
                 {/* Progress bar */}
-                <div className="w-full bg-[#172329] h-1.5 rounded-full mt-1.5 overflow-hidden border border-[#29383D]">
+                <div className="w-full bg-surface-container h-1.5 rounded-full mt-1.5 overflow-hidden border border-border">
                   <div
-                    className="bg-[#8FC5A7] h-full rounded-full transition-all duration-300"
+                    className="bg-coral h-full rounded-full transition-all duration-300"
                     style={{ width: `${activeCtx.progress}%` }}
                   />
                 </div>
               </div>
 
               {/* Generic Contextual Telemetry Grid */}
-              <div className="grid grid-cols-2 gap-2 pt-1 font-mono text-[10px]">
-                <div className="p-2 rounded bg-[#172329] border border-[#29383D] text-left">
-                  <div className="text-[#747F7B] font-medium">SEMESTER</div>
-                  <div className="text-[#F1F0E8] font-bold truncate">
+              <div className="grid grid-cols-2 gap-2 pt-1 font-sans text-[10px]">
+                <div className="p-2 rounded bg-surface-container border border-border text-left">
+                  <div className="text-on-surface-variant font-semibold uppercase tracking-wider text-[9px]">SEMESTER</div>
+                  <div className="text-on-surface font-bold truncate mt-0.5">
                     {activeCtx.semester}
                   </div>
                 </div>
 
-                <div className="p-2 rounded bg-[#172329] border border-[#29383D] text-left">
-                  <div className="text-[#747F7B] font-medium">UPCOMING DEADLINE</div>
-                  <div className="text-[#8FC5A7] font-bold truncate">
+                <div className="p-2 rounded bg-surface-container border border-border text-left">
+                  <div className="text-on-surface-variant font-semibold uppercase tracking-wider text-[9px]">UPCOMING DEADLINE</div>
+                  <div className="text-primary font-bold truncate mt-0.5">
                     {activeCtx.deadline}
                   </div>
                 </div>
 
-                <div className="p-2 rounded bg-[#172329] border border-[#29383D] text-left">
-                  <div className="text-[#747F7B] font-medium">ACTIVE GOAL</div>
-                  <div className="text-[#F1F0E8] font-bold truncate">
+                <div className="p-2 rounded bg-surface-container border border-border text-left">
+                  <div className="text-on-surface-variant font-semibold uppercase tracking-wider text-[9px]">ACTIVE GOAL</div>
+                  <div className="text-on-surface font-bold truncate mt-0.5">
                     {activeCtx.goal}
                   </div>
                 </div>
 
-                <div className="p-2 rounded bg-[#172329] border border-[#29383D] text-left">
-                  <div className="text-[#747F7B] font-medium">CURRENT PROJECT</div>
-                  <div className="text-[#F1F0E8] font-bold truncate">
+                <div className="p-2 rounded bg-surface-container border border-border text-left">
+                  <div className="text-on-surface-variant font-semibold uppercase tracking-wider text-[9px]">CURRENT PROJECT</div>
+                  <div className="text-on-surface font-bold truncate mt-0.5">
                     {activeCtx.project}
                   </div>
                 </div>
@@ -656,11 +656,11 @@ export function StudentContextDashboard({
             </div>
           </div>
 
-          <div className="pt-3 mt-3 border-t border-[#29383D]/60 flex items-center justify-between">
-            <span className="font-mono text-[9px] text-[#747F7B] font-medium">PROFILE-ADAPTED</span>
+          <div className="pt-3 mt-3 border-t border-border/60 flex items-center justify-between">
+            <span className="font-sans text-[10px] text-on-surface-variant font-semibold uppercase tracking-wider">PROFILE-ADAPTED</span>
             <Link
               href="/dashboard"
-              className="px-3 py-1.5 rounded-lg bg-[#8FC5A7] text-[#0F171B] font-sans text-xs font-bold inline-block"
+              className="px-3 py-1.5 rounded-lg bg-primary text-white hover:bg-coral transition-colors font-sans text-xs font-bold inline-block shadow-sm"
             >
               Open Workspace
             </Link>
@@ -672,50 +672,28 @@ export function StudentContextDashboard({
 }
 
 export default function AdaptationSection() {
-  const [selectedStream, setSelectedStream] = useState<string>('common');
-  const activeProfile = STREAM_PROFILES[selectedStream] || STREAM_PROFILES.common;
+  const activeProfile = STREAM_PROFILES.common;
 
   return (
     <section id="adaptation" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-2 sm:py-4">
       {/* Header Label */}
-      <div data-stream-heading className="text-center space-y-3 mb-10 will-change-transform">
-        <div className="font-mono text-[10px] tracking-[0.25em] text-[#747F7B] uppercase font-bold">
+      <div data-stream-heading className="text-center space-y-3 mb-8 sm:mb-10">
+        <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           STREAM PERSONALIZATION &amp; ADAPTATION
         </div>
-        <h2 className="text-3xl sm:text-5xl font-display font-bold tracking-[-0.025em] text-[#F1F0E8] leading-[1.15]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
           One interface. Your{' '}
-          <span className="font-serif italic text-[#8FC5A7] font-normal">
+          <span className="italic text-primary">
             context.
           </span>
         </h2>
-        <p className="mt-4 font-sans text-sm sm:text-base text-[#A6ADA9] max-w-2xl mx-auto leading-relaxed font-normal">
+        <p className="mt-4 font-sans text-sm sm:text-base text-on-surface-variant max-w-2xl mx-auto leading-relaxed font-normal">
           One student ecosystem for every stream. Nivora adapts the content, schedule, subjects, projects, and goals around you.
         </p>
       </div>
 
-      {/* Stream Profile Demonstrator Tabs */}
-      <div data-stream-pills className="flex items-center justify-center flex-wrap gap-2 mb-8 will-change-transform">
-        {Object.values(STREAM_PROFILES).map((profile) => {
-          const isSelected = selectedStream === profile.id;
-          return (
-            <button
-              key={profile.id}
-              data-stream-pill
-              onClick={() => setSelectedStream(profile.id)}
-              className={`px-3.5 py-1.5 rounded-full font-sans text-xs font-semibold tracking-wide transition-all cursor-pointer will-change-transform ${
-                isSelected
-                  ? 'bg-[#8FC5A7] text-[#0F171B] shadow-md scale-105'
-                  : 'bg-[#172329] border border-[#29383D] text-[#A6ADA9]'
-              }`}
-            >
-              {profile.label}
-            </button>
-          );
-        })}
-      </div>
-
       {/* 3-Column Common Student Interface Component */}
-      <div data-stream-dashboard className="will-change-transform transform scale-[0.85] sm:scale-[0.9] lg:scale-100 origin-top">
+      <div data-stream-dashboard className="w-full">
         <StudentContextDashboard
           tasks={activeProfile.tasks}
           schedule={activeProfile.schedule}
@@ -725,7 +703,7 @@ export default function AdaptationSection() {
 
       {/* Subtle Principle Note */}
       <div className="mt-8 text-center">
-        <span className="font-mono text-[10px] tracking-[0.2em] text-[#747F7B] uppercase">
+        <span className="font-sans text-[11px] tracking-[0.16em] text-on-surface-variant uppercase font-semibold">
           ONE UNIFIED INTERFACE • CONTEXTUALLY POPULATED FOR EVERY STREAM
         </span>
       </div>

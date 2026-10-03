@@ -213,7 +213,7 @@ export default function HoverPreview({
         >
           {/* Eyebrow */}
           {eyebrow && (
-            <div className="font-mono text-[9px] tracking-[0.2em] text-[var(--accent)] uppercase font-bold mb-1 flex items-center gap-1.5">
+            <div className="font-sans text-[10px] tracking-wider text-[var(--accent)] uppercase font-bold mb-1 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_6px_var(--accent)]" />
               <span>{eyebrow}</span>
             </div>
@@ -237,13 +237,13 @@ export default function HoverPreview({
                 return (
                   <div
                     key={idx}
-                    className="flex items-center gap-1.5 font-mono text-[9px] text-[var(--text-muted)] font-normal"
+                    className="flex items-center gap-1.5 font-sans text-[10px] text-[var(--text-muted)] font-medium"
                   >
                     <span className="w-1 h-1 rounded-full bg-[var(--accent)]/70 shrink-0" />
                     {isObject ? (
                       <span>
                         <span className="text-[var(--text-secondary)] font-semibold">{detail.label}:</span>{' '}
-                        <span className="text-[#D5B978] font-bold">{detail.value}</span>
+                        <span className="text-coral font-bold">{detail.value}</span>
                       </span>
                     ) : (
                       <span className="text-[var(--text-secondary)] font-medium">{detail}</span>
@@ -256,7 +256,7 @@ export default function HoverPreview({
 
           {/* Optional Action Text */}
           {actionText && (
-            <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between font-mono text-[9px] text-[var(--accent)] font-bold tracking-wider uppercase">
+            <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between font-sans text-[10px] text-[var(--accent)] font-bold tracking-wider uppercase">
               <span>{actionText}</span>
               <span className="material-symbols-outlined text-[12px]">arrow_forward</span>
             </div>

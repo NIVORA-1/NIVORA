@@ -8,7 +8,7 @@ interface PublicLayoutProps {
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <div className="min-h-screen w-full bg-[#0F171B] text-[#F1F0E8] antialiased selection:bg-[#8FC5A7] selection:text-[#0F171B]">
+    <div className="min-h-screen w-full bg-background text-on-surface antialiased selection:bg-coral selection:text-white transition-colors duration-250">
       {children}
     </div>
   );

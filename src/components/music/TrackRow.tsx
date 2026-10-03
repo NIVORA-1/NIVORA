@@ -31,7 +31,11 @@ export default function TrackRow({
   const { currentTrack, isPlaying, playTrack, togglePlay, toggleLike, isLiked } = useMusic();
   const [contextMenuPos, setContextMenuPos] = useState<{ x: number; y: number } | null>(null);
 
-  const isCurrent = currentTrack.id === track.id;
+  const targetVideoId = track?.videoId || track?.id;
+  const isCurrent = Boolean(targetVideoId) && (
+    (Boolean(currentTrack?.videoId) && (currentTrack.videoId === targetVideoId || currentTrack.videoId === track.id)) ||
+    (Boolean(currentTrack?.id) && (currentTrack.id === targetVideoId || currentTrack.id === track.id))
+  );
   const liked = isLiked(track.id);
 
   const formatTime = (secs: number) => {
@@ -41,6 +45,10 @@ export default function TrackRow({
   };
 
   const handleRowClick = () => {
+    if (!targetVideoId) {
+      console.warn('[TrackRow] Cannot play track: missing videoId', track);
+      return;
+    }
     if (isCurrent) {
       togglePlay();
     } else {
@@ -113,7 +121,7 @@ export default function TrackRow({
               description={track.whyThisTrack}
               details={[
                 { label: 'Artist', value: track.artist },
-                { label: 'Album', value: track.album },
+                ...(track.album ? [{ label: 'Album', value: track.album }] : []),
                 { label: 'Type', value: track.soundType },
                 ...(track.freq ? [{ label: 'Carrier', value: `${track.freq}Hz Delta` }] : []),
               ]}
@@ -127,12 +135,12 @@ export default function TrackRow({
             <div className="flex items-center gap-1.5 font-label-tag text-[10px] text-on-surface-variant truncate mt-0.5">
               <span
                 onClick={(e) => {
-                  if (onNavigateArtist) {
+                  if (onNavigateArtist && track.artistId) {
                     e.stopPropagation();
                     onNavigateArtist(track.artistId);
                   }
                 }}
-                className={`truncate ${onNavigateArtist ? 'hover:text-on-surface hover:underline' : ''}`}
+                className={`truncate ${onNavigateArtist && track.artistId ? 'hover:text-on-surface hover:underline' : ''}`}
               >
                 {track.artist}
               </span>
@@ -150,14 +158,14 @@ export default function TrackRow({
           <div className="hidden md:block w-48 text-on-surface-variant text-[11px] truncate pr-4">
             <span
               onClick={(e) => {
-                if (onNavigateAlbum) {
+                if (onNavigateAlbum && track.albumId) {
                   e.stopPropagation();
                   onNavigateAlbum(track.albumId);
                 }
               }}
-              className={`truncate ${onNavigateAlbum ? 'hover:text-on-surface hover:underline' : ''}`}
+              className={`truncate ${onNavigateAlbum && track.albumId ? 'hover:text-on-surface hover:underline' : ''}`}
             >
-              {track.album}
+              {track.album || ''}
             </span>
           </div>
         )}

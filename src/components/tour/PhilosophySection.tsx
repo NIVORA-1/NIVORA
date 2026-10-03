@@ -97,23 +97,23 @@ export default function PhilosophySection() {
   return (
     <section id="philosophy" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       {/* Header Label */}
-      <div data-philo-heading className="text-center space-y-3 mb-14 will-change-transform">
-        <div className="font-mono text-[10px] tracking-[0.25em] text-[#747F7B] uppercase font-bold">
+      <div data-philo-heading className="text-center space-y-3 mb-14">
+        <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           DESIGN PHILOSOPHY
         </div>
-        <h2 className="text-3xl sm:text-5xl font-display font-bold tracking-[-0.025em] text-[#F1F0E8] leading-[1.15]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
           More than{' '}
-          <span className="font-serif italic text-[#8FC5A7] font-normal">
+          <span className="italic text-primary">
             a planner.
           </span>
         </h2>
-        <p className="mt-4 font-mono text-[11px] sm:text-xs tracking-[0.18em] leading-relaxed text-[#747F7B] max-w-2xl mx-auto uppercase font-normal">
+        <p className="mt-4 font-sans text-xs sm:text-sm tracking-wider leading-relaxed text-on-surface-variant max-w-2xl mx-auto uppercase font-medium">
           A SYSTEM DESIGNED TO MINIMIZE COGNITIVE OVERHEAD WHILE MAXIMIZING CONTEXT RETENTION.
         </p>
       </div>
 
       {/* 6 Grid Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 transform scale-[0.88] sm:scale-[0.92] lg:scale-100 origin-top">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 scale-[0.88] sm:scale-[0.92] lg:scale-100 origin-top">
         {pillars.map((pillar) => {
           const isExpanded = activePillar === pillar.id;
           return (
@@ -121,46 +121,46 @@ export default function PhilosophySection() {
               key={pillar.id}
               data-philo-card
               onClick={() => setActivePillar(isExpanded ? null : pillar.id)}
-              className={`rounded-xl bg-[#172329] border transition-all duration-300 p-6 flex flex-col justify-between cursor-pointer h-full text-left will-change-transform ${
+              className={`rounded-xl border p-6 flex flex-col justify-between cursor-pointer h-full text-left ${
                 isExpanded
-                  ? 'border-[#8FC5A7] bg-[#1C2A30] shadow-[0_0_25px_rgba(143,197,167,0.12)]'
-                  : 'border-[#29383D]'
+                  ? 'border-primary bg-secondary-container shadow-[0_0_25px_rgba(232,90,79,0.12)]'
+                  : 'bg-surface-container border-border hover:bg-surface-container-high'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-[#0F171B] border border-[#29383D] flex items-center justify-center text-[#8FC5A7]">
+                  <div className="w-9 h-9 rounded-lg bg-surface border border-border flex items-center justify-center text-primary shadow-sm">
                     <span className="material-symbols-outlined text-[20px]">
                       {pillar.icon}
                     </span>
                   </div>
-                  <span className="font-mono text-[9px] px-2 py-0.5 rounded-full bg-[#1C2A30] border border-[#29383D] text-[#747F7B] uppercase tracking-wider font-semibold">
+                  <span className="font-sans text-[10px] px-2.5 py-0.5 rounded-full bg-surface-container-high border border-border text-on-surface-variant uppercase tracking-wider font-bold">
                     {pillar.tag}
                   </span>
                 </div>
 
-                <h3 className="font-mono text-base font-bold tracking-wider text-[#F1F0E8] mb-2">
+                <h3 className="font-sans text-base sm:text-lg font-bold tracking-tight text-on-surface mb-2">
                   {pillar.name}
                 </h3>
-                <p className="font-sans text-xs sm:text-sm text-[#A6ADA9] leading-relaxed font-normal">
+                <p className="font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed font-normal">
                   {pillar.desc}
                 </p>
 
                 {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-[#29383D] text-xs text-[#8FC5A7] font-sans leading-relaxed animate-in fade-in duration-200 font-normal">
+                  <div className="mt-3 pt-3 border-t border-border text-xs text-primary font-sans leading-relaxed font-normal">
                     {pillar.detail}
                   </div>
                 )}
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#29383D]/60 flex items-center justify-between">
-                <span className="font-mono text-[10px] text-[#747F7B] font-medium">
+              <div className="mt-6 pt-4 border-t border-border/60 flex items-center justify-between">
+                <span className="font-sans text-[10px] text-on-surface-variant font-semibold tracking-wider uppercase">
                   {isExpanded ? 'TAP TO COLLAPSE' : 'TAP FOR DETAIL'}
                 </span>
                 <Link
                   href={pillar.link}
                   onClick={(e) => e.stopPropagation()}
-                  className="inline-flex items-center gap-1 font-sans text-xs font-bold text-[#8FC5A7]"
+                  className="inline-flex items-center gap-1 font-sans text-xs font-bold text-primary hover:text-coral transition-colors"
                 >
                   <span>Explore</span>
                   <span className="material-symbols-outlined text-[14px]">arrow_forward</span>

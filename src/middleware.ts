@@ -11,9 +11,14 @@ const PUBLIC_PATHS = [
   '/tour',
   '/login',
   '/signup',
+  '/verify-email',
   '/forgot-password',
   '/verify-code',
   '/reset-password',
+  '/auth/callback',
+  '/community',
+  '/clubs-and-events',
+  '/music',
 ];
 
 /**
@@ -88,11 +93,21 @@ async function verifyJwtInEdge(
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Bypass Next.js internals, static files, and public assets
+  // 1. Bypass Next.js internals, static files, auth endpoints, and public assets
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api/auth') ||
+    pathname.startsWith('/auth') ||
+    pathname.startsWith('/api/ai') ||
     pathname.startsWith('/api/music') ||
+    pathname.startsWith('/api/curriculum') ||
+    pathname.startsWith('/api/universities') ||
+    pathname.startsWith('/api/clubs') ||
+    pathname.startsWith('/api/events') ||
+    pathname.startsWith('/api/connect') ||
+    pathname.startsWith('/api/community') ||
+    pathname.startsWith('/api/learning') ||
+    pathname.startsWith('/api/attendance') ||
     pathname.startsWith('/audio') ||
     pathname.includes('.') || // static assets e.g. favicon.ico, images, fonts, mp3
     pathname.startsWith('/static')
@@ -115,8 +130,12 @@ export async function middleware(request: NextRequest) {
   }
 
   // 4. Any other route is a protected application route
-  // If not authenticated or session is invalid/expired -> redirect to /login
+  // If not authenticated or session is invalid/expired
   if (!validSession) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const url = request.nextUrl.clone();
     url.pathname = '/login';
 
