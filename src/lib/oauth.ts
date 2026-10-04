@@ -9,17 +9,34 @@ export const OAUTH_STATE_COOKIE = 'nivora_oauth_state';
 
 /**
  * Resolves the application base URL for OAuth callbacks.
- * Prioritizes NEXT_PUBLIC_APP_URL, falls back to request origin or localhost:3000.
+ * Prioritizes incoming request origin (including x-forwarded-host on Vercel),
+ * ensuring callbacks never misroute between localhost and production domains.
  */
 export function getBaseUrl(request?: Request): string {
-  if (process.env.NEXT_PUBLIC_APP_URL) {
-    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/+$/, '');
-  }
   if (request) {
     try {
+      const forwardedHost = request.headers.get('x-forwarded-host');
+      const forwardedProto = request.headers.get('x-forwarded-proto') || 'https';
+      if (forwardedHost) {
+        return `${forwardedProto}://${forwardedHost}`;
+      }
+      const host = request.headers.get('host');
+      if (host) {
+        const proto = host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https';
+        return `${proto}://${host}`;
+      }
       const url = new URL(request.url);
-      return `${url.protocol}//${url.host}`;
+      return url.origin;
     } catch {}
+  }
+  if (process.env.NEXT_PUBLIC_APP_URL && !process.env.NEXT_PUBLIC_APP_URL.includes('localhost')) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/+$/, '');
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/+$/, '');
   }
   return 'http://localhost:3000';
 }

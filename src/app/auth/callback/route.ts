@@ -6,11 +6,122 @@ import { findOrCreateOAuthUser, getBaseUrl, setSessionCookie } from '@/lib/oauth
 
 export const dynamic = 'force-dynamic';
 
+function renderClientCallbackHtml(supabaseUrl: string, anonKey: string, baseUrl: string) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Authenticating with NIVORA...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #0D0F12;
+      color: #F3F4F6;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      user-select: none;
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255, 107, 74, 0.2);
+      border-top-color: #FF6B4A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 20px;
+    }
+    .text {
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: #9CA3AF;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="spinner"></div>
+  <div class="text">Authenticating session...</div>
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4';
+
+    const supabaseUrl = ${JSON.stringify(supabaseUrl)};
+    const anonKey = ${JSON.stringify(anonKey)};
+    const baseUrl = ${JSON.stringify(baseUrl)};
+    const supabase = createClient(supabaseUrl, anonKey);
+
+    async function syncAndRedirect(session) {
+      try {
+        const res = await fetch('/api/auth/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_token: session.access_token }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const target = data.needsOnboarding ? '/onboarding' : '/home';
+          window.location.replace(target);
+          return true;
+        }
+      } catch (err) {
+        console.error('Session sync error:', err);
+      }
+      window.location.replace('/home');
+      return true;
+    }
+
+    async function handleAuth() {
+      try {
+        // 1. Check existing session
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          await syncAndRedirect(session);
+          return;
+        }
+
+        // 2. Listen for auth change (e.g. from hash fragment #access_token=...)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          if (session?.user) {
+            subscription.unsubscribe();
+            await syncAndRedirect(session);
+          }
+        });
+
+        // 3. Fallback timeout if no session can be detected
+        setTimeout(async () => {
+          subscription.unsubscribe();
+          const { data: { session: finalCheck } } = await supabase.auth.getSession();
+          if (finalCheck?.user) {
+            await syncAndRedirect(finalCheck);
+          } else {
+            window.location.replace('/login?error=oauth_failed&message=Authentication+could+not+be+completed');
+          }
+        }, 3000);
+      } catch (err) {
+        console.error('Callback error:', err);
+        window.location.replace('/login?error=auth_callback_failed');
+      }
+    }
+
+    handleAuth();
+  </script>
+</body>
+</html>`;
+}
+
 /**
  * Supabase PKCE / SSR OAuth Callback Route Handler.
  * Exchanges authorization code for a Supabase session, retrieves user details,
  * creates or links the Nivora student record, sets the Nivora JWT session cookie,
  * and routes to onboarding or the student dashboard.
+ * If code is missing (e.g. implicit OAuth with hash fragment), gracefully serves
+ * client-side session resolution without error.
  */
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -49,18 +160,6 @@ export async function GET(request: Request) {
     return NextResponse.redirect(redirectUrl);
   }
 
-  // 2. Validate authorization code
-  if (!code) {
-    console.warn('[Auth Callback] Missing authorization code parameter');
-    const redirectUrl = new URL('/login', baseUrl);
-    redirectUrl.searchParams.set('error', 'oauth_failed');
-    redirectUrl.searchParams.set(
-      'message',
-      'Authorization code is missing from the authentication callback URL.'
-    );
-    return NextResponse.redirect(redirectUrl);
-  }
-
   const config = getSupabaseConfigStatus();
   if (!config.isConfigured) {
     console.error('[Auth Callback] Supabase environment variables missing:', config.missingVariables);
@@ -75,6 +174,17 @@ export async function GET(request: Request) {
 
   const anonKey = getSupabaseAnonKey();
   const supabaseUrl = getSupabaseUrl();
+
+  // 2. If code is absent, serve client recovery HTML to process potential hash fragment (#access_token=...)
+  if (!code) {
+    return new Response(renderClientCallbackHtml(supabaseUrl, anonKey, baseUrl), {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        'Cache-Control': 'no-store, max-age=0',
+      },
+    });
+  }
 
   try {
     const cookieStore = cookies();
@@ -102,22 +212,15 @@ export async function GET(request: Request) {
     const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
     if (exchangeError || !data?.user) {
-      console.error('[Auth Callback] exchangeCodeForSession failed:', exchangeError);
-      const errorMsg = exchangeError?.message || '';
-      const isExpired =
-        errorMsg.toLowerCase().includes('expired') ||
-        errorMsg.toLowerCase().includes('invalid') ||
-        errorMsg.toLowerCase().includes('already used');
-
-      const redirectUrl = new URL('/login', baseUrl);
-      redirectUrl.searchParams.set('error', isExpired ? 'link_expired' : 'auth_callback_failed');
-      redirectUrl.searchParams.set(
-        'message',
-        isExpired
-          ? 'Your email verification link has expired or has already been used. Please request a new verification email.'
-          : errorMsg || 'Failed to exchange authorization code for Supabase session.'
-      );
-      return NextResponse.redirect(redirectUrl);
+      console.warn('[Auth Callback] Server exchangeCodeForSession failed, serving client fallback:', exchangeError?.message);
+      // Fallback: Code might have already been exchanged by client or requires client PKCE verifier
+      return new Response(renderClientCallbackHtml(supabaseUrl, anonKey, baseUrl), {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-store, max-age=0',
+        },
+      });
     }
 
     const authUser = data.user;

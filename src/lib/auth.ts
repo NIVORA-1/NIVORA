@@ -118,10 +118,47 @@ export async function getCurrentUser() {
       } = await supabase.auth.getUser();
 
       if (sbUser?.email) {
-        const user = await prisma.user.findUnique({
-          where: { email: sbUser.email },
+        const cleanEmail = sbUser.email.toLowerCase().trim();
+        let user = await prisma.user.findUnique({
+          where: { email: cleanEmail },
           include: { profile: true },
         });
+
+        if (!user) {
+          // If authenticated through Supabase (Google/GitHub/email) but not yet in DB,
+          // ensure the Nivora user and student profile exist
+          const { findOrCreateOAuthUser } = await import('@/lib/oauth');
+          const userMeta = sbUser.user_metadata || {};
+          const fullName =
+            (userMeta.full_name as string) ||
+            (userMeta.name as string) ||
+            (userMeta.user_name as string) ||
+            (userMeta.preferred_username as string) ||
+            cleanEmail.split('@')[0];
+
+          const avatarUrl =
+            (userMeta.avatar_url as string) ||
+            (userMeta.picture as string) ||
+            null;
+
+          const rawProvider =
+            (sbUser.app_metadata?.provider as string) ||
+            (userMeta.provider as string) ||
+            'google';
+
+          await findOrCreateOAuthUser({
+            email: cleanEmail,
+            name: fullName,
+            avatar: avatarUrl,
+            provider: rawProvider,
+            providerId: sbUser.id,
+          });
+
+          user = await prisma.user.findUnique({
+            where: { email: cleanEmail },
+            include: { profile: true },
+          });
+        }
 
         if (user) {
           return user;

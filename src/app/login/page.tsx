@@ -10,7 +10,18 @@ import { useApp } from '@/context/AppContext';
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { refreshUser } = useApp();
+  const { refreshUser, user, isLoadingUser } = useApp();
+
+  // If already authenticated, redirect directly to dashboard
+  useEffect(() => {
+    if (!isLoadingUser && user) {
+      if (user.profile && user.profile.onboardingCompleted === false) {
+        router.replace('/onboarding');
+      } else {
+        router.replace('/home');
+      }
+    }
+  }, [user, isLoadingUser, router]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

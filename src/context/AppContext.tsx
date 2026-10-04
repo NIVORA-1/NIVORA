@@ -169,7 +169,37 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    refreshUser();
+    let unsubscribe: (() => void) | undefined;
+
+    const initAuth = async () => {
+      try {
+        const { createSupabaseBrowserClient, isSupabaseConfigured } = await import('@/lib/supabase/client');
+        if (isSupabaseConfigured()) {
+          const supabase = createSupabaseBrowserClient();
+          const {
+            data: { subscription },
+          } = supabase.auth.onAuthStateChange(async (_event: any, session: any) => {
+            if (session?.user) {
+              await refreshUser();
+            } else if (session === null || _event === 'SIGNED_OUT') {
+              setUser(null);
+              setIsLoadingUser(false);
+            }
+          });
+          unsubscribe = () => subscription.unsubscribe();
+        }
+      } catch (err) {
+        console.error('Supabase auth state listener error:', err);
+      }
+
+      await refreshUser();
+    };
+
+    initAuth();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [refreshUser]);
 
   const logout = async () => {
@@ -184,7 +214,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch {}
     setUser(null);
-    window.location.href = '/login';
+    window.location.href = '/?logout=true';
   };
 
   // Keyboard shortcut listener for ⌘K / Ctrl+K and /

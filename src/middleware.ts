@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { createServerClient } from '@supabase/ssr';
 
 const AUTH_COOKIE = 'nivora_session_token';
 
@@ -115,23 +116,78 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // 2. If redirected to '/' with OAuth callback parameters (?code=... or ?error=...), forward to /auth/callback
+  if (pathname === '/' && (request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('error'))) {
+    const callbackUrl = request.nextUrl.clone();
+    callbackUrl.pathname = '/auth/callback';
+    return NextResponse.redirect(callbackUrl);
+  }
+
   const secret = process.env.JWT_SECRET || 'nivora-student-os-super-secret-key-2026';
   const token = request.cookies.get(AUTH_COOKIE)?.value;
 
   const validSession = token ? await verifyJwtInEdge(token, secret) : null;
 
+  // Check Supabase session via @supabase/ssr
+  let hasSupabaseSession = false;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!validSession && supabaseUrl && supabaseAnonKey) {
+    const hasSbCookie = request.cookies.getAll().some(
+      (c) => c.name.startsWith('sb-') && c.name.includes('-auth-token') && c.value && c.value !== 'deleted'
+    );
+
+    if (hasSbCookie) {
+      try {
+        const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+          cookies: {
+            getAll() {
+              return request.cookies.getAll();
+            },
+            setAll() {},
+          },
+        });
+        const {
+          data: { user: sbUser },
+        } = await supabase.auth.getUser();
+        if (sbUser) {
+          hasSupabaseSession = true;
+        }
+      } catch {
+        hasSupabaseSession = false;
+      }
+    }
+  }
+
+  const isAuthenticated = Boolean(validSession || hasSupabaseSession);
+
+  // If authenticated user visits /login or /signup, redirect to /home
+  if (isAuthenticated && (pathname === '/login' || pathname === '/signup')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/home';
+    url.search = '';
+    return NextResponse.redirect(url);
+  }
+
+  // If authenticated user visits root landing page '/' (without logout flag), redirect to /home
+  if (isAuthenticated && pathname === '/' && !request.nextUrl.searchParams.has('logout')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/home';
+    return NextResponse.redirect(url);
+  }
+
   const isPublicPath = PUBLIC_PATHS.some((p) =>
     p === '/' ? pathname === '/' : pathname.startsWith(p)
   );
 
-  // 2. Public routes are always accessible and never auto-redirected
+  // Public routes are accessible for unauthenticated users
   if (isPublicPath) {
     return NextResponse.next();
   }
 
-  // 4. Any other route is a protected application route
-  // If not authenticated or session is invalid/expired
-  if (!validSession) {
+  // Protected route accessed without active session -> redirect to /login
+  if (!isAuthenticated) {
     if (pathname.startsWith('/api/')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -140,7 +196,6 @@ export async function middleware(request: NextRequest) {
     url.pathname = '/login';
 
     const response = NextResponse.redirect(url);
-    // If a stale or invalid token cookie was present, clear it
     if (token) {
       response.cookies.set(AUTH_COOKIE, '', {
         httpOnly: true,
@@ -153,7 +208,7 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // 5. Valid session accessing protected route -> proceed
+  // Valid session accessing protected route -> proceed
   return NextResponse.next();
 }
 
