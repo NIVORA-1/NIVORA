@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useScrollReveal } from '@/components/tour/useScrollReveal';
 
 interface ModuleItem {
   num: string;
@@ -20,6 +21,7 @@ interface ModuleItem {
 }
 
 export default function ModulesSection() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>(0.12);
   const modules: ModuleItem[] = [
     {
       num: '01',
@@ -157,13 +159,22 @@ export default function ModulesSection() {
   ];
 
   return (
-    <section id="modules" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      {/* Header Label */}
-      <div data-module-heading className="text-center space-y-3 mb-14">
+    <section
+      ref={ref}
+      id="modules"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 overflow-hidden"
+    >
+      {/* Header Label & Heading */}
+      <div
+        data-module-heading
+        className={`text-center space-y-3 mb-14 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           FOUNDATIONAL CURRICULUM
         </div>
-        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.08]">
           Learn. Plan. Focus. Grow. Connect.
         </h2>
         <p className="mt-4 font-sans text-xs sm:text-sm tracking-wider leading-relaxed text-on-surface-variant max-w-2xl mx-auto uppercase font-medium">
@@ -172,25 +183,33 @@ export default function ModulesSection() {
       </div>
 
       {/* 7 Modules Grid */}
-      <div data-modules-grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 transform scale-[0.88] sm:scale-[0.92] lg:scale-100 origin-top">
+      <div
+        data-modules-grid
+        className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 transition-all duration-700 delay-150 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         {modules.map((mod, idx) => (
           <div
             key={mod.num}
             data-module-card
+            style={{ transitionDelay: `${idx * 40}ms` }}
             className={`h-full ${idx === 6 ? 'sm:col-span-2 lg:col-span-2' : ''}`}
           >
             <Link
               href={mod.link}
-              className="h-full rounded-xl bg-surface-container border border-border p-5 flex flex-col justify-between hover:bg-surface-container-high hover:border-border-accent transition-all shadow-sm group"
+              className="h-full rounded-2xl bg-surface-container/90 backdrop-blur-sm border border-border p-6 flex flex-col justify-between hover:bg-surface-container-high hover:border-primary/50 hover:-translate-y-1.5 transition-all duration-300 shadow-sm hover:shadow-xl group"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between mb-4">
                   <span className="font-sans text-[11px] text-primary font-bold tracking-wider uppercase">
                     {mod.title}
                   </span>
-                  <span className="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary transition-colors">
-                    {mod.icon}
-                  </span>
+                  <div className="w-8 h-8 rounded-lg bg-surface border border-border/80 flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+                    <span className="material-symbols-outlined text-[18px]">
+                      {mod.icon}
+                    </span>
+                  </div>
                 </div>
 
                 <h3 className="font-sans text-sm sm:text-base font-bold text-on-surface mb-2 tracking-tight">
@@ -202,9 +221,9 @@ export default function ModulesSection() {
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-border/60 flex items-center justify-between font-sans text-[11px] text-on-surface-variant font-bold tracking-wider uppercase">
+              <div className="mt-6 pt-3.5 border-t border-border/60 flex items-center justify-between font-sans text-[11px] text-on-surface-variant font-bold tracking-wider uppercase">
                 <span>LAUNCH MODULE</span>
-                <span className="material-symbols-outlined text-[14px] text-primary group-hover:translate-x-0.5 transition-transform">
+                <span className="material-symbols-outlined text-[14px] text-primary group-hover:translate-x-1 transition-transform">
                   arrow_forward
                 </span>
               </div>

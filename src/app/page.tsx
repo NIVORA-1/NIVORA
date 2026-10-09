@@ -177,7 +177,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-background text-on-surface selection:bg-coral selection:text-white transition-colors duration-250">
+    <div className="min-h-screen w-full bg-background text-on-surface selection:bg-coral selection:text-white transition-colors duration-250 overflow-x-clip">
       {/* Public Floating Header */}
       <PublicHeader activeSection={activeSection} onNavigate={handleNavigate} />
 

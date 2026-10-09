@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useScrollReveal } from '@/components/tour/useScrollReveal';
 
 export interface TaskItem {
   id: string;
@@ -672,12 +673,22 @@ export function StudentContextDashboard({
 }
 
 export default function AdaptationSection() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>(0.12);
   const activeProfile = STREAM_PROFILES.common;
 
   return (
-    <section id="adaptation" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-2 sm:py-4">
+    <section
+      ref={ref}
+      id="adaptation"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-2 sm:py-4"
+    >
       {/* Header Label */}
-      <div data-stream-heading className="text-center space-y-3 mb-8 sm:mb-10">
+      <div
+        data-stream-heading
+        className={`text-center space-y-3 mb-8 sm:mb-10 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           STREAM PERSONALIZATION &amp; ADAPTATION
         </div>
@@ -693,7 +704,12 @@ export default function AdaptationSection() {
       </div>
 
       {/* 3-Column Common Student Interface Component */}
-      <div data-stream-dashboard className="w-full">
+      <div
+        data-stream-dashboard
+        className={`w-full transition-all duration-700 delay-150 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <StudentContextDashboard
           tasks={activeProfile.tasks}
           schedule={activeProfile.schedule}
@@ -702,7 +718,11 @@ export default function AdaptationSection() {
       </div>
 
       {/* Subtle Principle Note */}
-      <div className="mt-8 text-center">
+      <div
+        className={`mt-8 text-center transition-all duration-700 delay-300 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}
+      >
         <span className="font-sans text-[11px] tracking-[0.16em] text-on-surface-variant uppercase font-semibold">
           ONE UNIFIED INTERFACE • CONTEXTUALLY POPULATED FOR EVERY STREAM
         </span>

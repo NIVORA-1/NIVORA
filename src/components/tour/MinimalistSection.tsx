@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useScrollReveal } from '@/components/tour/useScrollReveal';
 
 export default function MinimalistSection() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>(0.12);
   const [openAccordion, setOpenAccordion] = useState<number>(0);
   const [showWhyInsight, setShowWhyInsight] = useState<boolean>(false);
 
@@ -59,13 +61,22 @@ export default function MinimalistSection() {
   ];
 
   return (
-    <section id="minimalist" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      {/* Header Label */}
-      <div data-mini-heading className="text-center space-y-3 mb-14">
+    <section
+      ref={ref}
+      id="minimalist"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 overflow-hidden"
+    >
+      {/* Header Label & Heading */}
+      <div
+        data-mini-heading
+        className={`text-center space-y-3 mb-14 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           MINIMALIST BY DESIGN
         </div>
-        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.08]">
           Only what matters.{' '}
           <span className="italic text-primary">
             When it matters.
@@ -77,14 +88,20 @@ export default function MinimalistSection() {
       </div>
 
       {/* Side-by-Side Showcase */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div
+        className={`grid grid-cols-1 lg:grid-cols-12 gap-6 items-start transition-all duration-700 delay-150 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
         {/* Left Column: Interactive Clean Workflow Accordion (7 cols) */}
-        <div data-mini-left className="lg:col-span-7 rounded-2xl bg-surface-container border border-border p-6 sm:p-7 shadow-xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
+        <div data-mini-left className="lg:col-span-7 rounded-2xl bg-surface-container/90 backdrop-blur-sm border border-border/80 p-6 sm:p-8 shadow-xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-border/80">
             <span className="font-sans text-xs text-on-surface font-bold tracking-wider uppercase">
               Intentional Interaction Model
             </span>
-            <span className="font-sans text-[10px] text-primary font-bold uppercase">ZERO NOISE PRINCIPLE</span>
+            <span className="font-sans text-[10px] text-primary font-bold uppercase tracking-wider">
+              ZERO NOISE PRINCIPLE
+            </span>
           </div>
 
           <div className="space-y-3">
@@ -94,11 +111,15 @@ export default function MinimalistSection() {
                 <div
                   key={item.title}
                   data-mini-item
-                  className="rounded-xl bg-surface-container-low border border-border overflow-clip"
+                  className={`rounded-xl border transition-all duration-200 overflow-clip ${
+                    isOpen
+                      ? 'bg-surface-container-high border-primary/50 shadow-sm'
+                      : 'bg-surface-container-low border-border hover:border-border/80'
+                  }`}
                 >
                   <button
                     onClick={() => setOpenAccordion(isOpen ? -1 : idx)}
-                    className="w-full p-4 flex items-center justify-between text-left cursor-pointer"
+                    className="w-full p-4.5 flex items-center justify-between text-left cursor-pointer"
                     aria-expanded={isOpen}
                   >
                     <div className="flex items-center gap-3">
@@ -115,11 +136,11 @@ export default function MinimalistSection() {
                   </button>
 
                   {isOpen && (
-                    <div className="px-4 pb-4 pt-1 border-t border-border/60">
-                      <p className="font-sans text-xs text-on-surface-variant leading-relaxed font-normal">
+                    <div className="px-5 pb-5 pt-1 border-t border-border/60 animate-in fade-in slide-in-from-top-1 duration-200">
+                      <p className="font-sans text-xs sm:text-sm text-on-surface-variant leading-relaxed font-normal">
                         {item.desc}
                       </p>
-                      <div className="mt-2.5 font-sans text-[10px] text-primary uppercase tracking-wider font-bold">
+                      <div className="mt-3 font-sans text-[10px] text-primary uppercase tracking-wider font-bold">
                         {item.metric}
                       </div>
                     </div>
@@ -131,20 +152,20 @@ export default function MinimalistSection() {
         </div>
 
         {/* Right Column: NIVORA Insight Telemetry Card (5 cols) */}
-        <div data-mini-telemetry className="lg:col-span-5 rounded-2xl bg-surface-container border border-border p-6 sm:p-7 shadow-xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
+        <div data-mini-telemetry className="lg:col-span-5 rounded-2xl bg-surface-container border border-border/90 p-6 sm:p-8 shadow-xl space-y-5">
+          <div className="flex items-center justify-between pb-3.5 border-b border-border/80">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-primary">
+              <span className="material-symbols-outlined text-[18px] text-primary animate-pulse">
                 psychology
               </span>
               <span className="font-sans text-xs tracking-wider text-primary uppercase font-bold">
                 NIVORA INSIGHT
               </span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-coral" />
+            <span className="w-2 h-2 rounded-full bg-coral animate-ping" />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             <p className="font-sans text-sm text-on-surface font-semibold leading-snug">
               &ldquo;Your recent quiz results show that Core Analytical Derivations and Unit 03 Concepts are currently your weakest topics.&rdquo;
             </p>
@@ -156,7 +177,7 @@ export default function MinimalistSection() {
           <div className="flex items-center gap-3 pt-2">
             <Link
               href="/learning"
-              className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-coral transition-colors font-sans text-xs font-bold flex items-center gap-1 shadow-sm"
+              className="px-4.5 py-2 rounded-full bg-primary text-white hover:bg-coral active:scale-95 transition-all font-sans text-xs font-bold flex items-center gap-1 shadow-md shadow-primary/20"
             >
               <span>Start Revision</span>
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -164,14 +185,14 @@ export default function MinimalistSection() {
 
             <button
               onClick={() => setShowWhyInsight(!showWhyInsight)}
-              className="font-sans text-xs text-on-surface-variant hover:text-on-surface underline underline-offset-4 cursor-pointer"
+              className="font-sans text-xs text-on-surface-variant hover:text-on-surface underline underline-offset-4 cursor-pointer transition-colors"
             >
-              Why this?
+              {showWhyInsight ? 'Hide reasoning' : 'Why this?'}
             </button>
           </div>
 
           {showWhyInsight && (
-            <div className="p-3 rounded-lg bg-surface-container-high border border-border text-[11px] text-on-surface-variant space-y-1.5">
+            <div className="p-3.5 rounded-xl bg-surface-container-high border border-border text-[11px] text-on-surface-variant space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
               <div>
                 <strong className="text-on-surface">Deficit Vector:</strong> Unit 03 Milestone Quiz score was 54%, below your 85% mastery target.
               </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useScrollReveal } from '@/components/tour/useScrollReveal';
 
 interface InvitationSectionProps {
   onScrollToTop: () => void;
@@ -12,13 +13,29 @@ export default function InvitationSection({
   onScrollToTop,
   onExploreArchitecture,
 }: InvitationSectionProps) {
-  return (
-    <div data-invite-section className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 text-center relative overflow-clip">
-      {/* Background subtle glow */}
-      <div data-invite-glow className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[320px] bg-coral/10 blur-[100px] rounded-full pointer-events-none" />
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>(0.15);
 
-      {/* Header Tag */}
-      <div data-invite-heading>
+  return (
+    <div
+      ref={ref}
+      data-invite-section
+      className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20 text-center relative overflow-hidden"
+    >
+      {/* Background subtle cinematic glow */}
+      <div
+        data-invite-glow
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[380px] bg-coral/15 blur-[120px] rounded-full pointer-events-none transition-opacity duration-1000 ${
+          isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
+      {/* Header Tag & Headline */}
+      <div
+        data-invite-heading
+        className={`relative z-10 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold mb-4">
           THE INVITATION
         </div>
@@ -38,27 +55,35 @@ export default function InvitationSection({
       </div>
 
       {/* Action Buttons */}
-      <div data-invite-cta className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <div
+        data-invite-cta
+        className={`relative z-10 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-700 delay-150 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <Link
           href="/signup"
-          className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-primary text-white hover:bg-coral transition-colors font-sans font-bold text-xs tracking-wider uppercase shadow-xl flex items-center justify-center gap-2"
+          className="w-full sm:w-auto px-9 py-3.5 rounded-full bg-primary text-white hover:bg-coral active:scale-95 transition-all font-sans font-bold text-xs tracking-wider uppercase shadow-xl shadow-primary/25 flex items-center justify-center gap-2 group cursor-pointer"
         >
           <span>Get Started</span>
-          <span className="material-symbols-outlined text-[16px]">
+          <span className="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">
             arrow_forward
           </span>
         </Link>
 
         <button
           onClick={onExploreArchitecture}
-          className="w-full sm:w-auto px-8 py-3.5 rounded-full bg-surface-container border border-border text-on-surface hover:bg-surface-container-high transition-colors font-sans font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full sm:w-auto px-9 py-3.5 rounded-full bg-surface-container/90 backdrop-blur-md border border-border text-on-surface hover:bg-surface-container-high active:scale-95 transition-all font-sans font-semibold text-xs tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer shadow-sm"
         >
           <span>EXPLORE THE ARCHITECTURE</span>
         </button>
       </div>
 
       {/* Bullet Attributes */}
-      <div data-invite-badges className="mt-8 flex items-center justify-center flex-wrap gap-2 text-xs font-sans text-on-surface-variant uppercase tracking-wider font-semibold">
+      <div
+        data-invite-badges
+        className="relative z-10 mt-8 flex items-center justify-center flex-wrap gap-2 text-xs font-sans text-on-surface-variant uppercase tracking-wider font-semibold"
+      >
         <span>Personalized to your stream.</span>
         <span>•</span>
         <span>Adaptive to your year.</span>
@@ -67,11 +92,14 @@ export default function InvitationSection({
       </div>
 
       {/* Founding Principle Blockquote */}
-      <div data-invite-quote className="mt-16 pt-10 max-w-2xl mx-auto">
-        <p className="font-display italic text-lg sm:text-2xl text-on-surface/90 font-normal">
+      <div
+        data-invite-quote
+        className="relative z-10 mt-16 pt-10 border-t border-border/50 max-w-2xl mx-auto"
+      >
+        <p className="font-display italic text-lg sm:text-2xl text-on-surface/90 font-normal leading-relaxed">
           &ldquo;When deep focus meets deep context, your entire trajectory changes for good.&rdquo;
         </p>
-        <span className="block mt-2 font-sans text-[10px] tracking-[0.16em] text-on-surface-variant uppercase font-semibold">
+        <span className="block mt-2.5 font-sans text-[10px] tracking-[0.16em] text-on-surface-variant uppercase font-semibold">
           FOUNDING PRINCIPLE, NIVORA LABS
         </span>
       </div>

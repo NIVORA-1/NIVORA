@@ -6,7 +6,7 @@ import NivoraLogo from '@/components/ui/NivoraLogo';
 
 export default function TourFooter() {
   return (
-    <footer className="w-full bg-surface-container-lowest pt-16 pb-12 px-4 sm:px-8 text-on-surface-variant">
+    <footer className="w-full bg-surface-container-lowest pt-16 pb-12 px-4 sm:px-8 text-on-surface-variant border-t border-border/50">
       <div className="max-w-7xl mx-auto">
         {/* Top Footer Section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-border/40">
@@ -18,6 +18,10 @@ export default function TourFooter() {
               <br />
               Built for those who build.
             </p>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-border/60 text-[10px] font-sans font-semibold tracking-wider text-on-surface-variant uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+              <span>SYSTEM: 4.0.1 • ALL NODES ACTIVE</span>
+            </div>
           </div>
 
           {/* Navigation Links (8 cols) */}

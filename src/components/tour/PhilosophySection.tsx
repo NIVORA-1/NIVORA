@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useScrollReveal } from '@/components/tour/useScrollReveal';
 
 interface PhilosophyPillar {
   id: string;
@@ -17,6 +18,7 @@ interface PhilosophyPillar {
 }
 
 export default function PhilosophySection() {
+  const { ref, isVisible } = useScrollReveal<HTMLDivElement>(0.12);
   const [activePillar, setActivePillar] = useState<string | null>(null);
 
   const pillars: PhilosophyPillar[] = [
@@ -95,13 +97,22 @@ export default function PhilosophySection() {
   ];
 
   return (
-    <section id="philosophy" className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      {/* Header Label */}
-      <div data-philo-heading className="text-center space-y-3 mb-14">
+    <section
+      ref={ref}
+      id="philosophy"
+      className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20 overflow-hidden"
+    >
+      {/* Header Label & Heading */}
+      <div
+        data-philo-heading
+        className={`text-center space-y-3 mb-14 transition-all duration-700 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        }`}
+      >
         <div className="font-sans text-[11px] tracking-[0.2em] text-on-surface-variant uppercase font-bold">
           DESIGN PHILOSOPHY
         </div>
-        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.1]">
+        <h2 className="text-3xl sm:text-5xl lg:text-[54px] font-display font-normal tracking-tight text-on-surface leading-[1.08]">
           More than{' '}
           <span className="italic text-primary">
             a planner.
@@ -113,23 +124,28 @@ export default function PhilosophySection() {
       </div>
 
       {/* 6 Grid Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 scale-[0.88] sm:scale-[0.92] lg:scale-100 origin-top">
-        {pillars.map((pillar) => {
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 transition-all duration-700 delay-150 ease-out ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+        }`}
+      >
+        {pillars.map((pillar, idx) => {
           const isExpanded = activePillar === pillar.id;
           return (
             <div
               key={pillar.id}
               data-philo-card
+              style={{ transitionDelay: `${idx * 40}ms` }}
               onClick={() => setActivePillar(isExpanded ? null : pillar.id)}
-              className={`rounded-xl border p-6 flex flex-col justify-between cursor-pointer h-full text-left ${
+              className={`group rounded-2xl border p-6 sm:p-7 flex flex-col justify-between cursor-pointer h-full text-left transition-all duration-300 hover:-translate-y-1.5 shadow-sm hover:shadow-xl ${
                 isExpanded
-                  ? 'border-primary bg-secondary-container shadow-[0_0_25px_rgba(232,90,79,0.12)]'
-                  : 'bg-surface-container border-border hover:bg-surface-container-high'
+                  ? 'border-primary bg-secondary-container/90 ring-1 ring-primary/20 shadow-[0_0_25px_rgba(232,90,79,0.14)]'
+                  : 'bg-surface-container/90 backdrop-blur-sm border-border hover:border-primary/40 hover:bg-surface-container-high'
               }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-9 h-9 rounded-lg bg-surface border border-border flex items-center justify-center text-primary shadow-sm">
+                  <div className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center text-primary shadow-sm group-hover:scale-105 transition-transform">
                     <span className="material-symbols-outlined text-[20px]">
                       {pillar.icon}
                     </span>
@@ -147,7 +163,7 @@ export default function PhilosophySection() {
                 </p>
 
                 {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-border text-xs text-primary font-sans leading-relaxed font-normal">
+                  <div className="mt-4 pt-3 border-t border-border/80 text-xs text-primary font-sans leading-relaxed font-normal animate-in fade-in slide-in-from-top-1 duration-200">
                     {pillar.detail}
                   </div>
                 )}
