@@ -19,7 +19,9 @@ export default function PublicHeader({
   const [pageScrollProgress, setPageScrollProgress] = useState(0);
 
   useEffect(() => {
+    let isMounted = true;
     const handleScroll = () => {
+      if (!isMounted) return;
       const scrollY = window.scrollY;
       setIsScrolled(scrollY > 20);
 
@@ -31,7 +33,10 @@ export default function PublicHeader({
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      isMounted = false;
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const navItems = [

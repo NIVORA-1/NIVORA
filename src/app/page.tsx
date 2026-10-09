@@ -18,7 +18,18 @@ import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/lib/supabas
 export default function LandingPage() {
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<string>('');
-  const [isCheckingSession, setIsCheckingSession] = useState<boolean>(true);
+  const [isCheckingSession, setIsCheckingSession] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const search = window.location.search;
+      const hash = window.location.hash;
+      return (
+        search.includes('code=') ||
+        search.includes('error=') ||
+        hash.includes('access_token=')
+      );
+    }
+    return false;
+  });
 
   // Check authenticated session on initial mount
   useEffect(() => {

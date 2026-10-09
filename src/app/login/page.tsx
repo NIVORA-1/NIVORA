@@ -84,7 +84,12 @@ function LoginForm() {
         return;
       }
 
-      await refreshUser();
+      if (data.user) {
+        await refreshUser(data.user);
+      } else {
+        await refreshUser();
+      }
+
       if (data.user?.profile && data.user.profile.onboardingCompleted === false) {
         router.push('/onboarding');
       } else {

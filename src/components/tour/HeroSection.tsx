@@ -37,6 +37,7 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
   const promptTextRef = useRef<HTMLSpanElement>(null);
 
   // Scroll physics & scrubbing state refs
+  const isMountedRef = useRef<boolean>(true);
   const scrollProgressRef = useRef<number>(0);
   const targetTimeRef = useRef<number>(0);
   const currentLerpTimeRef = useRef<number>(0);
@@ -62,7 +63,7 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
 
   // Native scroll progress calculation (no wheel hijacking, 100% native document scroll)
   const calculateScrollProgress = useCallback(() => {
-    if (!containerRef.current) return;
+    if (!isMountedRef.current || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const totalDistance = rect.height - window.innerHeight;
     if (totalDistance <= 0) return;
@@ -76,6 +77,7 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
 
   // High-performance seek dispatcher
   const seekVideo = useCallback((time: number) => {
+    if (!isMountedRef.current) return;
     const video = videoRef.current;
     if (!video || !videoLoadedRef.current) return;
     const clampedTime = Math.min(Math.max(time, 0), 8.0);
@@ -99,6 +101,7 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
 
   // Handle seeked event to drain queued seek target without skipping
   const handleSeeked = useCallback(() => {
+    if (!isMountedRef.current) return;
     if (pendingSeekTimeRef.current !== null && videoRef.current && videoLoadedRef.current) {
       const nextTime = pendingSeekTimeRef.current;
       pendingSeekTimeRef.current = null;
@@ -112,11 +115,14 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
 
   // High-performance requestAnimationFrame scrubbing loop with continuous interpolation (lerp)
   useEffect(() => {
+    isMountedRef.current = true;
     if (prefersReducedMotion) return;
 
     let animationFrameId: number;
 
     const tick = () => {
+      if (!isMountedRef.current) return;
+
       const targetP = scrollProgressRef.current;
       const targetTime = targetTimeRef.current;
       const diff = targetTime - currentLerpTimeRef.current;
@@ -154,7 +160,9 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
       }
       if (activeMilestoneIdxRef.current !== milestoneIdx) {
         activeMilestoneIdxRef.current = milestoneIdx;
-        setActiveMilestoneIdx(milestoneIdx);
+        if (isMountedRef.current) {
+          setActiveMilestoneIdx(milestoneIdx);
+        }
       }
 
       // Hero foreground content subtle transform
@@ -180,7 +188,9 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
           lerpedP >= 0.95 ? 'RELEASE TO FRAGMENTATION' : 'SCROLL TO SCRUB';
       }
 
-      animationFrameId = requestAnimationFrame(tick);
+      if (isMountedRef.current) {
+        animationFrameId = requestAnimationFrame(tick);
+      }
     };
 
     animationFrameId = requestAnimationFrame(tick);
@@ -190,9 +200,16 @@ export default function HeroSection({ onExplore, onReadArchitecture }: HeroSecti
     calculateScrollProgress();
 
     return () => {
+      isMountedRef.current = false;
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('scroll', calculateScrollProgress);
       window.removeEventListener('resize', calculateScrollProgress);
+      if (videoRef.current) {
+        try {
+          videoRef.current.pause();
+        } catch {}
+      }
+      videoLoadedRef.current = false;
     };
   }, [seekVideo, prefersReducedMotion, calculateScrollProgress]);
 

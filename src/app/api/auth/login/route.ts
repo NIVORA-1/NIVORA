@@ -16,7 +16,53 @@ export async function POST(request: Request) {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    // 1. If Supabase is configured, authenticate through Supabase Auth
+    // 1. Check local Prisma database (fastest, avoids external network roundtrips for existing/seed users)
+    let localUser = null;
+    try {
+      localUser = await prisma.user.findUnique({
+        where: { email: cleanEmail },
+        include: { profile: true },
+      });
+    } catch (dbErr) {
+      console.warn('[Login API] Local Prisma lookup note:', dbErr);
+    }
+
+    if (localUser && localUser.passwordHash) {
+      const isValid = await bcrypt.compare(password, localUser.passwordHash);
+      if (isValid) {
+        const token = signSessionToken(
+          {
+            userId: localUser.id,
+            email: localUser.email,
+            name: localUser.name,
+          },
+          Boolean(rememberMe)
+        );
+
+        const safeUser = {
+          id: localUser.id,
+          email: localUser.email,
+          name: localUser.name,
+          avatar: localUser.avatar,
+          profile: localUser.profile,
+        };
+
+        const response = NextResponse.json({ success: true, user: safeUser });
+        const maxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7;
+
+        response.cookies.set(AUTH_COOKIE, token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge,
+          path: '/',
+        });
+
+        return response;
+      }
+    }
+
+    // 2. If Supabase is configured, authenticate through Supabase Auth
     if (isSupabaseConfigured()) {
       try {
         const supabase = createSupabaseServerClient();
@@ -91,53 +137,10 @@ export async function POST(request: Request) {
       }
     }
 
-    // 2. Fallback to Prisma database for existing/seed users
-    const user = await prisma.user.findUnique({
-      where: { email: cleanEmail },
-      include: { profile: true },
-    });
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid email or password' },
-        { status: 401 }
-      );
-    }
-
-    const isValid = await bcrypt.compare(password, user.passwordHash);
-    if (!isValid) {
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
-    }
-
-    const token = signSessionToken(
-      {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-      },
-      Boolean(rememberMe)
+    return NextResponse.json(
+      { error: 'Invalid email or password' },
+      { status: 401 }
     );
-
-    const safeUser = {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      avatar: user.avatar,
-      profile: user.profile,
-    };
-
-    const response = NextResponse.json({ success: true, user: safeUser });
-    const maxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7;
-
-    response.cookies.set(AUTH_COOKIE, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge,
-      path: '/',
-    });
-
-    return response;
   } catch (error) {
     console.error('Login API error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

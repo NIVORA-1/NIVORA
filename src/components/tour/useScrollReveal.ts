@@ -15,9 +15,10 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(threshol
       return;
     }
 
+    let isMounted = true;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting && isMounted) {
           setIsVisible(true);
           observer.unobserve(entry.target);
         }
@@ -34,7 +35,8 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(threshol
     }
 
     return () => {
-      if (current) observer.unobserve(current);
+      isMounted = false;
+      observer.disconnect();
     };
   }, [threshold]);
 

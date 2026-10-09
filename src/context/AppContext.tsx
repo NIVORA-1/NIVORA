@@ -62,7 +62,7 @@ interface AppContextType {
   // User Authentication & Profile
   user: UserData | null;
   isLoadingUser: boolean;
-  refreshUser: () => Promise<void>;
+  refreshUser: (initialUserData?: UserData) => Promise<void>;
   logout: () => Promise<void>;
 
   // Navigation & Shell
@@ -138,7 +138,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isResetTimerActive, setIsResetTimerActive] = useState(false);
   const [resetTimerSeconds, setResetTimerSeconds] = useState(25 * 60);
 
-  const refreshUser = useCallback(async () => {
+  const refreshUser = useCallback(async (initialUserData?: UserData) => {
+    if (initialUserData) {
+      setUser(initialUserData);
+      if (initialUserData.profile?.streamCode) {
+        setCurrentStream(initialUserData.profile.streamCode);
+      }
+      if (typeof initialUserData.profile?.reelsToday === 'number') {
+        setReelsToday(initialUserData.profile.reelsToday);
+      }
+      if (typeof initialUserData.profile?.doomscrollMins === 'number') {
+        setDoomscrollMins(initialUserData.profile.doomscrollMins);
+      }
+      if (typeof initialUserData.profile?.focusScore === 'number') {
+        setFocusScore(initialUserData.profile.focusScore);
+      }
+      setIsLoadingUser(false);
+      return;
+    }
+
     try {
       const res = await fetch('/api/auth/me');
       if (res.ok) {
@@ -178,10 +196,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
           const supabase = createSupabaseBrowserClient();
           const {
             data: { subscription },
-          } = supabase.auth.onAuthStateChange(async (_event: any, session: any) => {
+          } = supabase.auth.onAuthStateChange(async (event: any, session: any) => {
             if (session?.user) {
               await refreshUser();
-            } else if (session === null || _event === 'SIGNED_OUT') {
+            } else if (event === 'SIGNED_OUT') {
+              // Only clear user on explicit sign out event, never when session is merely null for email/password users
               setUser(null);
               setIsLoadingUser(false);
             }
